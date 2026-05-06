@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\UtilisateursRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
-class Utilisateurs
+class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -104,7 +106,7 @@ class Utilisateurs
         return $this->email;
     }
 
-    public function getMotDePasse(): string
+    public function getPassword(): string
     {
         return $this->motDePasse;
     }
@@ -123,6 +125,18 @@ class Utilisateurs
     {
         return $this->role;
     }
+
+    public function getRoles(): array
+    {
+        return [$this->role->getCode()];
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials(): void {}
 
     // ======================
     // SETTERS
@@ -152,7 +166,7 @@ class Utilisateurs
         return $this;
     }
 
-    public function setMotDePasse(string $motDePasse): self
+    public function setPassword(string $motDePasse): self
     {
         $this->motDePasse = $motDePasse;
         return $this;

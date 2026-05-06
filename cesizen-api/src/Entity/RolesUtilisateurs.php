@@ -16,6 +16,9 @@ class RolesUtilisateurs
     #[ORM\Column(length: 50)]
     private ?string $libelle = null;
 
+    #[ORM\Column(length: 50, unique: true)]
+    private string $code;
+
     public function getIdRole(): ?int
     {
         return $this->id_role;
@@ -29,7 +32,17 @@ class RolesUtilisateurs
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
+        return $this;
+    }
 
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
         return $this;
     }
 }
