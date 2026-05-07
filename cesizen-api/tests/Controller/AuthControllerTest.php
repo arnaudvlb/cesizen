@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Tests\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class AuthControllerTest extends WebTestCase
+{
+    public function testLoginSuccess(): void
+    {
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/login',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                'email' => 'admin@test.com',
+                'password' => 'mdp'
+            ])
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        $data = json_decode(
+            $client->getResponse()->getContent(),
+            true
+        );
+
+        $this->assertArrayHasKey('token', $data);
+
+        $this->assertArrayHasKey('id', $data['user']);
+
+        $this->assertArrayHasKey('roles', $data['user']);
+
+        $this->assertContains('ROLE_ADMIN', $data['user']['roles']);
+    }
+
+    public function testLoginFail(): void
+    {
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/login',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                'email' => 'admin@test.com',
+                'password' => 'mauvais'
+            ])
+        );
+
+        $this->assertResponseStatusCodeSame(401);
+    }
+}
