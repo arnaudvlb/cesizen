@@ -56,4 +56,52 @@ class AuthControllerTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(401);
     }
+
+    public function testRegisterSuccess(): void
+    {
+        $client = static::createClient();
+
+        $client->request('POST', '/api/register', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], json_encode([
+            'email' => 'testregister@test.com',
+            'password' => 'password123',
+            'nom' => 'Doe',
+            'prenom' => 'John'
+        ]));
+
+        $this->assertResponseIsSuccessful();
+
+        $data = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals('Inscription réussie', $data['message']);
+    }
+
+    public function testRegisterFail(): void
+    {
+        $client = static::createClient();
+
+        $client->request('POST', '/api/register', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], json_encode([
+            'email' => 'duplicate@test.com',
+            'password' => 'password123',
+            'nom' => 'Doe',
+            'prenom' => 'John'
+        ]));
+
+        $this->assertResponseIsSuccessful();
+
+        $client->request('POST', '/api/register', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], json_encode([
+            'email' => 'duplicate@test.com',
+            'password' => 'password123',
+            'nom' => 'Doe',
+            'prenom' => 'John'
+        ]));
+
+        $this->assertResponseStatusCodeSame(400);
+    }
 }
