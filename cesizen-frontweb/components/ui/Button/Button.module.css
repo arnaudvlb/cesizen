@@ -1,0 +1,23 @@
+/* =====================
+   BOUTONS
+===================== */
+
+.btnPrimary {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btnPrimary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+}
