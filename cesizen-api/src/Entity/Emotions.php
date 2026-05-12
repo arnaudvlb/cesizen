@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\EmotionsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: EmotionsRepository::class)]
+#[ApiResource]
 class Emotions
 {
     #[ORM\Id]
