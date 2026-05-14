@@ -12,12 +12,20 @@ export const globalStyles = StyleSheet.create({
     padding: 16,
   },
 
-  resourcesPage: {
+  page: {
     width: "100%",
     maxWidth: 1200,
     paddingVertical: 48,
     paddingHorizontal: 16,
     alignSelf: "center",
+  },
+
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    marginBottom: 16,
+    textAlign: "center",
+    width: "100%",
   },
 
   /* =====================

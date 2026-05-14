@@ -1,10 +1,10 @@
-import { useRouter } from "expo-router";
-import { useState } from "react";
-import { View } from "react-native";
-
 import AuthForm from "@/components/AuthForm/AuthForm";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { useRegister } from "@/hooks/useRegister";
+import { globalStyles } from "@/styles/globals";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import { ScrollView } from "react-native";
 
 export default function RegisterPage() {
   const { registerUser, loading, error, data } = useRegister();
@@ -30,7 +30,14 @@ export default function RegisterPage() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <ScrollView
+      style={[globalStyles.page, { flex: 1 }]}
+      contentContainerStyle={{
+        padding: 16,
+        paddingBottom: 120,
+        flexGrow: 1,
+      }}
+    >
       {(message || error) && (
         <FormMessage message={message || error || ""} error={!!error} />
       )}
@@ -43,6 +50,6 @@ export default function RegisterPage() {
         placeholders={["Prénom", "Nom", "exemple@email.com", "••••••••"]}
         onSubmit={handleSubmit}
       />
-    </View>
+    </ScrollView>
   );
 }

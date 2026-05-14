@@ -1,5 +1,6 @@
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { EmotionGeneralesCardProps } from "@/types/components/EmotionGeneralesCardProps";
+import { Link } from "expo-router";
 import { Image, Text, View } from "react-native";
 import { styles } from "./EmotionGeneralesCard.styles";
 
@@ -13,25 +14,29 @@ export default function EmotionGeneralesCard({
   return (
     <View style={styles.emotionGrid}>
       {emotions.map((emotion) => (
-        <View
+        <Link
           key={emotion.id}
-          style={[
-            styles.emotionCard,
-            {
-              backgroundColor: colors.bg,
-              borderColor: colors.border,
-            },
-          ]}
+          href={{ pathname: "/emotion/[id]", params: { id: emotion.id } }}
         >
-          <Image
-            source={{ uri: `http://192.168.1.21:8000/${emotion.imageUrl}` }}
-            style={styles.image}
-          />
+          <View
+            style={[
+              styles.emotionCard,
+              {
+                backgroundColor: colors.bg,
+                borderColor: colors.border,
+              },
+            ]}
+          >
+            <Image
+              source={{ uri: `http://192.168.1.21:8000/${emotion.imageUrl}` }}
+              style={styles.image}
+            />
 
-          <Text style={[styles.label, { color: colors.text }]}>
-            {emotion.libelle}
-          </Text>
-        </View>
+            <Text style={[styles.label, { color: colors.text }]}>
+              {emotion.libelle}
+            </Text>
+          </View>
+        </Link>
       ))}
     </View>
   );

@@ -1,11 +1,12 @@
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import AuthForm from "@/components/AuthForm/AuthForm";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { useLogin } from "@/hooks/useLogin";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { globalStyles } from "@/styles/globals";
 
 export default function LoginPage() {
   const [message, setMessage] = useState("");
@@ -30,7 +31,14 @@ export default function LoginPage() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <ScrollView
+      style={[globalStyles.page, { flex: 1 }]}
+      contentContainerStyle={{
+        padding: 16,
+        paddingBottom: 120,
+        flexGrow: 1,
+      }}
+    >
       {(message || error) && (
         <FormMessage message={message || error || ""} error={!!error} />
       )}
@@ -54,6 +62,6 @@ export default function LoginPage() {
           </View>
         }
       />
-    </View>
+    </ScrollView>
   );
 }

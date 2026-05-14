@@ -1,7 +1,8 @@
 import EmotionGeneralesCard from "@/components/EmotionGeneralesCard/EmotionGeneralesCard";
 import { useEmotionGenerales } from "@/hooks/useEmotionGenerales";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { Text, View } from "react-native";
+import { globalStyles } from "@/styles/globals";
+import { ScrollView, Text } from "react-native";
 
 export default function EmotionsPage() {
   const { emotionGenerales, loading, error } = useEmotionGenerales();
@@ -16,18 +17,25 @@ export default function EmotionsPage() {
   }
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
+    <ScrollView
+      style={[globalStyles.page, { flex: 1 }]}
+      contentContainerStyle={{
+        padding: 16,
+        paddingBottom: 120,
+        flexGrow: 1,
+      }}
+    >
       <Text
-        style={{
-          fontSize: 24,
-          fontWeight: "700",
-          marginBottom: 16,
-          color: colors.text,
-        }}
+        style={[
+          {
+            color: colors.text,
+          },
+          globalStyles.pageTitle,
+        ]}
       >
         Émotions
       </Text>
       <EmotionGeneralesCard emotions={emotionGenerales} />
-    </View>
+    </ScrollView>
   );
 }
