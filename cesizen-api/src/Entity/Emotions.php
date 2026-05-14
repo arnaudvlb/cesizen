@@ -4,10 +4,15 @@ namespace App\Entity;
 
 use App\Repository\EmotionsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
 
 #[ORM\Entity(repositoryClass: EmotionsRepository::class)]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: [
+    'emotionGenerale.id' => 'exact'
+])]
 class Emotions
 {
     #[ORM\Id]
