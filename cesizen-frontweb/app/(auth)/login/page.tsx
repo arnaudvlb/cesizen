@@ -18,13 +18,12 @@ export default function LoginPage() {
       password: formData.password,
     });
 
-    // TODO Redirection
-    // if (res) {
-    //   setMessage("Connexion réussie !");
-    //   setTimeout(() => {
-    //     router.push("/resources");
-    //   }, 1500);
-    // }
+    if (res) {
+      setMessage("Connexion réussie !");
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
+    }
   };
 
   return (

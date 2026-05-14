@@ -1,15 +1,15 @@
 import { User } from "./users";
 
 export type Token = {
-  id_token: number;
+  idToken: number;
 
   token: string;
 
-  date_expiration: string;
+  dateExpiration: string;
 
-  date_creation: string;
+  dateCreation: string;
 
-  est_revoque: boolean;
+  estRevoque: boolean;
 
   utilisateur: User;
 };

@@ -1,7 +1,7 @@
 import { Role } from "./roles";
 
 export type User= {
-  id_utilisateur: number;
+  id: number;
 
   nom: string;
   
@@ -9,9 +9,9 @@ export type User= {
 
   telephone: string | null;
 
-  statut_compte: "ACTIF" | "DESACTIVE" | "BLOQUE";
+  statutCompte: "ACTIF" | "DESACTIVE" | "BLOQUE";
 
-  date_creation: string;
+  dateCreation: string;
 
   role: Role;
 }
