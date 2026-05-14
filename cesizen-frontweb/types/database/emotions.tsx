@@ -5,5 +5,5 @@ export type Emotion = {
 
   description: string;
 
-  emotionGeneralId: number;
+  emotionGeneraleId: number;
 };

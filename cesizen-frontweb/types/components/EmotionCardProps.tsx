@@ -1,5 +1,5 @@
-import { Emotion } from "../database/emotions";
+import { EmotionGenerale } from "../database/emotionGenerales";
 
 export type EmotionCardProps = {
-    emotions: Emotion[];
+    emotions: EmotionGenerale[];
 }
