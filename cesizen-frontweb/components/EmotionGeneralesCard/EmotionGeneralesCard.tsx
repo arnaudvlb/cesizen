@@ -10,11 +10,8 @@ export default function EmotionGeneralesCard({ emotions }: EmotionGeneralesCardP
       {emotions.map((emotion) => (
         <Link key={emotion.id} href={`/emotion/${emotion.id}`} className={styles.emotionCard}>
           <img
-            src={`/emotions/${emotion.id}.png`}
+            src={`http://localhost:8000/${emotion.imageUrl}`}
             alt={emotion.libelle}
-            onError={(e) => {
-              e.currentTarget.src = "/emotions/0.png";
-            }}
           />
           <span>{emotion.libelle}</span>
         </Link>

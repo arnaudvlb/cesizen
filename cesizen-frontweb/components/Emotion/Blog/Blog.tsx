@@ -7,12 +7,9 @@ export default function Blog({ emotionGenerale }: BlogProps) {
   return (
           <section className={styles.generalEmotion}>
         <img
-          src={`/emotions/${emotionGenerale.id}.png`}
+          src={`http://localhost:8000/${emotionGenerale.imageUrl}`}
           alt={emotionGenerale.libelle}
           className={styles.generalEmotionImage}
-          onError={(e) => {
-            e.currentTarget.src = "/emotions/0.png";
-          }}
         />
 
         <div className={styles.generalEmotionContent}>

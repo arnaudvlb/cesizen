@@ -4,4 +4,6 @@ export type EmotionGenerale = {
     libelle: string;
 
     description: string;
+
+    imageUrl: string;
 };

@@ -71,6 +71,17 @@ class EmotionGenerales
         return $this;
     }
 
+    public function getImageUrl(): string
+    {
+        $path = '/uploads/emotions/' . $this->id . '.png';
+
+        $fullPath = __DIR__ . '/../../public' . $path;
+
+        return file_exists($fullPath)
+            ? $path
+            : '/uploads/emotions/0.png';
+    }
+
     /**
      * @return Collection<int, Emotions>
      */

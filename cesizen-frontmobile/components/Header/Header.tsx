@@ -1,18 +1,12 @@
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { styles } from "./Header.styles";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const router = useRouter();
   const colors = useThemeColors();
-
-  const goTo = (path: string) => {
-    setMenuOpen(false);
-    router.push(path as any);
-  };
 
   return (
     <View style={[styles.header, { backgroundColor: colors.surface }]}>
@@ -41,6 +35,13 @@ export default function Header() {
 
             <Link href="/login" style={[styles.link, { color: colors.text }]}>
               Connexion
+            </Link>
+
+            <Link
+              href="/emotions"
+              style={[styles.link, { color: colors.text }]}
+            >
+              Émotions
             </Link>
           </View>
         )}
