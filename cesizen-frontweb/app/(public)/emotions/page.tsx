@@ -1,6 +1,6 @@
 "use client";
 
-import EmotionCard from "@/components/EmotionCard/EmotionCard";
+import EmotionGeneralesCard from "@/components/EmotionGeneralesCard/EmotionGeneralesCard";
 import { useEmotionGenerales } from "@/hooks/useEmotionGenerales";
 
 export default function EmotionsPage() {
@@ -12,7 +12,7 @@ export default function EmotionsPage() {
   return (
     <main className="page">
       <h1 className="pageTitle">Émotions</h1>
-      <EmotionCard emotions={emotionGenerales} />
+      <EmotionGeneralesCard emotions={emotionGenerales} />
     </main>
   );
 }
