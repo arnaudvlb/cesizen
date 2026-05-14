@@ -5,8 +5,8 @@ type Collection<T> = {
   "hydra:member"?: T[];
 };
 
-export default async function getEmotions(): Promise<Emotion[]> {
-  const res = await fetch("/api/emotions");
+export default async function getEmotions(emotionGeneraleId: string): Promise<Emotion[]> {
+  const res = await fetch(`/api/emotions/?emotionGenerale.id=${emotionGeneraleId}`);
   if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
 
   const data: Collection<Emotion> = await res.json();

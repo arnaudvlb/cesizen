@@ -20,7 +20,7 @@ export default function EmotionDetails() {
     emotions,
     loading: loadingEmotions,
     error: errorEmotions,
-  } = useEmotions();
+  } = useEmotions(id);
 
   if (loadingEmotionGenerale || loadingEmotions) {
     return <p>Chargement...</p>;
