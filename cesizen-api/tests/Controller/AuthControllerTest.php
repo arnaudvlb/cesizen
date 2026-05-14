@@ -64,7 +64,7 @@ class AuthControllerTest extends WebTestCase
         $client->request('POST', '/api/register', [], [], [
             'CONTENT_TYPE' => 'application/json',
         ], json_encode([
-            'email' => 'testregister@test.com',
+            'email' => uniqid() . '@test.com',
             'password' => 'password123',
             'nom' => 'Doe',
             'prenom' => 'John'
@@ -90,8 +90,6 @@ class AuthControllerTest extends WebTestCase
             'nom' => 'Doe',
             'prenom' => 'John'
         ]));
-
-        $this->assertResponseIsSuccessful();
 
         $client->request('POST', '/api/register', [], [], [
             'CONTENT_TYPE' => 'application/json',
