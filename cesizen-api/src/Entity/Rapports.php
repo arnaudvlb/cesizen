@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\RapportsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: RapportsRepository::class)]
+#[ApiResource]
 class Rapports
 {
     #[ORM\Id]
