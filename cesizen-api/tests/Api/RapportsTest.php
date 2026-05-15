@@ -20,7 +20,7 @@ class RapportsTest extends ApiTestCase
 
         $token = $jwtManager->create($user);
 
-        $response = $client->request('GET', '/api/rapports', [
+        $response = $client->request('GET', '/api/rapports/me', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
             ],

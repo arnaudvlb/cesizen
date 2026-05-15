@@ -8,13 +8,22 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
+use App\State\RapportsMeProvider;
 
 #[ORM\Entity(repositoryClass: RapportsRepository::class)]
 #[ApiResource(
+    security: "is_granted('ROLE_USER')",
     operations: [
-        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new GetCollection(
+            uriTemplate: '/rapports/me',
+            provider: RapportsMeProvider::class,
+        ),
         new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
-        new Post(security: "is_granted('IS_AUTHENTICATED_FULLY')")
+        new Post(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new Delete(security: "is_granted('IS_AUTHENTICATED_FULLY')"),  
+        new Patch(security: "is_granted('IS_AUTHENTICATED_FULLY')")
     ])]
 class Rapports
 {
