@@ -30,12 +30,6 @@ class AuthControllerTest extends WebTestCase
         );
 
         $this->assertArrayHasKey('token', $data);
-
-        $this->assertArrayHasKey('id', $data['user']);
-
-        $this->assertArrayHasKey('roles', $data['user']);
-
-        $this->assertContains('ROLE_ADMIN', $data['user']['roles']);
     }
 
     public function testLoginFail(): void

@@ -5,9 +5,17 @@ namespace App\Entity;
 use App\Repository\RapportsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 
 #[ORM\Entity(repositoryClass: RapportsRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
+        new Post(security: "is_granted('IS_AUTHENTICATED_FULLY')")
+    ])]
 class Rapports
 {
     #[ORM\Id]

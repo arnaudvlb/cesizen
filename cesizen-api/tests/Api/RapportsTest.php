@@ -3,13 +3,28 @@
 namespace App\Tests\Api;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 class RapportsTest extends ApiTestCase
 {
     public function testGetRapports(): void
     {
         $client = static::createClient();
-        $response = $client->request('GET', '/api/rapports');
+
+        $container = static::getContainer();
+
+        $userRepository = $container->get(\App\Repository\UtilisateursRepository::class);
+        $jwtManager = $container->get(JWTTokenManagerInterface::class);
+
+        $user = $userRepository->findOneBy([]);
+
+        $token = $jwtManager->create($user);
+
+        $response = $client->request('GET', '/api/rapports', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+            ],
+        ]);
 
         $this->assertResponseIsSuccessful();
 
