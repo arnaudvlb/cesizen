@@ -11,9 +11,13 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 use App\State\RapportsMeProvider;
+use App\State\RapportsProcessor;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RapportsRepository::class)]
 #[ApiResource(
+    normalizationContext: ['groups' => ['rapport:read']],
+    denormalizationContext: ['groups' => ['rapport:write']],
     security: "is_granted('ROLE_USER')",
     operations: [
         new GetCollection(
@@ -21,10 +25,14 @@ use App\State\RapportsMeProvider;
             provider: RapportsMeProvider::class,
         ),
         new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
-        new Post(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
-        new Delete(security: "is_granted('IS_AUTHENTICATED_FULLY')"),  
+        new Post(
+            security: "is_granted('IS_AUTHENTICATED_FULLY')",
+            processor: RapportsProcessor::class,
+        ),
+        new Delete(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
         new Patch(security: "is_granted('IS_AUTHENTICATED_FULLY')")
-    ])]
+    ]
+)]
 class Rapports
 {
     #[ORM\Id]
@@ -33,20 +41,23 @@ class Rapports
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['rapport:read', 'rapport:write'])]
     private ?string $reponses = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['rapport:read', 'rapport:write'])]
     private ?string $commentaire = null;
 
-    #[ORM\Column]
-    private ?\DateTime $date_rapport = null;
+    #[ORM\Column(type: "datetime")]
+    #[Groups(['rapport:read', 'rapport:write'])]
+    private ?\DateTimeInterface $dateRapport = null;
 
     #[ORM\ManyToOne(inversedBy: 'rapports')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['rapport:read', 'rapport:write'])]
     private ?EmotionGenerales $emotionGenerale = null;
 
     #[ORM\ManyToOne(inversedBy: 'rapports')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['rapport:read'])]
     private ?Utilisateurs $utilisateur = null;
 
     public function getId(): ?int
@@ -78,15 +89,14 @@ class Rapports
         return $this;
     }
 
-    public function getDateRapport(): ?\DateTime
+    public function getDateRapport(): ?\DateTimeInterface
     {
-        return $this->date_rapport;
+        return $this->dateRapport;
     }
 
-    public function setDateRapport(\DateTime $date_rapport): static
+    public function setDateRapport(\DateTimeInterface $dateRapport): static
     {
-        $this->date_rapport = $date_rapport;
-
+        $this->dateRapport = $dateRapport;
         return $this;
     }
 
