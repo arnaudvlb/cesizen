@@ -7,21 +7,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ORM\Entity(repositoryClass: EmotionGeneralesRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['rapport:read']]
+)]
 class EmotionGenerales
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['rapport:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['rapport:read'])]
     private ?string $libelle = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['rapport:read'])]
     private ?string $description = null;
 
     /**
@@ -71,6 +77,7 @@ class EmotionGenerales
         return $this;
     }
 
+    #[Groups(['rapport:read'])]
     public function getImageUrl(): string
     {
         $path = '/uploads/emotions/' . $this->id . '.png';

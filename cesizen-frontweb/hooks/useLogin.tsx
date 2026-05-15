@@ -22,14 +22,11 @@ export function useLogin() {
     setError(null);
 
     try {
-      const result = await getLogin(
-        formData.email,
-        formData.password
-      );
+      const result = await getLogin(formData.email, formData.password);
 
       setData(result);
 
-      document.cookie = `token=${result.token}; path=/`;
+      localStorage.setItem("token", `${result.token}`);
 
       return result;
     } catch (err: any) {

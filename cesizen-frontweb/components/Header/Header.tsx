@@ -63,6 +63,7 @@ export default function Header() {
             <li><Link href="/">Accueil</Link></li>
             <li><Link href="/login">Connexion</Link></li>
             <li><Link href="/emotions">Emotions</Link></li>
+              <li><Link href="/rapports">Rapports</Link></li>
           </ul>
 
           <button
@@ -80,6 +81,7 @@ export default function Header() {
             <li><Link href="/" onClick={() => setMenuOpen(false)}>Accueil</Link></li>
             <li><Link href="/login" onClick={() => setMenuOpen(false)}>Connexion</Link></li>
             <li><Link href="/emotions" onClick={() => setMenuOpen(false)}>Emotions</Link></li>
+              <li><Link href="/rapports" onClick={() => setMenuOpen(false)}>Rapports</Link></li>
           </ul>
         </div>
       </nav>

@@ -10,7 +10,7 @@ export default function EmotionGeneralesCard({ emotions }: EmotionGeneralesCardP
       {emotions.map((emotion) => (
         <Link key={emotion.id} href={`/emotion/${emotion.id}`} className={styles.emotionCard}>
           <img
-            src={`http://localhost:8000/${emotion.imageUrl}`}
+            src={`http://localhost:8000${emotion.imageUrl}`}
             alt={emotion.libelle}
           />
           <span>{emotion.libelle}</span>

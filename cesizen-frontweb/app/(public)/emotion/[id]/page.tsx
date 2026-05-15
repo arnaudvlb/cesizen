@@ -27,7 +27,7 @@ export default function EmotionDetails() {
   }
 
   if (errorEmotionGenerale || errorEmotions || !emotionGenerale || !emotions) {
-    return <p>Erreur lors du chargement.</p>;
+    return <p>Erreur : {errorEmotionGenerale || errorEmotions}</p>;
   }
 
   return (
