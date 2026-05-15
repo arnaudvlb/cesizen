@@ -44,11 +44,7 @@ class AuthController extends AbstractController
         $token = $jwtManager->create($user);
 
         return $this->json([
-            'token' => $token,
-            'user' => [
-                'id' => $user->getId(),
-                'roles' => $user->getRoles(),
-            ]
+            'token' => $token
         ]);
     }
 
