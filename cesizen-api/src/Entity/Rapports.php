@@ -30,7 +30,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
             processor: RapportsProcessor::class,
         ),
         new Delete(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
-        new Patch(security: "is_granted('IS_AUTHENTICATED_FULLY')")
+        new Patch(security: "is_granted('IS_AUTHENTICATED_FULLY')",
+            processor: RapportsProcessor::class,)
     ]
 )]
 class Rapports

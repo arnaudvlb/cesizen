@@ -43,37 +43,79 @@ class RapportsTest extends ApiTestCase
         }
     }
 
-    public function testCreateRapport(): void
+    public function testAlterRapport(): void
     {
         $client = static::createClient();
         $container = static::getContainer();
 
         $userRepository = $container->get(\App\Repository\UtilisateursRepository::class);
-        $jwtManager = $container->get(JWTTokenManagerInterface::class);
+        $emotionRepository = $container->get(\App\Repository\EmotionGeneralesRepository::class);
+        $jwtManager = $container->get(\Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface::class);
 
         $user = $userRepository->findOneBy([]);
+        $this->assertNotNull($user, 'TEST INIT ECHOUE: aucun utilisateur en base');
+
+        $emotion = $emotionRepository->findOneBy([]);
+        $this->assertNotNull($emotion, 'TEST INIT ECHOUE: aucune emotionGenerale en base');
+
         $token = $jwtManager->create($user);
 
         $response = $client->request('POST', '/api/rapports', [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
-                'Content-Type' => 'application/ld+json',
                 'Accept' => 'application/ld+json',
+                'Content-Type' => 'application/ld+json',
             ],
             'json' => [
-                'reponses' => 'test',
+                'reponses' => 'test-create',
+                'commentaire' => 'init',
                 'dateRapport' => (new \DateTime())->format(DATE_ATOM),
-                'emotionGenerale' => '/api/emotion_generales/1',
-            ]
+                'emotionGenerale' => '/api/emotion_generales/' . $emotion->getId(),
+            ],
         ]);
 
         $this->assertResponseIsSuccessful();
 
         $data = $response->toArray();
 
-        $this->assertEquals('test', $data['reponses']);
-        $this->assertArrayHasKey('dateRapport', $data);
-        $this->assertArrayHasKey('emotionGenerale', $data);
-        $this->assertArrayHasKey('utilisateur', $data);
+        $iri = $data['@id'] ?? null;
+        $this->assertNotNull($iri, 'CREATE ECHOUE: @id absent dans la réponse');
+
+        $id = (int) basename($iri);
+        $this->assertGreaterThan(0, $id, 'CREATE ECHOUE: ID invalide');
+
+
+        $client->request('PATCH', '/api/rapports/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/ld+json',
+                'Content-Type' => 'application/merge-patch+json',
+            ],
+            'json' => [
+                'reponses' => 'test-patch',
+                'commentaire' => 'updated',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+
+
+        $client->request('DELETE', '/api/rapports/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/ld+json',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+
+
+        $em = $container->get('doctrine')->getManager();
+
+        $deleted = $em
+            ->getRepository(\App\Entity\Rapports::class)
+            ->find($id);
+
+        $this->assertNull($deleted, 'DELETE ECHOUE: le rapport n\'a pas été supprimé de la base de données');
     }
 }

@@ -58,6 +58,12 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $reinitialisationMdps;
 
     /**
+     * @var Collection<int, Rapports>
+     */
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Rapports::class)]
+    private Collection $rapports;
+
+    /**
      * @var Collection<int, Trackers>
      */
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Trackers::class)]
@@ -72,6 +78,7 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
         $this->tokens = new ArrayCollection();
         $this->reinitialisationMdps = new ArrayCollection();
+        $this->rapports = new ArrayCollection();
         $this->trackers = new ArrayCollection();
     }
 
@@ -200,6 +207,11 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     public function getReinitialisationMdps(): Collection
     {
         return $this->reinitialisationMdps;
+    }
+
+    public function getRapports(): Collection
+    {
+        return $this->rapports;
     }
 
     public function getTrackers(): Collection
