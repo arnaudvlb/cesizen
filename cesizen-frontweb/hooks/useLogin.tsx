@@ -5,7 +5,6 @@ import { Token } from "@/types/database/tokens";
 
 type LoginData = {
   token: Token;
-  user: User;
 };
 
 type FormData = {
@@ -31,7 +30,6 @@ export function useLogin() {
       setData(result);
 
       document.cookie = `token=${result.token}; path=/`;
-      document.cookie = `user=${JSON.stringify(result.user)}; path=/`;
 
       return result;
     } catch (err: any) {
