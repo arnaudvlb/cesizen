@@ -5,7 +5,6 @@ import { useRapportForm } from "@/hooks/useRapportForm";
 import MandatoryButton from "@/components/ui/MandatoryButton/MandatoryButton";
 import TextArea from "@/components/ui/TextArea/TextArea";
 import EmotionsSelect from "@/components/EmotionsSelect/EmotionsSelect";
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { usePatchRapport } from "@/hooks/rapports/usePatchRapport";
@@ -27,10 +26,9 @@ const Questions = [
 export default function editRapportPage() {
   const params = useParams();
   const id = params.id as string;
-  const [message, setMessage] = useState("");
   const { emotions } = useEmotions();
   const { rapport } = useRapport(id);
-  const { patchRapport, error } = usePatchRapport(id);
+  const { patchRapport, loading ,error } = usePatchRapport(id);
   const router = useRouter();
 
   const {
@@ -41,7 +39,7 @@ export default function editRapportPage() {
     fullForm,
     serializedReponses,
     emotionGeneraleId,
-  } = useRapportForm(emotions, Questions.length, rapport?.reponses);
+  } = useRapportForm(emotions, Questions.length, rapport?.reponses, rapport?.commentaire);
   console.log(rapport);
   const handleSubmit = async () => {
     const res = await patchRapport({
@@ -52,17 +50,18 @@ export default function editRapportPage() {
     });
 
     if (res) {
-      setMessage("Rapport mis à jour avec succès !");
       setTimeout(() => {
         router.push("/rapports");
-      }, 1500);
+      });
     }
   };
   
+  if (loading) return <p>Chargement...</p>;
+  
   return (
     <>
-      {(message || error) && (
-        <FormMessage message={message || error || ""} error={!!error} />
+      {(error) && (
+        <FormMessage message={error} />
       )}
       <div className="page">
         <h1 className="pageTitle">Modification du rapport du {new Date(rapport?.dateRapport || new Date()).toLocaleDateString("fr-FR")}</h1>

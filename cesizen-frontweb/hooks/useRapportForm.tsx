@@ -8,6 +8,7 @@ export function useRapportForm(
   emotions: Emotion[],
   questionsCount: number,
   reponsesStockees?: string,
+  commentaireStocke?: string,
 ) {
   const [reponses, setReponses] = useState<ReponseMap>({});
   const [commentaire, setCommentaire] = useState("");
@@ -16,7 +17,10 @@ export function useRapportForm(
     if (reponsesStockees) {
       setReponses(useParseReponsesRapport(reponsesStockees));
     }
-  }, [reponsesStockees]);
+    if (commentaireStocke) {
+      setCommentaire(commentaireStocke);
+    }
+  }, [reponsesStockees, commentaireStocke]);
 
   const setReponse = (questionIndex: number, emotionId: number) => {
     setReponses((prev) => ({

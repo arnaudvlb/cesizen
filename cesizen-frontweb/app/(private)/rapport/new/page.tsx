@@ -6,7 +6,6 @@ import { useRapportForm } from "@/hooks/useRapportForm";
 import MandatoryButton from "@/components/ui/MandatoryButton/MandatoryButton";
 import TextArea from "@/components/ui/TextArea/TextArea";
 import EmotionsSelect from "@/components/EmotionsSelect/EmotionsSelect";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 
@@ -24,7 +23,6 @@ const Questions = [
 ];
 
 export default function newRapportPage() {
-  const [message, setMessage] = useState("");
   const { emotions } = useEmotions();
   const { createRapport, loading, error } = useCreateRapport();
   const router = useRouter();
@@ -48,10 +46,9 @@ export default function newRapportPage() {
     });
 
     if (res) {
-      setMessage("Rapport créé avec succès !");
       setTimeout(() => {
         router.push("/rapports");
-      }, 1500);
+      });
     }
   };
 
@@ -59,8 +56,8 @@ export default function newRapportPage() {
 
   return (
     <>
-      {(message || error) && (
-        <FormMessage message={message || error || ""} error={!!error} />
+      {(error) && (
+        <FormMessage message={error} />
       )}
       <div className="page">
         <h1 className="pageTitle">Nouveau rapport</h1>
