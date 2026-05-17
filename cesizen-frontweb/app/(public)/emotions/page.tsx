@@ -1,7 +1,7 @@
 "use client";
 
 import EmotionGeneralesCard from "@/components/EmotionGeneralesCard/EmotionGeneralesCard";
-import { useEmotionGenerales } from "@/hooks/useEmotionGenerales";
+import { useEmotionGenerales } from "@/hooks/emotionGenerales/useEmotionGenerales";
 
 export default function EmotionsPage() {
   const { emotionGenerales, loading, error } = useEmotionGenerales();

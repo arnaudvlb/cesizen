@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getRapports from "@/services/getRapports";
+import getRapports from "@/services/rapports/getRapports";
 import { Rapport } from "@/types/database/rapports";
 
 export function useRapports() {

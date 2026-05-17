@@ -1,5 +1,5 @@
 import { useState } from "react";
-import createRapportService from "@/services/createRapport";
+import createRapportService from "@/services/rapports/createRapport";
 import { Rapport } from "@/types/database/rapports";
 
 type FormData = {

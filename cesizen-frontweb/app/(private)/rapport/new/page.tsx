@@ -1,7 +1,7 @@
 "use client";
 
-import { useEmotions } from "@/hooks/useEmotions";
-import { useCreateRapport } from "@/hooks/useCreateRapport";
+import { useEmotions } from "@/hooks/emotions/useEmotions";
+import { useCreateRapport } from "@/hooks/rapports/useCreateRapport";
 import { useRapportForm } from "@/hooks/useRapportForm";
 import MandatoryButton from "@/components/ui/MandatoryButton/MandatoryButton";
 import TextArea from "@/components/ui/TextArea/TextArea";

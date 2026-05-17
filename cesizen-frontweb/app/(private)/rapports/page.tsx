@@ -2,7 +2,7 @@
 
 import RapportCard from "@/components/RapportsCard/RapportCard";
 import CreateButton from "@/components/ui/CreateButton/CreateButton";
-import { useRapports } from "@/hooks/useRapports";
+import { useRapports } from "@/hooks/rapports/useRapports";
 
 export default function RapportsPage() {
   const { rapports, loading, error } = useRapports();

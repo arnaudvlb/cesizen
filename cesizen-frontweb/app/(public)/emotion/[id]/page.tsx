@@ -1,8 +1,8 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEmotionGenerale } from "@/hooks/useEmotionGenerale";
-import { useEmotionsByEmotionGenerale } from "@/hooks/useEmotionsByEmotionGenerale";
+import { useEmotionGenerale } from "@/hooks/emotionGenerales/useEmotionGenerale";
+import { useEmotionsByEmotionGenerale } from "@/hooks/emotions/useEmotionsByEmotionGenerale";
 import Blog from "@/components/Emotion/Blog/Blog";
 import EmotionCard from "@/components/Emotion/EmotionCard/EmotionCard";
 

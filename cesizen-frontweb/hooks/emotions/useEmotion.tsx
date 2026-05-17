@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getEmotion from "@/services/getEmotion";
+import getEmotion from "@/services/emotions/getEmotion";
 import { Emotion } from "@/types/database/emotions";
 
 export function useEmotion(id: string) {

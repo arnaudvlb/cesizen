@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import AuthForm from "@/components/AuthForm/AuthForm";
-import { useRegister } from "@/hooks/useRegister";
+import { useRegister } from "@/hooks/auth/useRegister";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 
 export default function RegisterPage() {

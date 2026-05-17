@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getEmotionGenerales from "@/services/getEmotionGenerales";
+import getEmotionGenerales from "@/services/emotionGenerales/getEmotionGenerales";
 import { EmotionGenerale } from "@/types/database/emotionGenerales";
 
 export function useEmotionGenerales() {

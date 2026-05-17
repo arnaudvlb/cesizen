@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getRapport from "@/services/getRapport";
+import getRapport from "@/services/rapports/getRapport";
 import { Rapport } from "@/types/database/rapports";
 
 export function useRapport(id: string) {
