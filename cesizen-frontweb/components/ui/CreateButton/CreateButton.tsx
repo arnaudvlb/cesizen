@@ -1,0 +1,13 @@
+import Link from "next/link";
+import styles from "./CreateButton.module.css";
+import { CreateButtonProps } from "@/types/components/CreateButtonProps";
+
+export default function CreateButton({ url }: CreateButtonProps) {
+  return (
+    <Link href={url} className={styles.link}>
+      <button className={styles.button}>
+        +
+      </button>
+    </Link>
+  );
+}

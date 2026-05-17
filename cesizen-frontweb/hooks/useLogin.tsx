@@ -1,6 +1,5 @@
 import { useState } from "react";
 import getLogin from "@/services/getLogin";
-import { User } from "@/types/database/users";
 import { Token } from "@/types/database/tokens";
 
 type LoginData = {

@@ -2,11 +2,11 @@
 
 import { useParams } from "next/navigation";
 import { useEmotionGenerale } from "@/hooks/useEmotionGenerale";
-import { useEmotions } from "@/hooks/useEmotions";
+import { useEmotionsByEmotionGenerale } from "@/hooks/useEmotionsByEmotionGenerale";
 import Blog from "@/components/Emotion/Blog/Blog";
 import EmotionCard from "@/components/Emotion/EmotionCard/EmotionCard";
 
-export default function EmotionDetails() {
+export default function Emotion() {
   const params = useParams();
   const id = params.id as string;
 
@@ -20,7 +20,7 @@ export default function EmotionDetails() {
     emotions,
     loading: loadingEmotions,
     error: errorEmotions,
-  } = useEmotions(id);
+  } = useEmotionsByEmotionGenerale(id);
 
   if (loadingEmotionGenerale || loadingEmotions) {
     return <p>Chargement...</p>;

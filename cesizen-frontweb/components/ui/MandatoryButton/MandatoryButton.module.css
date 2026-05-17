@@ -1,0 +1,51 @@
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  border: none;
+  border-radius: 14px;
+
+  padding: 0.9rem 1.4rem;
+  margin-top: 1.5rem;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  color: var(--text);
+
+  background: var(--primary);
+
+  box-shadow: 0 6px 16px var(--shadow);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow: 0 10px 22px var(--shadow);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.button:focus-visible {
+  outline: none;
+
+  box-shadow: 0 0 0 4px var(--shadow);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  box-shadow: none;
+}

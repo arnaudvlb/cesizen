@@ -1,9 +1,7 @@
-import { User } from "@/types/database/users";
 import { Token } from "@/types/database/tokens";
 
 type LoginData = {
   token: Token;
-  user: User;
 };
 
 export default async function getLogin(

@@ -1,6 +1,7 @@
 "use client";
 
 import RapportCard from "@/components/RapportsCard/RapportCard";
+import CreateButton from "@/components/ui/CreateButton/CreateButton";
 import { useRapports } from "@/hooks/useRapports";
 
 export default function RapportsPage() {
@@ -12,6 +13,7 @@ export default function RapportsPage() {
     <div className="page">
       <h1 className="pageTitle">Mes rapports</h1>
       <RapportCard rapports={rapports} />
+      <CreateButton url="/rapport/new" />
     </div>
   );
 }
