@@ -1,3 +1,5 @@
+"use client";
+
 import { MandatoryButtonProps } from "@/types/components/MandatoryButtonProps";
 import styles from "@/components/ui/MandatoryButton/MandatoryButton.module.css";
 

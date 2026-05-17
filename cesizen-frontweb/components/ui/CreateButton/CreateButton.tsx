@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import styles from "./CreateButton.module.css";
 import { CreateButtonProps } from "@/types/components/CreateButtonProps";

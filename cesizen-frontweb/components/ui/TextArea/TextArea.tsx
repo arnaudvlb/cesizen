@@ -1,3 +1,5 @@
+"use client";
+
 import { TextAreaProps } from "@/types/components/TextAreaProps";
 import styles from "@/components/ui/TextArea/TextArea.module.css";
 
