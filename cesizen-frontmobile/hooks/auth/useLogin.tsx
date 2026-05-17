@@ -3,11 +3,9 @@ import { useState } from "react";
 
 import getLogin from "@/services/auth/getLogin";
 import { Token } from "@/types/database/tokens";
-import { User } from "@/types/database/users";
 
 type LoginData = {
   token: Token;
-  user: User;
 };
 
 type FormData = {
@@ -30,7 +28,6 @@ export function useLogin() {
       setData(result);
 
       await SecureStore.setItemAsync("token", String(result.token));
-      await SecureStore.setItemAsync("user", JSON.stringify(result.user));
 
       return result;
     } catch (err: any) {

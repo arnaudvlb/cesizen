@@ -1,13 +1,13 @@
 "use client";
 
-import EmotionGeneralesCard from "@/components/EmotionGeneralesCard/EmotionGeneralesCard";
-import { useEmotionGenerales } from "@/hooks/emotionGenerales/useEmotionGenerales";
+import RapportCard from "@/components/RapportsCard/RapportCard";
+import { useRapports } from "@/hooks/rapports/useRapports";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { globalStyles } from "@/styles/globals";
 import { ScrollView, Text } from "react-native";
 
-export default function EmotionsPage() {
-  const { emotionGenerales, loading, error } = useEmotionGenerales();
+export default function RapportsPage() {
+  const { rapports, loading, error } = useRapports();
   const colors = useThemeColors();
 
   if (loading) {
@@ -17,7 +17,6 @@ export default function EmotionsPage() {
   if (error) {
     return <Text style={{ color: colors.text }}>{error}</Text>;
   }
-
   return (
     <ScrollView
       style={[globalStyles.page, { flex: 1 }]}
@@ -27,17 +26,10 @@ export default function EmotionsPage() {
         flexGrow: 1,
       }}
     >
-      <Text
-        style={[
-          {
-            color: colors.text,
-          },
-          globalStyles.pageTitle,
-        ]}
-      >
-        Émotions
+      <Text style={[globalStyles.pageTitle, { color: colors.text }]}>
+        Mes rapports
       </Text>
-      <EmotionGeneralesCard emotions={emotionGenerales} />
+      <RapportCard rapports={rapports} />
     </ScrollView>
   );
 }

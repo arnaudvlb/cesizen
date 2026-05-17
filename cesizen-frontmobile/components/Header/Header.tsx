@@ -43,6 +43,13 @@ export default function Header() {
             >
               Émotions
             </Link>
+
+            <Link
+              href="/rapports"
+              style={[styles.link, { color: colors.text }]}
+            >
+              Rapports
+            </Link>
           </View>
         )}
       </View>

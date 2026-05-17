@@ -8,9 +8,6 @@ export default function EmotionGeneralesCard({
   emotions,
 }: EmotionGeneralesCardProps) {
   const colors = useThemeColors();
-  {
-    emotions.map((emotion) => console.log(emotion));
-  }
   return (
     <View style={styles.emotionGrid}>
       {emotions.map((emotion) => (
@@ -28,7 +25,7 @@ export default function EmotionGeneralesCard({
             ]}
           >
             <Image
-              source={{ uri: `http://192.168.1.21:8000/${emotion.imageUrl}` }}
+              source={{ uri: `http://192.168.1.21:8000${emotion.imageUrl}` }}
               style={styles.image}
             />
 

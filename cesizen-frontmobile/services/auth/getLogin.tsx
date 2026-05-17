@@ -1,10 +1,8 @@
 import { API_URL } from "@/expo.config";
 import { Token } from "@/types/database/tokens";
-import { User } from "@/types/database/users";
 
 type LoginData = {
   token: Token;
-  user: User;
 };
 
 export default async function getLogin(

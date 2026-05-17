@@ -1,0 +1,24 @@
+import { API_URL } from "@/expo.config";
+import { Rapport } from "@/types/database/rapports";
+import * as SecureStore from "expo-secure-store";
+
+type Collection<T> = {
+  member?: T[];
+  "hydra:member"?: T[];
+};
+
+export default async function getRapports(): Promise<Rapport[]> {
+  const res = await fetch(`${API_URL}/rapports/me`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`,
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
+
+  const data: Collection<Rapport> = await res.json();
+  const items = data.member ?? data["hydra:member"] ?? [];
+
+  return items;
+}
