@@ -67,6 +67,7 @@ export default function AuthForm({
                     },
                   ]}
                   placeholder={placeholders?.[index] || ""}
+                  placeholderTextColor={colors.text + "80"}
                   value={formData[key] || ""}
                   secureTextEntry={key === "password"}
                   onChangeText={(value) => handleChange(key, value)}

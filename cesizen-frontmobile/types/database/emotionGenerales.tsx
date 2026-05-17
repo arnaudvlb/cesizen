@@ -1,5 +1,5 @@
 export type EmotionGenerale = {
-  id: string;
+  id: number;
 
   libelle: string;
 

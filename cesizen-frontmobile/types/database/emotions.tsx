@@ -1,3 +1,5 @@
+import { EmotionGenerale } from "./emotionGenerales";
+
 export type Emotion = {
   id: number;
 
@@ -5,5 +7,5 @@ export type Emotion = {
 
   description: string;
 
-  emotionGeneraleId: number;
+  emotionGenerale: EmotionGenerale;
 };

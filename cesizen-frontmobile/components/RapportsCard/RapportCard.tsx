@@ -1,17 +1,19 @@
-import { styles } from "@/components/RapportsCard/RapportCard.module";
+import { styles } from "@/components/RapportsCard/RapportCard.styles";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { RapportsCardProps } from "@/types/components/RapportsCardProps";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { Image, Text, View } from "react-native";
 
 export default function RapportCard({ rapports }: RapportsCardProps) {
   const colors = useThemeColors();
-  const router = useRouter();
 
   return (
     <View style={styles.rapportsGrid}>
       {rapports.map((rapport) => (
-        <View key={rapport.id} style={styles.rapportCard}>
+        <View
+          key={rapport.id}
+          style={[styles.rapportCard, { borderColor: colors.primary }]}
+        >
           <Link
             href={{
               pathname: "/emotion/[id]",

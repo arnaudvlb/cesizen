@@ -1,6 +1,7 @@
 "use client";
 
 import RapportCard from "@/components/RapportsCard/RapportCard";
+import CreateButton from "@/components/ui/CreateButton/CreateButton";
 import { useRapports } from "@/hooks/rapports/useRapports";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { globalStyles } from "@/styles/globals";
@@ -30,6 +31,7 @@ export default function RapportsPage() {
         Mes rapports
       </Text>
       <RapportCard rapports={rapports} />
+      <CreateButton url={"/rapport/new"} />
     </ScrollView>
   );
 }

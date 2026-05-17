@@ -31,8 +31,7 @@ export const styles = StyleSheet.create({
   },
 
   rapportImage: {
-    width: 300,
-    height: 300,
+    width: 100,
     aspectRatio: 1,
   },
 
