@@ -8,7 +8,9 @@ export default function AuthOnly({ children }: AuthOnlyLinkProps) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsAuth(!!token);
+    if (token) {
+      setIsAuth(true);
+    }
   }, []);
 
   if (!isAuth) return null;
