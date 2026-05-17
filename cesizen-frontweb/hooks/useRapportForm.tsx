@@ -1,14 +1,22 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Emotion } from "@/types/database/emotions";
+import { useParseReponsesRapport } from "./useParseReponseRapport";
 
 type ReponseMap = Record<number, number>;
 
 export function useRapportForm(
   emotions: Emotion[],
   questionsCount: number,
+  reponsesStockees?: string,
 ) {
   const [reponses, setReponses] = useState<ReponseMap>({});
   const [commentaire, setCommentaire] = useState("");
+
+  useEffect(() => {
+    if (reponsesStockees) {
+      setReponses(useParseReponsesRapport(reponsesStockees));
+    }
+  }, [reponsesStockees]);
 
   const setReponse = (questionIndex: number, emotionId: number) => {
     setReponses((prev) => ({
@@ -19,9 +27,7 @@ export function useRapportForm(
 
   const fullForm = useMemo(() => {
     return Array.from({ length: questionsCount }).every(
-      (_, index) =>
-        reponses[index] !== undefined &&
-        reponses[index] !== null,
+      (_, index) => reponses[index] !== undefined && reponses[index] !== null,
     );
   }, [reponses, questionsCount]);
 

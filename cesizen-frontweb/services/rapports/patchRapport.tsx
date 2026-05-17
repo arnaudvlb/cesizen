@@ -1,16 +1,17 @@
 import { Rapport } from "@/types/database/rapports";
 
-export default async function createRapport(
+export default async function patchRapport(
+  id: string,
   reponses: string,
   commentaire: string | null,
   dateRapport: string,
   emotionGenerale: string,
 ): Promise<Rapport> {
-  const res = await fetch("/api/rapports", {
-    method: "POST",
+  const res = await fetch(`/api/rapports/${id}`, {
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/ld+json",
+      "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({
       reponses,
