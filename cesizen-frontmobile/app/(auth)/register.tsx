@@ -1,6 +1,6 @@
 import AuthForm from "@/components/AuthForm/AuthForm";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
-import { useRegister } from "@/hooks/useRegister";
+import { useRegister } from "@/hooks/auth/useRegister";
 import { globalStyles } from "@/styles/globals";
 import { useRouter } from "expo-router";
 import { useState } from "react";

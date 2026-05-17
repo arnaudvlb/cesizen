@@ -6,7 +6,7 @@ type Collection<T> = {
   "hydra:member"?: T[];
 };
 
-export default async function getEmotions(
+export default async function getEmotionsByEmotionGenerale(
   emotionGeneraleId: string,
 ): Promise<Emotion[]> {
   const res = await fetch(

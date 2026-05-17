@@ -1,7 +1,7 @@
 import Blog from "@/components/Emotion/Blog/Blog";
 import EmotionCard from "@/components/Emotion/EmotionCard/EmotionCard";
-import { useEmotionGenerale } from "@/hooks/useEmotionGenerale";
-import { useEmotions } from "@/hooks/useEmotions";
+import { useEmotionGenerale } from "@/hooks/emotionGenerales/useEmotionGenerale";
+import { useEmotionsByEmotionGenerale } from "@/hooks/emotions/useEmotionsByEmotionGenerale";
 import { globalStyles } from "@/styles/globals";
 import { useLocalSearchParams } from "expo-router";
 import { ScrollView, Text } from "react-native";
@@ -19,7 +19,7 @@ export default function EmotionDetails() {
     emotions,
     loading: loadingEmotions,
     error: errorEmotions,
-  } = useEmotions(id);
+  } = useEmotionsByEmotionGenerale(id);
 
   if (loadingEmotionGenerale || loadingEmotions) {
     return <Text>Chargement...</Text>;

@@ -4,7 +4,7 @@ import { ScrollView, Text, View } from "react-native";
 
 import AuthForm from "@/components/AuthForm/AuthForm";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
-import { useLogin } from "@/hooks/useLogin";
+import { useLogin } from "@/hooks/auth/useLogin";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { globalStyles } from "@/styles/globals";
 

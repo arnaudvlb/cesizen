@@ -1,5 +1,5 @@
 import EmotionGeneralesCard from "@/components/EmotionGeneralesCard/EmotionGeneralesCard";
-import { useEmotionGenerales } from "@/hooks/useEmotionGenerales";
+import { useEmotionGenerales } from "@/hooks/emotionGenerales/useEmotionGenerales";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { globalStyles } from "@/styles/globals";
 import { ScrollView, Text } from "react-native";

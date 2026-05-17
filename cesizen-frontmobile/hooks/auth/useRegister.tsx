@@ -1,6 +1,6 @@
-import { useState } from "react";
-import getRegister from "@/services/getRegister";
+import getRegister from "@/services/auth/getRegister";
 import { User } from "@/types/database/users";
+import { useState } from "react";
 
 type RegisterData = {
   message: string;

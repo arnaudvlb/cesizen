@@ -1,7 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import { useState } from "react";
 
-import getLogin from "@/services/getLogin";
+import getLogin from "@/services/auth/getLogin";
 import { Token } from "@/types/database/tokens";
 import { User } from "@/types/database/users";
 
