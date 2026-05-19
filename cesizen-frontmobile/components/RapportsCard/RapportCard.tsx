@@ -3,6 +3,7 @@ import { useThemeColors } from "@/hooks/useThemeColors";
 import { RapportsCardProps } from "@/types/components/RapportsCardProps";
 import { Link } from "expo-router";
 import { Image, Text, View } from "react-native";
+import EditButton from "../ui/EditButton/EditButton";
 
 export default function RapportCard({ rapports }: RapportsCardProps) {
   const colors = useThemeColors();
@@ -40,7 +41,9 @@ export default function RapportCard({ rapports }: RapportsCardProps) {
             </View>
           </Link>
 
-          <View style={styles.rapportActions} />
+          <View style={styles.rapportActions}>
+            <EditButton url={`/rapport/${rapport.id}`} />
+          </View>
         </View>
       ))}
     </View>

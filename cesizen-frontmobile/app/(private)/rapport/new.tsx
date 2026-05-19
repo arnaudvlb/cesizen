@@ -24,11 +24,10 @@ const Questions = [
 ];
 
 export default function NewRapportPage() {
-  const router = useRouter();
-  const colors = useThemeColors();
-
   const { emotions } = useEmotions();
   const { createRapport, loading, error } = useCreateRapport();
+  const router = useRouter();
+  const colors = useThemeColors();
 
   const {
     reponses,
