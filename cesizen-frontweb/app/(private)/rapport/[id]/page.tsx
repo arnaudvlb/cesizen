@@ -45,13 +45,13 @@ export default function editRapportPage() {
     const res = await patchRapport({
       reponses: serializedReponses,
       commentaire: commentaire || null,
-      dateRapport: rapport?.dateRapport || new Date().toLocaleDateString("fr-FR"),
+      dateRapport: rapport?.dateRapport || new Date().toISOString(),
       emotionGenerale: `/api/emotion_generales/${emotionGeneraleId}`,
     });
 
     if (res) {
       setTimeout(() => {
-        router.push("/rapports");
+        router.push(`/emotion/${emotionGeneraleId}`);
       });
     }
   };

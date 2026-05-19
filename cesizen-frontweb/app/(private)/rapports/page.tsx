@@ -2,7 +2,6 @@
 
 import RapportCard from "@/components/RapportsCard/RapportCard";
 import CreateButton from "@/components/ui/CreateButton/CreateButton";
-import { useDeleteRapport } from "@/hooks/rapports/deleteRapport";
 import { useRapports } from "@/hooks/rapports/useRapports";
 
 export default function RapportsPage() {

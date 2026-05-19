@@ -41,7 +41,7 @@ export default function newRapportPage() {
     const res = await createRapport({
       reponses: serializedReponses,
       commentaire: commentaire || null,
-      dateRapport: new Date().toLocaleDateString("fr-FR"),
+      dateRapport: new Date().toISOString(),
       emotionGenerale: `/api/emotion_generales/${emotionGeneraleId}`,
     });
 

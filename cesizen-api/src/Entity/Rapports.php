@@ -39,6 +39,7 @@ class Rapports
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
+    #[Groups(['rapport:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]

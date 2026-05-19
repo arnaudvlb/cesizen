@@ -3,7 +3,7 @@ import styles from "@/components/RapportsCard/RapportCard.module.css";
 import Link from "next/link";
 import EditButton from "../ui/EditButton/EditButton";
 import DeleteButton from "../ui/DeleteButton/DeleteButton";
-import { useDeleteRapport } from "@/hooks/rapports/deleteRapport";
+import { useDeleteRapport } from "@/hooks/rapports/useDeleteRapport";
 
 export default function RapportCard({ rapports }: RapportsCardProps) {
   const { deleteRapport } = useDeleteRapport(0);
