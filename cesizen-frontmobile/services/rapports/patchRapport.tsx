@@ -1,5 +1,6 @@
 import { API_URL } from "@/expo.config";
 import { Rapport } from "@/types/database/rapports";
+import * as SecureStore from "expo-secure-store";
 
 export default async function patchRapport(
   id: string,
@@ -11,7 +12,7 @@ export default async function patchRapport(
   const res = await fetch(`${API_URL}/rapports/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`,
       "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({

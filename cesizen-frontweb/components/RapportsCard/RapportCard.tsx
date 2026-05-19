@@ -38,7 +38,6 @@ export default function RapportCard({ rapports }: RapportsCardProps) {
               onConfirm={async () => {
                 await deleteRapport(rapport.id);
               }}
-              onDelete={() => {}}
             />
           </div>
         </article>

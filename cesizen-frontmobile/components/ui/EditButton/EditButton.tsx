@@ -11,9 +11,12 @@ export default function EditButton({ url }: EditButtonProps) {
   return (
     <Link
       href={url}
-      style={[styles.editButton, { borderColor: colors.primary }]}
+      style={[
+        styles.editButton,
+        { borderColor: colors.primary, shadowColor: colors.shadow },
+      ]}
     >
-      <Text style={[styles.editText, { color: colors.text }]}>Modifier</Text>
+      <Text style={[styles.editText, { color: colors.primary }]}>Modifier</Text>
     </Link>
   );
 }

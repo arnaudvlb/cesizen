@@ -1,11 +1,14 @@
 import { styles } from "@/components/RapportsCard/RapportCard.styles";
+import { useDeleteRapport } from "@/hooks/rapports/useDeleteRapport";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { RapportsCardProps } from "@/types/components/RapportsCardProps";
 import { Link } from "expo-router";
 import { Image, Text, View } from "react-native";
+import DeleteButton from "../ui/DeleteButton/DeleteButton";
 import EditButton from "../ui/EditButton/EditButton";
 
-export default function RapportCard({ rapports }: RapportsCardProps) {
+export default function RapportCard({ rapports, onDelete }: RapportsCardProps) {
+  const { deleteRapport } = useDeleteRapport(0);
   const colors = useThemeColors();
 
   return (
@@ -13,7 +16,10 @@ export default function RapportCard({ rapports }: RapportsCardProps) {
       {rapports.map((rapport) => (
         <View
           key={rapport.id}
-          style={[styles.rapportCard, { borderColor: colors.primary }]}
+          style={[
+            styles.rapportCard,
+            { borderColor: colors.border, backgroundColor: colors.surface },
+          ]}
         >
           <Link
             href={{
@@ -43,6 +49,12 @@ export default function RapportCard({ rapports }: RapportsCardProps) {
 
           <View style={styles.rapportActions}>
             <EditButton url={`/rapport/${rapport.id}`} />
+            <DeleteButton
+              onConfirm={async () => {
+                await deleteRapport(rapport.id);
+              }}
+              onDelete={onDelete}
+            />
           </View>
         </View>
       ))}

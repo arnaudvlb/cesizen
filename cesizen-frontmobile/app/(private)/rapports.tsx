@@ -30,7 +30,7 @@ export default function RapportsPage() {
       <Text style={[globalStyles.pageTitle, { color: colors.text }]}>
         Mes rapports
       </Text>
-      <RapportCard rapports={rapports} />
+      <RapportCard rapports={rapports} onDelete={"/rapports"} />
       <CreateButton url={"/rapport/new"} />
     </ScrollView>
   );

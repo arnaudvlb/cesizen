@@ -16,7 +16,7 @@ export default function CreateButton({ url }: CreateButtonProps) {
           { backgroundColor: colors.bg, borderColor: colors.primary },
         ]}
       >
-        <Text style={[styles.buttonText, { color: colors.text }]}>+</Text>
+        <Text style={[styles.buttonText, { color: colors.primary }]}>+</Text>
       </Link>
     </View>
   );
