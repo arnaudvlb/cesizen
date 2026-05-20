@@ -6,7 +6,6 @@ function truncate(text: string, max: number) {
 }
 
 export function TrackersCard({ trackers }: TrackersCardProps) {
-  console.log(trackers);
   return (
     <div className={styles.grid}>
       {trackers.map((tracker) => (

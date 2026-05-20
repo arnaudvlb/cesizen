@@ -56,7 +56,7 @@ label {
   font-weight: 500;
 }
 
-input {
+input, textarea {
   width: 100%;
   padding: 0.65rem 0.75rem;
   border-radius: 0.5rem;
@@ -66,11 +66,11 @@ input {
   font-size: 0.95rem;
 }
 
-input::placeholder {
+input::placeholder, textarea::placeholder {
   color: #9ca3af;
 }
 
-input:focus {
+input:focus, textarea:focus {
   outline: none;
   border-color: var(--primary);
 }

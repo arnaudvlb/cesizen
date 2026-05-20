@@ -34,10 +34,10 @@ export default function Form({
 
   return (
     <div className="pageCenter">
-      <div className={styles.authCard}>
-        <h1 className={styles.authTitle}>{titreForm}</h1>
+      <div className={styles.formCard}>
+        <h1 className={styles.formTitle}>{titreForm}</h1>
 
-        <form className={styles.authForm} onSubmit={handleSubmit}>
+        <form className={styles.formForm} onSubmit={handleSubmit}>
           {champs.map((champ, index) => {
             const key = names[index];
 
@@ -56,12 +56,13 @@ export default function Form({
           })}
 
           {textAreas?.map((textArea, index) => {
-            const key = textArea[index];
+            const key = textArea;
             return (
-              <div key={index} className={styles.formGroup}>
+              <div key={index} className={styles.formTextarea}>
                 <label htmlFor={key}>{textArea}</label>
                 <textarea
                   id={key}
+                  placeholder={textArea}
                   value={formData[key] || ""}
                   onChange={(e) => handleChange(key, e.target.value)}
                 />
@@ -72,7 +73,7 @@ export default function Form({
           <Button text={buttonText} />
 
           {footerContent && (
-            <div className={styles.authFooter}>{footerContent}</div>
+            <div className={styles.formFooter}>{footerContent}</div>
           )}
         </form>
       </div>

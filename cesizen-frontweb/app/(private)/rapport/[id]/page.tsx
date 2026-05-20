@@ -40,7 +40,6 @@ export default function editRapportPage() {
     serializedReponses,
     emotionGeneraleId,
   } = useRapportForm(emotions, Questions.length, rapport?.reponses, rapport?.commentaire);
-  console.log(rapport);
   const handleSubmit = async () => {
     const res = await patchRapport({
       reponses: serializedReponses,
