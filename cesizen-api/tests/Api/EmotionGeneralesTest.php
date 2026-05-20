@@ -2,9 +2,9 @@
 
 namespace App\Tests\Api;
 
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use App\Tests\Api\ApiTestCaseBase;
 
-class EmotionGeneralesTest extends ApiTestCase
+class EmotionGeneralesTest extends ApiTestCaseBase
 {
     public function testGetEmotionGenerales(): void
     {

@@ -2,9 +2,9 @@
 
 namespace App\Tests\Controller;
 
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use App\Tests\Api\ApiTestCaseBase;
 
-final class MeControllerTest extends ApiTestCase
+final class MeControllerTest extends ApiTestCaseBase
 {
     public function testMeUnauthorized(): void
     {

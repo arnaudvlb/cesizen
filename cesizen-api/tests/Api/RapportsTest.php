@@ -2,10 +2,10 @@
 
 namespace App\Tests\Api;
 
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use App\Tests\Api\ApiTestCaseBase;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
-class RapportsTest extends ApiTestCase
+class RapportsTest extends ApiTestCaseBase
 {
     public function testGetRapports(): void
     {
