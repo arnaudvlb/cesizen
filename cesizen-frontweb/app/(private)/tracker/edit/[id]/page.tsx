@@ -42,8 +42,8 @@ export default function editTrackerPage() {
           placeHolders={["JJ/MM/YYYY", "JJ/MM/YYYY", "Libellé"]}
           textAreas={["Description"]}
           defaultValues={{
-            dateDebut: new Date(tracker?.dateDebut || new Date()).toLocaleDateString("fr-FR"),
-            dateFin: new Date(tracker?.dateFin || new Date()).toLocaleDateString("fr-FR"),
+            dateDebut: tracker?.dateDebut?.split("T")[0] ?? "",
+            dateFin: tracker?.dateFin?.split("T")[0] ?? "",
             libelle: tracker?.libelle ?? "",
             Description: tracker?.description ?? "",
           }}
