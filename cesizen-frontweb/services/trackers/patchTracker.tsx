@@ -1,16 +1,17 @@
 import { Tracker } from "@/types/database/trackers";
 
-export default async function createTracker(
+export default async function patchTracker(
+  id: string,
   dateDebut: string,
   dateFin: string,
   libelle: string,
   description: string | null,
 ): Promise<Tracker> {
-  const res = await fetch("/api/trackers", {
-    method: "POST",
+  const res = await fetch(`/api/trackers/${id}`, {
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/ld+json",
+      "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({
       dateDebut,
@@ -19,6 +20,12 @@ export default async function createTracker(
       description,
     }),
   });
+  console.log(
+      dateDebut,
+      dateFin,
+      libelle,
+      description,
+  )
 
   if (!res.ok) {
     if (res.status === 400) {
@@ -27,8 +34,6 @@ export default async function createTracker(
       throw new Error("Accès non autorisé.");
     } else if (res.status === 404) {
       throw new Error("Ressource introuvable.");
-    } else if (res.status === 500) {
-      throw new Error("Veuillez compléter le formulaire.");
     } else {
       throw new Error(`Erreur API: ${res.status}`);
     }

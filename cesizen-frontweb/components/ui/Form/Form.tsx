@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProps } from "@/types/components/ui/FormProps";
 import styles from "@/components//ui/Form/Form.module.css";
 import Button from "@/components/ui/Button/Button";
@@ -12,10 +12,17 @@ export default function Form({
   buttonText,
   placeHolders,
   textAreas,
+  defaultValues,
   onSubmit,
   footerContent,
 }: FormProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (defaultValues) {
+      setFormData(defaultValues);
+    }
+  }, [defaultValues]);
 
   const handleChange = (key: string, value: string) => {
     setFormData((prev) => ({
@@ -45,7 +52,13 @@ export default function Form({
               <div key={index} className={styles.formGroup}>
                 <label htmlFor={key}>{champ}</label>
                 <input
-                  type={key === "password" ? "password" : "text"}
+                  type={
+                    key.toLowerCase().includes("date")
+                      ? "date"
+                      : key === "password"
+                        ? "password"
+                        : "text"
+                  }
                   id={key}
                   placeholder={placeHolders?.[index] || ""}
                   value={formData[key] || ""}

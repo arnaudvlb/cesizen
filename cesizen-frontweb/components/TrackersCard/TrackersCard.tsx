@@ -1,5 +1,6 @@
 import { TrackersCardProps } from "@/types/components/TrackersCardProps";
 import styles from "@/components/TrackersCard/TrackersCard.module.css";
+import EditButton from "../ui/EditButton/EditButton";
 
 function truncate(text: string, max: number) {
   return text?.length > max ? text.slice(0, max) + "..." : text;
@@ -25,6 +26,10 @@ export function TrackersCard({ trackers }: TrackersCardProps) {
           </div>
 
           <p className={styles.desc}>{truncate(tracker.description, 50)}</p>
+
+          <div className={styles.trackerActions}>
+            <EditButton url={`/tracker/edit/${tracker.id}`} />
+          </div>
         </div>
       ))}
     </div>

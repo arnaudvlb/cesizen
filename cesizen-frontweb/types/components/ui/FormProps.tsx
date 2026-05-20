@@ -5,6 +5,7 @@ export type FormProps = {
   buttonText: string;
   placeHolders?: string[];
   textAreas?: string[];
+  defaultValues?: Record<string, string>;
   onSubmit?: (data: Record<string, string>) => void;
   footerContent?: React.ReactNode;
 }

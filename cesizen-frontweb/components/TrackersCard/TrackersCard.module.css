@@ -9,7 +9,7 @@
 
 .card {
   position: relative;
-  padding: 1.2rem 1.2rem 1.3rem;
+  padding: 1.2rem 1.2rem 0;
 
   border-radius: 18px;
 
@@ -73,4 +73,11 @@
   font-size: 0.9rem;
   line-height: 1.4;
   color: color-mix(in srgb, var(--text) 80%, transparent);
+}
+
+.trackerActions {
+  padding: 0 16px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
