@@ -7,7 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class RapportsProcessor implements ProcessorInterface
+class AuthUserProcessor implements ProcessorInterface
 {
     public function __construct(
         private EntityManagerInterface $em,

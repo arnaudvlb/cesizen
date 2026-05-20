@@ -11,7 +11,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 use App\State\RapportsMeProvider;
-use App\State\RapportsProcessor;
+use App\State\AuthUserProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RapportsRepository::class)]
@@ -27,11 +27,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Get(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
         new Post(
             security: "is_granted('IS_AUTHENTICATED_FULLY')",
-            processor: RapportsProcessor::class,
+            processor: AuthUserProcessor::class,
         ),
         new Delete(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
         new Patch(security: "is_granted('IS_AUTHENTICATED_FULLY')",
-            processor: RapportsProcessor::class,)
+            processor: AuthUserProcessor::class,)
     ]
 )]
 class Rapports
