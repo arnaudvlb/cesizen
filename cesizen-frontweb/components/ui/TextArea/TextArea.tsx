@@ -1,6 +1,6 @@
 "use client";
 
-import { TextAreaProps } from "@/types/components/TextAreaProps";
+import { TextAreaProps } from "@/types/components/ui/TextAreaProps";
 import styles from "@/components/ui/TextArea/TextArea.module.css";
 
 export default function CommentaireField({

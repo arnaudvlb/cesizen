@@ -1,6 +1,6 @@
 "use client";
 
-import { MandatoryButtonProps } from "@/types/components/MandatoryButtonProps";
+import { MandatoryButtonProps } from "@/types/components/ui/MandatoryButtonProps";
 import styles from "@/components/ui/MandatoryButton/MandatoryButton.module.css";
 
 export default function MandatoryButton({

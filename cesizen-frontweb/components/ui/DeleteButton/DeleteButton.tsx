@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import styles from "@/components/ui/DeleteButton/DeleteButton.module.css";
-import { DeleteButtonProps } from "@/types/components/DeleteButtonProps";
+import { DeleteButtonProps } from "@/types/components/ui/DeleteButtonProps";
 
 export default function DeleteButton({ onConfirm }: DeleteButtonProps) {
   const [confirm, setConfirm] = useState(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import { EditButtonProps } from "@/types/components/EditButtonProps";
+import { EditButtonProps } from "@/types/components/ui/EditButtonProps";
 import styles from "@/components/ui/EditButton/EditButton.module.css";
 import Link from "next/link";
 

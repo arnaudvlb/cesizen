@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AuthOnlyLinkProps } from "@/types/components/AuthOnlyLinkProps";
+import { AuthOnlyLinkProps } from "@/types/components/ui/AuthOnlyLinkProps";
 
 export default function AuthOnly({ children }: AuthOnlyLinkProps) {
   const [isAuth, setIsAuth] = useState(false);
