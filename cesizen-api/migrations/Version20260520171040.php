@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260515161207 extends AbstractMigration
+final class Version20260520171040 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20260515161207 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE emotion_generales (id INT AUTO_INCREMENT NOT NULL, libelle VARCHAR(25) NOT NULL, description VARCHAR(255) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE emotion_generales (id INT AUTO_INCREMENT NOT NULL, libelle VARCHAR(25) NOT NULL, description VARCHAR(255) NOT NULL, couleur VARCHAR(7) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE emotions (id INT AUTO_INCREMENT NOT NULL, libelle VARCHAR(25) NOT NULL, description VARCHAR(255) DEFAULT NULL, emotion_generale_id INT NOT NULL, INDEX IDX_D56FF528424F1C13 (emotion_generale_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE rapports (id INT AUTO_INCREMENT NOT NULL, reponses VARCHAR(50) NOT NULL, commentaire VARCHAR(255) DEFAULT NULL, date_rapport DATETIME NOT NULL, emotion_generale_id INT DEFAULT NULL, utilisateur_id INT DEFAULT NULL, INDEX IDX_E20924C4424F1C13 (emotion_generale_id), INDEX IDX_E20924C4FB88E14F (utilisateur_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE reinitialisation_mdp (id INT AUTO_INCREMENT NOT NULL, token_reset VARCHAR(255) NOT NULL, date_demande DATETIME NOT NULL, date_expiration DATETIME NOT NULL, date_utilisation DATETIME NOT NULL, utilisateur_id INT NOT NULL, INDEX IDX_D0E4C911FB88E14F (utilisateur_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');

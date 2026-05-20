@@ -30,6 +30,10 @@ class EmotionGenerales
     #[Groups(['rapport:read'])]
     private ?string $description = null;
 
+    #[ORM\Column(length: 7)]
+    #[Groups(['rapport:read'])]
+    private ?string $couleur = null;
+
     /**
      * @var Collection<int, Emotions>
      */
@@ -73,6 +77,18 @@ class EmotionGenerales
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCouleur(): ?string
+    {
+        return $this->couleur;
+    }
+
+    public function setCouleur(string $couleur): static
+    {
+        $this->couleur = $couleur;
 
         return $this;
     }
