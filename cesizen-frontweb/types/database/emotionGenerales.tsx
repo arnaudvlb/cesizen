@@ -6,4 +6,6 @@ export type EmotionGenerale = {
     description: string;
 
     imageUrl: string;
+
+    couleur: string;
 };

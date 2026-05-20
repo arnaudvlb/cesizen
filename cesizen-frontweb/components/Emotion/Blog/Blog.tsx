@@ -13,7 +13,7 @@ export default function Blog({ emotionGenerale }: BlogProps) {
         />
 
         <div className={styles.generalEmotionContent}>
-          <span className={styles.emotionBadge}>Émotion générale</span>
+          <span className={styles.emotionBadge} style={{color: emotionGenerale.couleur , background:emotionGenerale.couleur + "33"}}>Émotion générale</span>
 
           <h1>{emotionGenerale.libelle}</h1>
 

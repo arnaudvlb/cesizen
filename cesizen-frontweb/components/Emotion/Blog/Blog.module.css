@@ -30,7 +30,7 @@
 
 .emotionBadge {
   width: fit-content;
-  background: rgba(235, 113, 37, 0.12);
+  background-blend-mode: multiply;
   color: var(--primary);
 
   padding: 0.45rem 0.9rem;
