@@ -19,6 +19,10 @@ export default async function createRapport(
       emotionGenerale,
     }),
   });
+  console.log(reponses,
+      commentaire,
+      dateRapport,
+      emotionGenerale,)
 
   if (!res.ok) {
     if (res.status === 400) {

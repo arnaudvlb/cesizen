@@ -74,6 +74,9 @@ export default function Header() {
               <li>
                 <Link href="/rapports">Rapports</Link>
               </li>
+              <li>
+                <Link href="/trackers">Trackers</Link>
+              </li>
             </AuthOnly>
           </ul>
 
@@ -110,6 +113,11 @@ export default function Header() {
               <li>
                 <Link href="/rapports" onClick={() => setMenuOpen(false)}>
                   Rapports
+                </Link>
+              </li>
+              <li>
+                <Link href="/trackers" onClick={() => setMenuOpen(false)}>
+                  Trackers
                 </Link>
               </li>
             </AuthOnly>

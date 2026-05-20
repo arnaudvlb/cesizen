@@ -31,6 +31,7 @@
 .emotionCard:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 28px var(--shadow);
+  border-color: var(--primary);
 }
 
 .emotionCard img {

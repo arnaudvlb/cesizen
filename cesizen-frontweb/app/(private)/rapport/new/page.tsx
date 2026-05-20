@@ -47,7 +47,7 @@ export default function newRapportPage() {
 
     if (res) {
       setTimeout(() => {
-        router.push("/rapports");
+        router.push(`/emotion/${emotionGeneraleId}`);
       });
     }
   };
