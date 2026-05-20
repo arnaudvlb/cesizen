@@ -1,12 +1,15 @@
 import { TrackersCardProps } from "@/types/components/TrackersCardProps";
 import styles from "@/components/TrackersCard/TrackersCard.module.css";
 import EditButton from "../ui/EditButton/EditButton";
+import DeleteButton from "../ui/DeleteButton/DeleteButton";
+import { useDeleteTracker } from "@/hooks/trackers/useDeleteRapport";
 
 function truncate(text: string, max: number) {
   return text?.length > max ? text.slice(0, max) + "..." : text;
 }
 
 export function TrackersCard({ trackers }: TrackersCardProps) {
+  const { deleteTracker } = useDeleteTracker(0);
   return (
     <div className={styles.grid}>
       {trackers.map((tracker) => (
@@ -29,6 +32,9 @@ export function TrackersCard({ trackers }: TrackersCardProps) {
 
           <div className={styles.trackerActions}>
             <EditButton url={`/tracker/edit/${tracker.id}`} />
+            <DeleteButton onConfirm={async () => {
+                await deleteTracker(tracker.id);
+              }}/>
           </div>
         </div>
       ))}
