@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import AuthForm from "@/components/AuthForm/AuthForm";
+import Form from "@/components/ui/Form/Form";
 import { useLogin } from "@/hooks/auth/useLogin";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 
@@ -31,12 +31,12 @@ export default function LoginPage() {
       {(message || error) && (
         <FormMessage message={message || error || ""} error={!!error} />
       )}
-      <AuthForm
+      <Form
         titreForm="Connexion"
         champs={["Email", "Mot de passe"]}
         names={["email", "password"]}
         buttonText={loading ? "Connexion..." : "Se connecter"}
-        placeholders={["exemple@email.com", "••••••••"]}
+        placeHolders={["exemple@email.com", "••••••••"]}
         onSubmit={handleSubmit}
         footerContent={
           <>

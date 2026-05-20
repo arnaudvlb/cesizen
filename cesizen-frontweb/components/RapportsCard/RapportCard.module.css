@@ -5,7 +5,7 @@
 }
 
 .rapportCard {
-  background: var(--surface);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 18px;
   overflow: hidden;

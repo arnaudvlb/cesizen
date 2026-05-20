@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { AuthFormProps } from "@/types/components/AuthFormProps";
-import styles from "@/components/AuthForm/AuthForm.module.css";
+import { FormProps } from "@/types/components/ui/FormProps";
+import styles from "@/components//ui/Form/Form.module.css";
 import Button from "@/components/ui/Button/Button";
 
-export default function AuthForm({
+export default function Form({
   titreForm,
   champs,
   names,
   buttonText,
-  placeholders,
+  placeHolders,
+  textAreas,
   onSubmit,
   footerContent,
-}: AuthFormProps) {
+}: FormProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
 
   const handleChange = (key: string, value: string) => {
@@ -46,7 +47,21 @@ export default function AuthForm({
                 <input
                   type={key === "password" ? "password" : "text"}
                   id={key}
-                  placeholder={placeholders?.[index] || ""}
+                  placeholder={placeHolders?.[index] || ""}
+                  value={formData[key] || ""}
+                  onChange={(e) => handleChange(key, e.target.value)}
+                />
+              </div>
+            );
+          })}
+
+          {textAreas?.map((textArea, index) => {
+            const key = textArea[index];
+            return (
+              <div key={index} className={styles.formGroup}>
+                <label htmlFor={key}>{textArea}</label>
+                <textarea
+                  id={key}
                   value={formData[key] || ""}
                   onChange={(e) => handleChange(key, e.target.value)}
                 />

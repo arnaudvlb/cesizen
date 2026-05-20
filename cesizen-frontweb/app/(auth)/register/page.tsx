@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import AuthForm from "@/components/AuthForm/AuthForm";
+import Form from "@/components/ui/Form/Form";
 import { useRegister } from "@/hooks/auth/useRegister";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 
@@ -29,7 +29,7 @@ export default function RegisterPage() {
       {(data?.message || error) && (
         <FormMessage message={data?.message || error || ""} error={!!error} />
       )}
-      <AuthForm
+      <Form
         titreForm="Créer un compte"
         champs={[
           "Prénom",
@@ -39,7 +39,7 @@ export default function RegisterPage() {
         ]}
         names={["prenom", "nom", "email", "password"]}
         buttonText={loading ? "Inscription..." : "S'inscrire"}
-        placeholders={[
+        placeHolders={[
           "Prénom",
           "Nom",
           "exemple@email.com",

@@ -1,22 +1,22 @@
-import { Rapport } from "@/types/database/rapports";
+import { Tracker } from "@/types/database/trackers";
 
-export default async function createRapport(
-  reponses: string,
-  commentaire: string | null,
-  dateRapport: string,
-  emotionGenerale: string,
-): Promise<Rapport> {
-  const res = await fetch("/api/rapports", {
+export default async function createTracker(
+  dateDebut: string,
+  dateFin: string,
+  libelle: string,
+  description: string | null,
+): Promise<Tracker> {
+  const res = await fetch("/api/trackers", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      reponses,
-      commentaire,
-      dateRapport,
-      emotionGenerale,
+      dateDebut,
+      dateFin,
+      libelle,
+      description,
     }),
   });
 
@@ -32,7 +32,7 @@ export default async function createRapport(
     }
   }
 
-  const data: Rapport = await res.json();
+  const data: Tracker = await res.json();
 
   return data;
 }

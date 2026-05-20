@@ -13,7 +13,7 @@
 
   border-radius: 18px;
 
-  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
 
   backdrop-filter: blur(10px);
