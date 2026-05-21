@@ -50,6 +50,13 @@ export default function Header() {
             >
               Rapports
             </Link>
+
+            <Link
+              href="/trackers"
+              style={[styles.link, { color: colors.text }]}
+            >
+              Trackers
+            </Link>
           </View>
         )}
       </View>

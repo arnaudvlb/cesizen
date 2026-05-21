@@ -48,7 +48,12 @@ export default function RapportCard({ rapports, onDelete }: RapportsCardProps) {
           </Link>
 
           <View style={styles.rapportActions}>
-            <EditButton url={`/rapport/${rapport.id}`} />
+            <EditButton
+              url={{
+                pathname: "/rapport/[id]",
+                params: { id: rapport.id },
+              }}
+            />
             <DeleteButton
               onConfirm={async () => {
                 await deleteRapport(rapport.id);
