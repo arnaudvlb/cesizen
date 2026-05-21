@@ -1,7 +1,7 @@
 import Button from "@/components/ui/Button/Button";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { globalStyles } from "@/styles/globals";
-import { FormProps } from "@/types/components/FormProps";
+import { FormProps } from "@/types/components/ui/FormProps";
 import { useEffect, useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import DateInput from "../DateInput/DateInput";

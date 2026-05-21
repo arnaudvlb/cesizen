@@ -2,7 +2,7 @@
 
 import { styles } from "@/components/ui/EditButton/EditButton.styles";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { EditButtonProps } from "@/types/components/EditButtonProps";
+import { EditButtonProps } from "@/types/components/ui/EditButtonProps";
 import { Link } from "expo-router";
 import { Text } from "react-native";
 

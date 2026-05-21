@@ -1,16 +1,15 @@
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { DateInputProps } from "@/types/components/ui/DateInputProps";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { styles } from "./DateInput.styles";
 
-type Props = {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-};
-
-export default function DateInput({ value, onChange, placeholder }: Props) {
+export default function DateInput({
+  value,
+  onChange,
+  placeholder,
+}: DateInputProps) {
   const [visible, setVisible] = useState(false);
   const colors = useThemeColors();
 
@@ -23,7 +22,7 @@ export default function DateInput({ value, onChange, placeholder }: Props) {
 
   const displayText = value
     ? new Date(value).toLocaleDateString("fr-FR")
-    : placeholder || "Choisir une date";
+    : placeholder || "JJ/MM/AAAA";
 
   return (
     <View>

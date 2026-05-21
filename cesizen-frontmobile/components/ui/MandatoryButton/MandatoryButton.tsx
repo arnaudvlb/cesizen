@@ -1,6 +1,6 @@
 import { styles } from "@/components/ui/MandatoryButton/MandatoryButton.styles";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { MandatoryButtonProps } from "@/types/components/MandatoryButtonProps";
+import { MandatoryButtonProps } from "@/types/components/ui/MandatoryButtonProps";
 import { Pressable, Text, View } from "react-native";
 
 export default function MandatoryButton({

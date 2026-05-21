@@ -1,6 +1,6 @@
 import { styles } from "@/components/ui/TextArea/TextArea.styles";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { TextAreaProps } from "@/types/components/TextAreaProps";
+import { TextAreaProps } from "@/types/components/ui/TextAreaProps";
 import { TextInput } from "react-native";
 
 export default function CommentaireField({

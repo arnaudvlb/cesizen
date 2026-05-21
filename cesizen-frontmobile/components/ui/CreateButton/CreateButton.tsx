@@ -1,5 +1,5 @@
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { CreateButtonProps } from "@/types/components/CreateButtonProps";
+import { CreateButtonProps } from "@/types/components/ui/CreateButtonProps";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 import { styles } from "./CreateButton.styles";

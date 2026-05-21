@@ -2,7 +2,7 @@
 
 import { styles } from "@/components/ui/DeleteButton/DeleteButton.styles";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { DeleteButtonProps } from "@/types/components/DeleteButtonProps";
+import { DeleteButtonProps } from "@/types/components/ui/DeleteButtonProps";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, Text } from "react-native";
