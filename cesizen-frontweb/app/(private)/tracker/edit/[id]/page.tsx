@@ -35,11 +35,11 @@ export default function editTrackerPage() {
       {error && <FormMessage message={error} />}
       <div className="page">
         <Form
-          titreForm="Nouveau tracker"
+          titreForm="Modifier le tracker"
           champs={["Date de début", "Date de fin", "Libellé"]}
           names={["dateDebut", "dateFin", "libelle"]}
-          buttonText={loading ? "Création..." : "Créer le tracker"}
-          placeHolders={["JJ/MM/YYYY", "JJ/MM/YYYY", "Libellé"]}
+          buttonText={loading ? "Mise à jour..." : "Mettre à jour le tracker"}
+          placeHolders={["JJ/MM/AAAA", "JJ/MM/AAAA", "Libellé"]}
           textAreas={["Description"]}
           defaultValues={{
             dateDebut: tracker?.dateDebut?.split("T")[0] ?? "",
