@@ -1,4 +1,4 @@
-import AuthForm from "@/components/AuthForm/AuthForm";
+import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { useRegister } from "@/hooks/auth/useRegister";
 import { globalStyles } from "@/styles/globals";
@@ -42,12 +42,12 @@ export default function RegisterPage() {
         <FormMessage message={message || error || ""} error={!!error} />
       )}
 
-      <AuthForm
+      <Form
         titreForm="Créer un compte"
         champs={["Prénom", "Nom", "Email", "Mot de passe"]}
         names={["prenom", "nom", "email", "password"]}
         buttonText={loading ? "Inscription..." : "S'inscrire"}
-        placeholders={["Prénom", "Nom", "exemple@email.com", "••••••••"]}
+        placeHolders={["Prénom", "Nom", "exemple@email.com", "••••••••"]}
         onSubmit={handleSubmit}
       />
     </ScrollView>

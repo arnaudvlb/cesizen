@@ -1,12 +1,11 @@
-import { Link, useRouter } from "expo-router";
-import { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
-
-import AuthForm from "@/components/AuthForm/AuthForm";
+import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { useLogin } from "@/hooks/auth/useLogin";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { globalStyles } from "@/styles/globals";
+import { Link, useRouter } from "expo-router";
+import { useState } from "react";
+import { ScrollView, Text, View } from "react-native";
 
 export default function LoginPage() {
   const [message, setMessage] = useState("");
@@ -43,12 +42,12 @@ export default function LoginPage() {
         <FormMessage message={message || error || ""} error={!!error} />
       )}
 
-      <AuthForm
+      <Form
         titreForm="Connexion"
         champs={["Email", "Mot de passe"]}
         names={["email", "password"]}
         buttonText={loading ? "Connexion..." : "Se connecter"}
-        placeholders={["exemple@email.com", "••••••••"]}
+        placeHolders={["exemple@email.com", "••••••••"]}
         onSubmit={handleSubmit}
         footerContent={
           <View style={{ flexDirection: "row", gap: 4 }}>

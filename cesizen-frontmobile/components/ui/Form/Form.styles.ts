@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
      AUTH CARD
   ===================== */
 
-  authCard: {
+  formCard: {
     width: "100%",
     maxWidth: 380,
     borderRadius: 16,
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
      TITLES
   ===================== */
 
-  authTitle: {
+  formTitle: {
     marginBottom: 24,
     textAlign: "center",
     fontSize: 24,
@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
      FORM
   ===================== */
 
-  authForm: {
+  formForm: {
     flexDirection: "column",
     gap: 20,
   },
@@ -41,6 +41,15 @@ export const styles = StyleSheet.create({
   formGroup: {
     flexDirection: "column",
     gap: 6,
+  },
+
+  formTextarea: {
+    minHeight: 120,
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 12,
+
+    textAlignVertical: "top",
   },
 
   /* =====================
