@@ -21,6 +21,7 @@ export default function LoginPage() {
     if (res) {
       setMessage("Connexion réussie !");
       setTimeout(() => {
+        window.dispatchEvent(new Event("auth-change"));
         router.push("/");
       }, 1500);
     }

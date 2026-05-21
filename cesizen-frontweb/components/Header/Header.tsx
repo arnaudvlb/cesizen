@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import styles from "./Header.module.css";
-import AuthOnly from "../ui/AuthOnlyLink/AuthOnlyLink";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement | null>(null);
+  const { isAuth } = useAuth();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -62,22 +63,45 @@ export default function Header() {
         <div className={styles.navContainer}>
           <ul>
             <li>
-              <Link href="/">Accueil</Link>
+              <Link href="/">
+                Accueil
+              </Link>
             </li>
-            <li>
-              <Link href="/login">Connexion</Link>
-            </li>
-            <li>
-              <Link href="/emotions">Emotions</Link>
-            </li>
-            <AuthOnly>
+            {!isAuth && (
               <li>
-                <Link href="/rapports">Rapports</Link>
+                <Link href="/login">
+                  Connexion
+                </Link>
               </li>
-              <li>
-                <Link href="/trackers">Trackers</Link>
-              </li>
-            </AuthOnly>
+            )}
+            {isAuth && (
+              <>
+                <li>
+                  <Link href="/logout">
+                    Déconnexion
+                  </Link>
+                </li>
+              </>
+            )}
+            <li>
+              <Link href="/emotions">
+                Emotions
+              </Link>
+            </li>
+            {isAuth && (
+              <>
+                <li>
+                  <Link href="/rapports">
+                    Rapports
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/trackers">
+                    Trackers
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
 
           <button
@@ -99,28 +123,41 @@ export default function Header() {
                 Accueil
               </Link>
             </li>
-            <li>
-              <Link href="/login" onClick={() => setMenuOpen(false)}>
-                Connexion
-              </Link>
-            </li>
+            {!isAuth && (
+              <li>
+                <Link href="/login" onClick={() => setMenuOpen(false)}>
+                  Connexion
+                </Link>
+              </li>
+            )}
+            {isAuth && (
+              <>
+                <li>
+                  <Link href="/logout" onClick={() => setMenuOpen(false)}>
+                    Déconnexion
+                  </Link>
+                </li>
+              </>
+            )}
             <li>
               <Link href="/emotions" onClick={() => setMenuOpen(false)}>
                 Emotions
               </Link>
             </li>
-            <AuthOnly>
-              <li>
-                <Link href="/rapports" onClick={() => setMenuOpen(false)}>
-                  Rapports
-                </Link>
-              </li>
-              <li>
-                <Link href="/trackers" onClick={() => setMenuOpen(false)}>
-                  Trackers
-                </Link>
-              </li>
-            </AuthOnly>
+            {isAuth && (
+              <>
+                <li>
+                  <Link href="/rapports" onClick={() => setMenuOpen(false)}>
+                    Rapports
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/trackers" onClick={() => setMenuOpen(false)}>
+                    Trackers
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </nav>
