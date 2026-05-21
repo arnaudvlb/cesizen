@@ -1,0 +1,62 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.dates {
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--text) 60%, transparent);
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--text) 80%, transparent);
+}
+
+.chartSection {
+  padding: 12px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+
+  display: flex;
+  justify-content: center;
+}
+
+.recapSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.summary {
+  padding-top: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
