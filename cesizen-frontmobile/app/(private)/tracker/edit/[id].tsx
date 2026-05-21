@@ -9,7 +9,7 @@ import { globalStyles } from "@/styles/globals";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
 
-export default function newTrackerPage() {
+export default function editTrackerPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { tracker } = useTracker(id);
   const { patchTracker, loading, error } = usePatchTracker(id);
