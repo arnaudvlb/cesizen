@@ -1,8 +1,8 @@
-import * as SecureStore from "expo-secure-store";
-import { useState } from "react";
-
+import { useAuth } from "@/hooks/useAuth";
 import getLogin from "@/services/auth/getLogin";
 import { Token } from "@/types/database/tokens";
+import * as SecureStore from "expo-secure-store";
+import { useState } from "react";
 
 type LoginData = {
   token: Token;
@@ -17,6 +17,7 @@ export function useLogin() {
   const [data, setData] = useState<LoginData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { syncAuth } = useAuth();
 
   const loginUser = async (formData: FormData) => {
     setLoading(true);
@@ -28,6 +29,7 @@ export function useLogin() {
       setData(result);
 
       await SecureStore.setItemAsync("token", String(result.token));
+      await syncAuth();
 
       return result;
     } catch (err: any) {

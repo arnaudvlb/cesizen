@@ -25,7 +25,7 @@ export default function LoginPage() {
 
       setTimeout(() => {
         router.replace("/");
-      }, 1000);
+      }, 1500);
     }
   };
 

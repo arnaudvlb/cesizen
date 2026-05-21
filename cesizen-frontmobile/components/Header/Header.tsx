@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { Link } from "expo-router";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import { styles } from "./Header.styles";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const colors = useThemeColors();
+  const { isAuth } = useAuth();
 
   return (
     <View style={[styles.header, { backgroundColor: colors.surface }]}>
@@ -32,31 +34,42 @@ export default function Header() {
             <Link href="/" style={[styles.link, { color: colors.text }]}>
               Accueil
             </Link>
-
-            <Link href="/login" style={[styles.link, { color: colors.text }]}>
-              Connexion
-            </Link>
-
+            {!isAuth && (
+              <Link href="/login" style={[styles.link, { color: colors.text }]}>
+                Connexion
+              </Link>
+            )}
+            {isAuth && (
+              <Link
+                href="/logout"
+                style={[styles.link, { color: colors.text }]}
+              >
+                Déconnexion
+              </Link>
+            )}
             <Link
               href="/emotions"
               style={[styles.link, { color: colors.text }]}
             >
               Émotions
             </Link>
+            {isAuth && (
+              <>
+                <Link
+                  href="/rapports"
+                  style={[styles.link, { color: colors.text }]}
+                >
+                  Rapports
+                </Link>
 
-            <Link
-              href="/rapports"
-              style={[styles.link, { color: colors.text }]}
-            >
-              Rapports
-            </Link>
-
-            <Link
-              href="/trackers"
-              style={[styles.link, { color: colors.text }]}
-            >
-              Trackers
-            </Link>
+                <Link
+                  href="/trackers"
+                  style={[styles.link, { color: colors.text }]}
+                >
+                  Trackers
+                </Link>
+              </>
+            )}
           </View>
         )}
       </View>
