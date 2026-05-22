@@ -6,7 +6,7 @@ import { useEmotionGenerale } from "@/hooks/emotionGenerales/useEmotionGenerale"
 import { usePatchEmotionGenerale } from "@/hooks/emotionGenerales/usePatchEmotionGenerale";
 import { useParams, useRouter } from "next/navigation";
 
-export default function editTrackerPage() {
+export default function editEmotionGeneralePage() {
   const params = useParams();
   const id = params.id as string;
   const { emotionGenerale } = useEmotionGenerale(id);
