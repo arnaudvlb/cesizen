@@ -1,10 +1,29 @@
 import { useEffect, useState } from "react";
 
+function parseJwt(token: string) {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch {
+    return null;
+  }
+}
+
 export function useAuth() {
   const [isAuth, setIsAuth] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const syncAuth = () => {
-    setIsAuth(!!localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
+
+    setIsAuth(!!token);
+
+    if (token) {
+      const payload = parseJwt(token);
+
+      setIsAdmin(payload.roles.includes("ROLE_ADMIN"));
+    } else {
+      setIsAdmin(false);
+    }
   };
 
   useEffect(() => {
@@ -17,5 +36,8 @@ export function useAuth() {
     };
   }, []);
 
-  return { isAuth };
+  return {
+    isAuth,
+    isAdmin,
+  };
 }
