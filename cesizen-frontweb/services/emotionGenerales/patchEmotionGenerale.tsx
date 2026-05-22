@@ -25,7 +25,9 @@ export default async function patchEmotionGenerale(
     } else if (res.status === 403) {
       throw new Error("Accès non autorisé.");
     } else if (res.status === 404) {
-      throw new Error("Ressource introuvable.");
+      throw new Error("Ressource introuvable."); 
+    } else if (res.status === 500) {
+      throw new Error("Veuillez compléter le formulaire.");
     } else {
       throw new Error(`Erreur API: ${res.status}`);
     }

@@ -5,10 +5,13 @@ import { useEmotionGenerale } from "@/hooks/emotionGenerales/useEmotionGenerale"
 import { useEmotionsByEmotionGenerale } from "@/hooks/emotions/useEmotionsByEmotionGenerale";
 import Blog from "@/components/Emotion/Blog/Blog";
 import EmotionCard from "@/components/Emotion/EmotionCard/EmotionCard";
+import { useAuth } from "@/hooks/useAuth";
+import CreateButton from "@/components/ui/CreateButton/CreateButton";
 
 export default function Emotion() {
   const params = useParams();
   const id = params.id as string;
+  const { isAdmin } = useAuth();
 
   const {
     emotionGenerale,
@@ -34,6 +37,7 @@ export default function Emotion() {
     <main className="page">
       <Blog emotionGenerale={emotionGenerale} />
       <EmotionCard emotions={emotions} />
+      {isAdmin && <CreateButton url={`/emotion/new/${emotionGenerale.id}`} />}
     </main>
   );
 }

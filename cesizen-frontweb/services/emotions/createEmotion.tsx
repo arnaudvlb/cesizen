@@ -1,11 +1,11 @@
-import { EmotionGenerale } from "@/types/database/emotionGenerales";
+import { Emotion } from "@/types/database/emotions";
 
-export default async function createEmotionGenerale(
+export default async function createEmotion(
   libelle: string,
   description: string,
-  couleur: string,
-): Promise<EmotionGenerale> {
-  const res = await fetch("/api/emotion_generales", {
+  emotionGenerale: string,
+): Promise<Emotion> {
+  const res = await fetch("/api/emotions", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -14,7 +14,7 @@ export default async function createEmotionGenerale(
     body: JSON.stringify({
       libelle,
       description,
-      couleur,
+      emotionGenerale,
     }),
   });
 
@@ -32,7 +32,7 @@ export default async function createEmotionGenerale(
     }
   }
 
-  const data: EmotionGenerale = await res.json();
+  const data: Emotion = await res.json();
 
   return data;
 }

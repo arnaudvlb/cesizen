@@ -2,23 +2,25 @@
 
 import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
-import { useCreateEmotionGenerale } from "@/hooks/emotionGenerales/useCreateEmotionGenerale";
-import { useRouter } from "next/navigation";
+import { useCreateEmotion } from "@/hooks/emotions/useCreateEmotion";
+import { useParams, useRouter } from "next/navigation";
 
 export default function newEmotionPage() {
-  const { createEmotionGenerale, loading, error } = useCreateEmotionGenerale();
+  const params = useParams();
+  const id = params.id as string;
+  const { createEmotion, loading, error } = useCreateEmotion();
   const router = useRouter();
 
   const handleSubmit = async (formData: Record<string, string>) => {
-    const res = await createEmotionGenerale({
+    const res = await createEmotion({
       libelle: formData.libelle,
       description: formData.Description,
-      couleur: formData.couleur,
+      emotionGenerale: `api/emotion_generales/${id}`,
     });
 
     if (res) {
       setTimeout(() => {
-        router.push("/emotions");
+        router.push(`/emotion/${id}`);
       });
     }
   };
@@ -30,11 +32,11 @@ export default function newEmotionPage() {
       {error && <FormMessage message={error} />}
       <div className="page">
         <Form
-          titreForm="Modifier l'émotion générale"
-          champs={["Libellé", "Couleur"]}
-          names={["libelle", "couleur"]}
-          buttonText={loading ? "Mise à jour..." : "Mettre à jour l'émotion générale"}
-          placeHolders={["Libellé", "#FFFFFF"]}
+          titreForm="Créer une émotion"
+          champs={["Libellé"]}
+          names={["libelle"]}
+          buttonText={loading ? "Création..." : "Création de l'émotion"}
+          placeHolders={["Libellé"]}
           textAreas={["Description"]}
           onSubmit={handleSubmit}
         />

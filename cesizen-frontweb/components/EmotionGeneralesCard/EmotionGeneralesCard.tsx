@@ -26,7 +26,7 @@ export default function EmotionGeneralesCard({
           </Link>
           {isAdmin && (
             <div className={styles.emotionActions}>
-              <EditButton url={`/emotion/edit/${emotion.id}`} />
+              <EditButton url={`/emotiongenerale/edit/${emotion.id}`} />
               <DeleteButton
                 onConfirm={async () => {
                   await deleteEmotionGenerale(emotion.id);
