@@ -44,6 +44,13 @@
   margin: 0;
   line-height: 1.6;
   opacity: 0.85;
+  min-height: 1.6rem;
+}
+
+.emotionActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 @media (max-width: 900px) {
