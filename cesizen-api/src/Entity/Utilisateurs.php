@@ -8,9 +8,27 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
+use App\State\UtilisateursMeProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: "is_granted('ROLE_ADMIN')"),
+        new Get(security: "object == user or is_granted('ROLE_ADMIN')"),
+        new Get(
+            uriTemplate: '/utilisateurs/me',
+            provider: UtilisateursMeProvider::class
+        ),
+        new Delete(security: "is_granted('ROLE_ADMIN')"),
+        new Patch(security: "object == user or is_granted('ROLE_ADMIN')")
+    ]
+)]
 class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

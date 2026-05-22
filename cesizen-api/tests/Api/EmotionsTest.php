@@ -50,8 +50,8 @@ class EmotionsTest extends ApiTestCaseBase
                 );
 
                 $this->assertEquals(
-                    '/api/emotion_generales/1',
-                    $emotion['emotionGenerale']
+                    1,
+                    $emotion['emotionGenerale']['id']
                 );
             }
         }
