@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmotionGeneralesRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['rapport:read']],
+    normalizationContext: ['groups' => ['rapport:read', 'emotion:read']],
     operations: [
         new GetCollection(),
         new Get(),
@@ -37,19 +37,19 @@ class EmotionGenerales
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['rapport:read'])]
+    #[Groups(['rapport:read', 'emotion:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['rapport:read'])]
+    #[Groups(['rapport:read', 'emotion:read'])]
     private ?string $libelle = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['rapport:read'])]
+    #[Groups(['rapport:read', 'emotion:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 7)]
-    #[Groups(['rapport:read'])]
+    #[Groups(['rapport:read', 'emotion:read'])]
     private ?string $couleur = null;
 
     /**
@@ -111,7 +111,7 @@ class EmotionGenerales
         return $this;
     }
 
-    #[Groups(['rapport:read'])]
+    #[Groups(['rapport:read', 'emotion:read'])]
     public function getImageUrl(): string
     {
         $path = '/uploads/emotions/' . $this->id . '.png';
