@@ -56,4 +56,99 @@ class EmotionsTest extends ApiTestCaseBase
             }
         }
     }
+
+    public function testAlterEmotion(): void
+    {
+        $client = static::createClient();
+        $container = static::getContainer();
+
+        $userRepository = $container->get(\App\Repository\UtilisateursRepository::class);
+        $jwtManager = $container->get(\Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface::class);
+
+        $admin = $userRepository->findOneBy([
+            'email' => 'admin@test.com'
+        ]);
+
+        $this->assertNotNull(
+            $admin,
+            'TEST INIT ECHOUE: l\'admin admin@test.com n\'a pas été trouvé en base'
+        );
+
+        $this->assertContains(
+            'ROLE_ADMIN',
+            $admin->getRoles(),
+            'TEST INIT ECHOUE: l\'utilisateur récupéré n\'est pas admin'
+        );
+
+        $token = $jwtManager->create($admin);
+
+        $response = $client->request('POST', '/api/emotions', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/ld+json',
+                'Content-Type' => 'application/ld+json',
+            ],
+            'json' => [
+                'libelle' => 'Test Emotion',
+                'description' => 'Description test',
+                'emotionGenerale' => '/api/emotion_generales/1',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful(
+            'CREATE ECHOUE: impossible de créer une emotion'
+        );
+
+        $data = $response->toArray();
+
+        $iri = $data['@id'] ?? null;
+
+        $this->assertNotNull(
+            $iri,
+            'CREATE ECHOUE: @id absent dans la réponse'
+        );
+
+        $id = (int) basename($iri);
+
+        $this->assertGreaterThan(
+            0,
+            $id,
+            'CREATE ECHOUE: ID invalide'
+        );
+
+        $client->request('PATCH', '/api/emotions/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/ld+json',
+                'Content-Type' => 'application/merge-patch+json',
+            ],
+            'json' => [
+                'libelle' => 'Emotion Modifiée',
+                'description' => 'Description modifiée',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+
+        $client->request('DELETE', '/api/emotions/' . $id, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/ld+json',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+
+
+        $em = $container->get('doctrine')->getManager();
+
+        $deletedEmotion = $em
+            ->getRepository(\App\Entity\EmotionGenerales::class)
+            ->find($id);
+
+        $this->assertNull(
+            $deletedEmotion,
+            'DELETE ECHOUE: l\'emotion existe encore en base'
+        );
+    }
 }

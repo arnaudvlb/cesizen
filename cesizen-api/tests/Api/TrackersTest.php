@@ -63,8 +63,8 @@ class TrackersTest extends ApiTestCaseBase
                 'Content-Type' => 'application/ld+json',
             ],
             'json' => [
-                'date_debut' => (new \DateTime())->format(DATE_ATOM),
-                'date_fin' => (new \DateTime('+1 day'))->format(DATE_ATOM),
+                'dateDebut' => (new \DateTime())->format(DATE_ATOM),
+                'dateFin' => (new \DateTime('+1 day'))->format(DATE_ATOM),
                 'libelle' => 'test-create',
                 'description' => 'init',
             ],
@@ -112,6 +112,6 @@ class TrackersTest extends ApiTestCaseBase
             ->getRepository(\App\Entity\trackers::class)
             ->find($id);
 
-        $this->assertNull($deleted, 'DELETE ECHOUE: le rapport n\'a pas été supprimé de la base de données');
+        $this->assertNull($deleted, 'DELETE ECHOUE: le tracker n\'a pas été supprimé de la base de données');
     }
 }

@@ -56,7 +56,7 @@ class RapportsTest extends ApiTestCaseBase
         $this->assertNotNull($user, 'TEST INIT ECHOUE: aucun utilisateur en base');
 
         $emotion = $emotionRepository->findOneBy([]);
-        $this->assertNotNull($emotion, 'TEST INIT ECHOUE: aucune emotion en base');
+        $this->assertNotNull($emotion, 'TEST INIT ECHOUE: aucun rapport en base');
 
         $token = $jwtManager->create($user);
 
