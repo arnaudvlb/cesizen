@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Get(security: "object == user or is_granted('ROLE_ADMIN')"),
         new Get(
             uriTemplate: '/utilisateurs/me',
-            provider: UtilisateursMeProvider::class
+            provider: UtilisateursMeProvider::class,
         ),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "object == user or is_granted('ROLE_ADMIN')")

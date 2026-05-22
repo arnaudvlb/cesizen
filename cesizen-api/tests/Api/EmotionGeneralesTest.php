@@ -34,19 +34,17 @@ class EmotionGeneralesTest extends ApiTestCaseBase
         $userRepository = $container->get(\App\Repository\UtilisateursRepository::class);
         $jwtManager = $container->get(\Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface::class);
 
-        $admin = $userRepository->findOneBy([
-            'email' => 'admin@test.com'
-        ]);
+        $admin = $userRepository->createQueryBuilder('u')
+            ->join('u.role', 'r')
+            ->where('r.code = :code')
+            ->setParameter('code', 'ROLE_ADMIN')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
         $this->assertNotNull(
             $admin,
-            'TEST INIT ECHOUE: l\'admin admin@test.com n\'a pas été trouvé en base'
-        );
-
-        $this->assertContains(
-            'ROLE_ADMIN',
-            $admin->getRoles(),
-            'TEST INIT ECHOUE: l\'utilisateur récupéré n\'est pas admin'
+            'TEST INIT ECHOUE: Aucun administrateur n\'a pas été trouvé en base'
         );
 
         $token = $jwtManager->create($admin);
