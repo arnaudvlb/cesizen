@@ -5,10 +5,13 @@ import styles from "@/components/EmotionGeneralesCard/EmotionGeneralesCard.modul
 import Link from "next/link";
 import EditButton from "../ui/EditButton/EditButton";
 import { useAuth } from "@/hooks/useAuth";
+import DeleteButton from "../ui/DeleteButton/DeleteButton";
+import { useDeleteEmotionGenerale } from "@/hooks/emotionGenerales/useDeleteEmotionGenerale";
 
 export default function EmotionGeneralesCard({
   emotions,
 }: EmotionGeneralesCardProps) {
+  const { deleteEmotionGenerale } = useDeleteEmotionGenerale(0);
   const { isAdmin } = useAuth();
   return (
     <div className={styles.emotionGrid}>
@@ -23,7 +26,12 @@ export default function EmotionGeneralesCard({
           </Link>
           {isAdmin && (
             <div className={styles.emotionActions}>
-              <EditButton url={`/emotion/edit/${emotion.id}`}/>
+              <EditButton url={`/emotion/edit/${emotion.id}`} />
+              <DeleteButton
+                onConfirm={async () => {
+                  await deleteEmotionGenerale(emotion.id);
+                }}
+              />
             </div>
           )}
         </article>
