@@ -1,0 +1,61 @@
+"use client";
+
+import Form from "@/components/ui/Form/Form";
+import FormMessage from "@/components/ui/FormMessage/FormMessage";
+import { usePatchUtilisateur } from "@/hooks/utilisateurs/usePatchUtilisateur";
+import { useUtilisateur } from "@/hooks/utilisateurs/useUtilisateur";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+
+export default function alterUtilisateur() {
+  const [message, setMessage] = useState("");
+  const params = useParams();
+  const id = params.id as string;
+  const { utilisateur } = useUtilisateur(id);
+  const { patchUtilisateur, loading, error } = usePatchUtilisateur(id);
+  const router = useRouter();
+
+  const handleSubmit = async (formData: Record<string, string>) => {
+    const res = await patchUtilisateur({
+      nom: formData.nom,
+      prenom: formData.prenom,
+      email: formData.email,
+      dateCreation: utilisateur?.dateCreation || new Date().toISOString(),
+      role: formData.role,
+      password: formData.password == "" ? null : formData.password,
+    });
+
+    if (res) {
+      setTimeout(() => {
+        setMessage("Modification réussie !");
+        router.push("/");
+      }, 1500);
+    }
+  };
+
+  if (loading) return <p>Chargement...</p>;
+
+  return (
+    <>
+      {(message || error) && (
+        <FormMessage message={message || error || ""} error={!!error} />
+      )}
+      <div className="page">
+        <Form
+          titreForm="Données utilisateur"
+          champs={["Nom", "Prénom", "Adresse Email", "Nouveau mot de passe"]}
+          names={["nom", "prenom", "email", "password"]}
+          buttonText={loading ? "Mise à jour..." : "Mettre à jour les données"}
+          placeHolders={["Nom", "Prénom", "nom.prenom@xyz.com", "••••••••"]}
+          onSubmit={handleSubmit}
+          defaultValues={{
+            nom: utilisateur?.nom ?? "",
+            prenom: utilisateur?.prenom ?? "",
+            email: utilisateur?.email ?? "",
+            password: "",
+          }}
+        />
+      </div>
+    </>
+  );
+}

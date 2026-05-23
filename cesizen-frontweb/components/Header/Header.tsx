@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement | null>(null);
-  const { isAuth } = useAuth();
+  const { isAuth, userId } = useAuth();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -100,6 +100,11 @@ export default function Header() {
                     Trackers
                   </Link>
                 </li>
+                <li>
+                  <Link href={`/utilisateur/${userId}`}>
+                    Informations du compte
+                  </Link>
+                </li>
               </>
             )}
           </ul>
@@ -154,6 +159,11 @@ export default function Header() {
                 <li>
                   <Link href="/trackers" onClick={() => setMenuOpen(false)}>
                     Trackers
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/utilisateur/${userId}`} onClick={() => setMenuOpen(false)}>
+                    Informations du compte
                   </Link>
                 </li>
               </>

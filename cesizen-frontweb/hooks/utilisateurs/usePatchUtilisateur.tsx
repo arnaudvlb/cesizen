@@ -5,9 +5,10 @@ import { User } from "@/types/database/users";
 type FormData = {
   nom: string;
   prenom: string;
+  email: string | null;
   dateCreation: string;
   role: string;
-  password: string;
+  password: string | null;
 };
 
 export function usePatchUtilisateur(id: string) {
@@ -24,6 +25,7 @@ export function usePatchUtilisateur(id: string) {
         id,
         formData.nom,
         formData.prenom,
+        formData.email,
         formData.dateCreation,
         formData.role,
         formData.password,

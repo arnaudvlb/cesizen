@@ -4,9 +4,10 @@ export default async function patchUtilisateur(
   id: string,
   nom: string,
   prenom: string,
+  email: string | null,
   dateCreation: string,
   role: string,
-  password: string,
+  password: string | null,
 ): Promise<User> {
   const res = await fetch(`/api/utilisateurs/${id}`, {
     method: "PATCH",
@@ -25,7 +26,7 @@ export default async function patchUtilisateur(
 
   if (!res.ok) {
     if (res.status === 400) {
-      throw new Error("Données invalides.");
+      throw new Error("Données invalides. (Veuillez remplir l'email et le mot de passe.)");
     } else if (res.status === 403) {
       throw new Error("Accès non autorisé.");
     } else if (res.status === 404) {
