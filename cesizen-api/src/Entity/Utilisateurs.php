@@ -13,7 +13,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
-use App\State\UtilisateursMeProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
@@ -21,10 +20,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new GetCollection(security: "is_granted('ROLE_ADMIN')"),
         new Get(security: "object == user or is_granted('ROLE_ADMIN')"),
-        new Get(
-            uriTemplate: '/utilisateurs/me',
-            provider: UtilisateursMeProvider::class,
-        ),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "object == user or is_granted('ROLE_ADMIN')")
     ]
@@ -43,18 +38,12 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 30)]
     private string $prenom;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $photoProfil = null;
-
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['rapport:read'])]
     private string $email;
 
     #[ORM\Column(length: 255)]
     private string $motDePasse;
-
-    #[ORM\Column]
-    private bool $actif;
 
     #[ORM\Column(type: "datetime")]
     private \DateTimeInterface $dateCreation;
@@ -92,7 +81,6 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->dateCreation = new \DateTime();
-        $this->actif = true;
 
         $this->tokens = new ArrayCollection();
         $this->reinitialisationMdps = new ArrayCollection();
@@ -119,11 +107,6 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->prenom;
     }
 
-    public function getPhotoProfil(): ?string
-    {
-        return $this->photoProfil;
-    }
-
     public function getEmail(): string
     {
         return $this->email;
@@ -132,11 +115,6 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): string
     {
         return $this->motDePasse;
-    }
-
-    public function isActif(): bool
-    {
-        return $this->actif;
     }
 
     public function getDateCreation(): \DateTimeInterface
@@ -177,12 +155,6 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setPhotoProfil(?string $photoProfil): self
-    {
-        $this->photoProfil = $photoProfil;
-        return $this;
-    }
-
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -192,12 +164,6 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $motDePasse): self
     {
         $this->motDePasse = $motDePasse;
-        return $this;
-    }
-
-    public function setActif(bool $actif): self
-    {
-        $this->actif = $actif;
         return $this;
     }
 

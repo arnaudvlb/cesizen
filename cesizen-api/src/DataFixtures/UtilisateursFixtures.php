@@ -28,8 +28,6 @@ class UtilisateursFixtures extends Fixture
         $admin->setNom('Admin');
         $admin->setPrenom('Systeme');
         $admin->setEmail('admin@test.com');
-        $admin->setPhotoProfil(null);
-        $admin->setActif(true);
         $admin->setDateCreation(new \DateTime());
 
         $admin->setPassword(
@@ -46,8 +44,6 @@ class UtilisateursFixtures extends Fixture
             $user->setNom($faker->lastName());
             $user->setPrenom($faker->firstName());
             $user->setEmail($faker->unique()->safeEmail());
-            $user->setPhotoProfil(null);
-            $user->setActif(true);
             $user->setDateCreation(new \DateTime());
 
             $user->setPassword(

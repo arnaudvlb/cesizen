@@ -63,6 +63,7 @@ class EmotionsTest extends ApiTestCaseBase
         $container = static::getContainer();
 
         $userRepository = $container->get(\App\Repository\UtilisateursRepository::class);
+        $emotionRepository = $container->get(\App\Repository\EmotionsRepository::class);
         $jwtManager = $container->get(\Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface::class);
 
         $admin = $userRepository->createQueryBuilder('u')
@@ -89,7 +90,7 @@ class EmotionsTest extends ApiTestCaseBase
             'json' => [
                 'libelle' => 'Test Emotion',
                 'description' => 'Description test',
-                'emotionGenerale' => '/api/emotion_generales/1',
+                'emotionGenerale' => '/api/emotion_generales/' . $emotionRepository->findOneBy([])->getId(),
             ],
         ]);
 

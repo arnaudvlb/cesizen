@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260520171040 extends AbstractMigration
+final class Version20260523153659 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,7 +27,7 @@ final class Version20260520171040 extends AbstractMigration
         $this->addSql('CREATE TABLE roles_utilisateurs (id_role INT AUTO_INCREMENT NOT NULL, libelle VARCHAR(50) NOT NULL, code VARCHAR(50) NOT NULL, UNIQUE INDEX UNIQ_7B40729177153098 (code), PRIMARY KEY (id_role)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE tokens (id INT AUTO_INCREMENT NOT NULL, token VARCHAR(255) NOT NULL, date_expiration DATETIME NOT NULL, date_creation DATETIME NOT NULL, est_revoque TINYINT NOT NULL, utilisateur_id INT NOT NULL, INDEX IDX_AA5A118EFB88E14F (utilisateur_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE trackers (id INT AUTO_INCREMENT NOT NULL, date_debut DATETIME NOT NULL, date_fin DATETIME NOT NULL, libelle VARCHAR(50) NOT NULL, description VARCHAR(255) DEFAULT NULL, utilisateur_id INT NOT NULL, INDEX IDX_5DCB1258FB88E14F (utilisateur_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE utilisateurs (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(50) NOT NULL, prenom VARCHAR(30) NOT NULL, photo_profil VARCHAR(255) DEFAULT NULL, email VARCHAR(180) NOT NULL, mot_de_passe VARCHAR(255) NOT NULL, actif TINYINT NOT NULL, date_creation DATETIME NOT NULL, role_id INT NOT NULL, UNIQUE INDEX UNIQ_497B315EE7927C74 (email), INDEX IDX_497B315ED60322AC (role_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE utilisateurs (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(50) NOT NULL, prenom VARCHAR(30) NOT NULL, email VARCHAR(180) NOT NULL, mot_de_passe VARCHAR(255) NOT NULL, date_creation DATETIME NOT NULL, role_id INT NOT NULL, UNIQUE INDEX UNIQ_497B315EE7927C74 (email), INDEX IDX_497B315ED60322AC (role_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('ALTER TABLE emotions ADD CONSTRAINT FK_D56FF528424F1C13 FOREIGN KEY (emotion_generale_id) REFERENCES emotion_generales (id)');
         $this->addSql('ALTER TABLE rapports ADD CONSTRAINT FK_E20924C4424F1C13 FOREIGN KEY (emotion_generale_id) REFERENCES emotion_generales (id)');
         $this->addSql('ALTER TABLE rapports ADD CONSTRAINT FK_E20924C4FB88E14F FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs (id)');
