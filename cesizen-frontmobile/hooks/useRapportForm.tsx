@@ -49,14 +49,9 @@ export function useRapportForm(
       const numericId = Number(emotionId);
 
       const emotion = emotions.find((e) => e.id === numericId);
-
       if (!emotion) return;
 
-      const iri = emotion.emotionGenerale as unknown as string;
-
-      const id = Number(iri.split("/").pop());
-
-      if (Number.isNaN(id)) return;
+      const id = emotion.emotionGenerale.id;
 
       counts[id] = (counts[id] || 0) + 1;
     });

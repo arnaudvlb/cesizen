@@ -49,7 +49,7 @@ export default function NewRapportPage() {
 
     if (res) {
       setTimeout(() => {
-        router.push("/rapports");
+        router.push(`/emotion/${emotionGeneraleId}`);
       }, 500);
     }
   };
