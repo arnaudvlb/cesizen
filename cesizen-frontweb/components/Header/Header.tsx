@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement | null>(null);
-  const { isAuth, userId } = useAuth();
+  const { isAuth, isAdmin, userId } = useAuth();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -63,42 +63,30 @@ export default function Header() {
         <div className={styles.navContainer}>
           <ul>
             <li>
-              <Link href="/">
-                Accueil
-              </Link>
+              <Link href="/">Accueil</Link>
             </li>
             {!isAuth && (
               <li>
-                <Link href="/login">
-                  Connexion
-                </Link>
+                <Link href="/login">Connexion</Link>
               </li>
             )}
             {isAuth && (
               <>
                 <li>
-                  <Link href="/logout">
-                    Déconnexion
-                  </Link>
+                  <Link href="/logout">Déconnexion</Link>
                 </li>
               </>
             )}
             <li>
-              <Link href="/emotions">
-                Emotions
-              </Link>
+              <Link href="/emotions">Emotions</Link>
             </li>
             {isAuth && (
               <>
                 <li>
-                  <Link href="/rapports">
-                    Rapports
-                  </Link>
+                  <Link href="/rapports">Rapports</Link>
                 </li>
                 <li>
-                  <Link href="/trackers">
-                    Trackers
-                  </Link>
+                  <Link href="/trackers">Trackers</Link>
                 </li>
                 <li>
                   <Link href={`/utilisateur/${userId}`}>
@@ -106,6 +94,13 @@ export default function Header() {
                   </Link>
                 </li>
               </>
+            )}
+            {isAdmin && (
+              <li>
+                <Link href="/utilisateurs">
+                  Gestion des utilisateurs
+                </Link>
+              </li>
             )}
           </ul>
 
@@ -162,11 +157,21 @@ export default function Header() {
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/utilisateur/${userId}`} onClick={() => setMenuOpen(false)}>
+                  <Link
+                    href={`/utilisateur/${userId}`}
+                    onClick={() => setMenuOpen(false)}
+                  >
                     Informations du compte
                   </Link>
                 </li>
               </>
+            )}
+            {isAdmin && (
+              <li>
+                <Link href="/utilisateurs" onClick={() => setMenuOpen(false)}>
+                  Gestion des utilisateurs
+                </Link>
+              </li>
             )}
           </ul>
         </div>
