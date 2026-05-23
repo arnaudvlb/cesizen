@@ -15,7 +15,6 @@ export default function DeleteButton({ onConfirm }: DeleteButtonProps) {
     }
 
     await onConfirm();
-    // TODO: remplacer par une méthode plus propre que le rechargement de la page
     location.reload();
   };
 
