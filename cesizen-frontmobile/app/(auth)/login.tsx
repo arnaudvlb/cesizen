@@ -53,7 +53,7 @@ export default function LoginPage() {
           <View style={{ flexDirection: "row", gap: 4 }}>
             <Text style={{ color: colors.text }}>Pas encore de compte ?</Text>
 
-            <Link href="/register" asChild>
+            <Link href="/register">
               <Text style={{ color: colors.primary, fontWeight: "600" }}>
                 Créer un compte
               </Text>

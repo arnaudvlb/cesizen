@@ -1,17 +1,17 @@
 import { Role } from "./roles";
 
-export type User= {
-  id_utilisateur: number;
+export type User = {
+  id: number;
 
   nom: string;
-  
+
   prenom: string;
 
-  telephone: string | null;
+  email: string;
 
-  statut_compte: "ACTIF" | "DESACTIVE" | "BLOQUE";
+  password: string;
 
-  date_creation: string;
+  dateCreation: string;
 
   role: Role;
-}
+};

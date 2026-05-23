@@ -8,8 +8,7 @@ import { styles } from "./Header.styles";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const colors = useThemeColors();
-  const { isAuth } = useAuth();
-
+  const { isAuth, userId } = useAuth();
   return (
     <View style={[styles.header, { backgroundColor: colors.surface }]}>
       <View style={styles.banner}>
@@ -67,6 +66,16 @@ export default function Header() {
                   style={[styles.link, { color: colors.text }]}
                 >
                   Trackers
+                </Link>
+
+                <Link
+                  href={{
+                    pathname: "/utilisateur/[id]",
+                    params: { id: userId },
+                  }}
+                  style={[styles.link, { color: colors.text }]}
+                >
+                  Informations du compte
                 </Link>
               </>
             )}

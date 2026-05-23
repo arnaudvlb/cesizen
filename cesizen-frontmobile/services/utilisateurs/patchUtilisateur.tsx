@@ -1,31 +1,33 @@
 import { API_URL } from "@/expo.config";
-import { Tracker } from "@/types/database/trackers";
+import { User } from "@/types/database/users";
 import * as SecureStore from "expo-secure-store";
 
-export default async function patchTracker(
+export default async function patchUtilisateur(
   id: string,
-  dateDebut: string,
-  dateFin: string,
-  libelle: string,
-  description: string | null,
-): Promise<Tracker> {
-  const res = await fetch(`${API_URL}/trackers/${id}`, {
+  nom: string,
+  prenom: string,
+  email: string | null,
+  password: string | null,
+): Promise<User> {
+  const res = await fetch(`${API_URL}/utilisateurs/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${await SecureStore.getItemAsync("token")}`,
       "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({
-      dateDebut,
-      dateFin,
-      libelle,
-      description,
+      nom,
+      prenom,
+      email,
+      password,
     }),
   });
 
   if (!res.ok) {
     if (res.status === 400) {
-      throw new Error("Données invalides.");
+      throw new Error(
+        "Données invalides. (Veuillez remplir l'email et le mot de passe.)",
+      );
     } else if (res.status === 403) {
       throw new Error("Accès non autorisé.");
     } else if (res.status === 404) {
@@ -35,7 +37,7 @@ export default async function patchTracker(
     }
   }
 
-  const data: Tracker = await res.json();
+  const data: User = await res.json();
 
   return data;
 }
