@@ -5,8 +5,7 @@ export default async function patchUtilisateur(
   nom: string,
   prenom: string,
   email: string | null,
-  dateCreation: string,
-  role: string,
+  role: string | null,
   password: string | null,
 ): Promise<User> {
   const res = await fetch(`/api/utilisateurs/${id}`, {
@@ -18,7 +17,7 @@ export default async function patchUtilisateur(
     body: JSON.stringify({
       nom,
       prenom,
-      dateCreation,
+      email,
       role,
       password,
     }),

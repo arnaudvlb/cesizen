@@ -6,7 +6,6 @@ type FormData = {
   nom: string;
   prenom: string;
   email: string | null;
-  dateCreation: string;
   role: string;
   password: string | null;
 };
@@ -26,7 +25,6 @@ export function usePatchUtilisateur(id: string) {
         formData.nom,
         formData.prenom,
         formData.email,
-        formData.dateCreation,
         formData.role,
         formData.password,
       );

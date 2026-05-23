@@ -1,11 +1,14 @@
 "use client";
 
+import RolesSelect from "@/components/RolesSelect/RolesSelect";
 import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
+import { useRoles } from "@/hooks/roles/useRoles";
+import { useAuth } from "@/hooks/useAuth";
 import { usePatchUtilisateur } from "@/hooks/utilisateurs/usePatchUtilisateur";
 import { useUtilisateur } from "@/hooks/utilisateurs/useUtilisateur";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function alterUtilisateur() {
   const [message, setMessage] = useState("");
@@ -13,15 +16,25 @@ export default function alterUtilisateur() {
   const id = params.id as string;
   const { utilisateur } = useUtilisateur(id);
   const { patchUtilisateur, loading, error } = usePatchUtilisateur(id);
+  const { roles } = useRoles();
+  const [selectedRole, setSelectedRole] = useState(Number);
   const router = useRouter();
+  const { isAdmin } = useAuth();
+
+  useEffect(() => {
+    if (utilisateur?.role?.id_role) {
+      setSelectedRole(utilisateur.role.id_role);
+    }
+  }, [utilisateur]);
 
   const handleSubmit = async (formData: Record<string, string>) => {
     const res = await patchUtilisateur({
       nom: formData.nom,
       prenom: formData.prenom,
       email: formData.email,
-      dateCreation: utilisateur?.dateCreation || new Date().toISOString(),
-      role: formData.role,
+      role: selectedRole
+        ? `/api/roles_utilisateurs/${selectedRole}`
+        : formData.role,
       password: formData.password == "" ? null : formData.password,
     });
 
@@ -39,6 +52,13 @@ export default function alterUtilisateur() {
     <>
       {(message || error) && (
         <FormMessage message={message || error || ""} error={!!error} />
+      )}
+      {isAdmin && (
+        <RolesSelect
+          roles={roles}
+          value={selectedRole}
+          onChange={setSelectedRole}
+        />
       )}
       <div className="page">
         <Form
