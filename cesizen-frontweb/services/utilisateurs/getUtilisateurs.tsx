@@ -1,0 +1,16 @@
+import { User } from "@/types/database/users";
+
+type Collection<T> = {
+  member?: T[];
+  "hydra:member"?: T[];
+};
+
+export default async function getUtilisateurs(): Promise<User[]> {
+  const res = await fetch("/api/utilisateurs/");
+  if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
+  
+  const data: Collection<User> = await res.json();
+  const items = data.member ?? data["hydra:member"] ?? [];
+
+  return items;
+}

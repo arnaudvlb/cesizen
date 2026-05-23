@@ -7,9 +7,9 @@ export type User= {
   
   prenom: string;
 
-  telephone: string | null;
+  email: string;
 
-  statutCompte: "ACTIF" | "DESACTIVE" | "BLOQUE";
+  password: string;
 
   dateCreation: string;
 

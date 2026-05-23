@@ -19,12 +19,6 @@ export default async function patchEmotion(
     }),
   });
 
-  console.log(
-      libelle,
-      description,
-      emotionGenerale,
-  )
-
   if (!res.ok) {
     if (res.status === 400) {
       throw new Error("Données invalides.");

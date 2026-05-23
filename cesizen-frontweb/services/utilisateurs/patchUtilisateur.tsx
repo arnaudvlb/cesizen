@@ -1,23 +1,25 @@
-import { Tracker } from "@/types/database/trackers";
+import { User } from "@/types/database/users";
 
-export default async function patchTracker(
+export default async function patchUtilisateur(
   id: string,
-  dateDebut: string,
-  dateFin: string,
-  libelle: string,
-  description: string | null,
-): Promise<Tracker> {
-  const res = await fetch(`/api/trackers/${id}`, {
+  nom: string,
+  prenom: string,
+  dateCreation: string,
+  role: string,
+  password: string,
+): Promise<User> {
+  const res = await fetch(`/api/utilisateurs/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({
-      dateDebut,
-      dateFin,
-      libelle,
-      description,
+      nom,
+      prenom,
+      dateCreation,
+      role,
+      password,
     }),
   });
 
@@ -33,7 +35,7 @@ export default async function patchTracker(
     }
   }
 
-  const data: Tracker = await res.json();
+  const data: User = await res.json();
 
   return data;
 }
