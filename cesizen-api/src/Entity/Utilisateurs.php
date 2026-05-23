@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
+use App\State\UserPasswordProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
@@ -21,7 +22,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(security: "is_granted('ROLE_ADMIN')"),
         new Get(security: "object == user or is_granted('ROLE_ADMIN')"),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
-        new Patch(security: "object == user or is_granted('ROLE_ADMIN')")
+        new Patch(
+            security: "object == user or is_granted('ROLE_ADMIN')",
+            processor: UserPasswordProcessor::class
+        )
     ]
 )]
 class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface

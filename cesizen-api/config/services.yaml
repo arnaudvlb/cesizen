@@ -29,3 +29,8 @@ services:
                 event: lexik_jwt_authentication.on_jwt_created,
                 method: onJWTCreated
             }
+    
+    App\State\UserPasswordProcessor:
+        arguments:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+        tags: [ 'api_platform.state_processor' ]
