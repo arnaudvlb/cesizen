@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
 #[ApiResource(
+    normalizationContext: ['groups' => ['utilisateur:read', 'rapport:read']],
     operations: [
         new GetCollection(security: "is_granted('ROLE_ADMIN')"),
         new Get(security: "object == user or is_granted('ROLE_ADMIN')"),
@@ -33,17 +34,19 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
-    #[Groups(['rapport:read'])]
+    #[Groups(['rapport:read', 'utilisateur:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['utilisateur:read'])]
     private string $nom;
 
     #[ORM\Column(length: 30)]
+    #[Groups(['utilisateur:read'])]
     private string $prenom;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['rapport:read'])]
+    #[Groups(['rapport:read', 'utilisateur:read'])]
     private string $email;
 
     #[ORM\Column(length: 255)]
@@ -54,6 +57,7 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: RolesUtilisateurs::class)]
     #[ORM\JoinColumn(name: "role_id", referencedColumnName: "id_role", nullable: false)]
+    #[Groups(['utilisateur:read'])]
     private RolesUtilisateurs $role;
 
     /**

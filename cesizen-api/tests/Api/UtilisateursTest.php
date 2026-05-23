@@ -16,13 +16,19 @@ class UtilisateursTest extends ApiTestCaseBase
         $userRepository = $container->get(\App\Repository\UtilisateursRepository::class);
         $jwtManager = $container->get(JWTTokenManagerInterface::class);
 
-        $user = $userRepository->findOneBy([]);
+        $admin = $userRepository->createQueryBuilder('u')
+            ->join('u.role', 'r')
+            ->where('r.code = :code')
+            ->setParameter('code', 'ROLE_ADMIN')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
-        $token = $jwtManager->create($user);
+        $token = $jwtManager->create($admin);
 
         $client->request(
             'GET',
-            '/api/utilisateurs/' . $user->getId(),
+            '/api/utilisateurs/' . $admin->getId(),
             [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
