@@ -9,6 +9,8 @@ import { useParams, useRouter } from "next/navigation";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { usePatchRapport } from "@/hooks/rapports/usePatchRapport";
 import { useRapport } from "@/hooks/rapports/useRapport";
+import { useAuth } from "@/hooks/useAuth";
+import AccessDenied from "@/components/ui/AccessDenied/AccessDenied";
 
 const Questions = [
   "Quelle émotion décrit le mieux votre réveil aujourd’hui ?",
@@ -28,8 +30,9 @@ export default function editRapportPage() {
   const id = params.id as string;
   const { emotions } = useEmotions();
   const { rapport } = useRapport(id);
-  const { patchRapport, loading ,error } = usePatchRapport(id);
+  const { patchRapport, loading, error } = usePatchRapport(id);
   const router = useRouter();
+  const { isAuth } = useAuth();
 
   const {
     reponses,
@@ -39,7 +42,12 @@ export default function editRapportPage() {
     fullForm,
     serializedReponses,
     emotionGeneraleId,
-  } = useRapportForm(emotions, Questions.length, rapport?.reponses, rapport?.commentaire);
+  } = useRapportForm(
+    emotions,
+    Questions.length,
+    rapport?.reponses,
+    rapport?.commentaire,
+  );
   const handleSubmit = async () => {
     const res = await patchRapport({
       reponses: serializedReponses,
@@ -54,16 +62,21 @@ export default function editRapportPage() {
       });
     }
   };
-  
+
+  if (!isAuth) return <AccessDenied />;
+
   if (loading) return <p>Chargement...</p>;
-  
+
   return (
     <>
-      {(error) && (
-        <FormMessage message={error} />
-      )}
+      {error && <FormMessage message={error} />}
       <div className="page">
-        <h1 className="pageTitle">Modification du rapport du {new Date(rapport?.dateRapport || new Date()).toLocaleDateString("fr-FR")}</h1>
+        <h1 className="pageTitle">
+          Modification du rapport du{" "}
+          {new Date(rapport?.dateRapport || new Date()).toLocaleDateString(
+            "fr-FR",
+          )}
+        </h1>
         {Questions.map((question, index) => (
           <EmotionsSelect
             key={index}

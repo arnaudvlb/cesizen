@@ -1,0 +1,23 @@
+.filterContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.filterInput {
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .filterContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterInput,
+  .filterSelect {
+    width: 100%;
+  }
+}

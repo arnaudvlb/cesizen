@@ -1,11 +1,16 @@
-"use client"
+"use client";
 
 import CreateButton from "@/components/ui/CreateButton/CreateButton";
 import { useTrackers } from "@/hooks/trackers/useTrackers";
 import { TrackersCard } from "@/components/TrackersCard/TrackersCard";
+import AccessDenied from "@/components/ui/AccessDenied/AccessDenied";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function TrackersPage() {
   const { trackers, loading, error } = useTrackers();
+  const { isAuth } = useAuth();
+
+  if (!isAuth) return <AccessDenied />;
 
   if (loading) return <p>Chargement...</p>;
   if (error) return <p>Erreur : {error}</p>;

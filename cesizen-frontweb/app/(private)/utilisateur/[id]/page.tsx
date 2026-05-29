@@ -1,6 +1,7 @@
 "use client";
 
 import RolesSelect from "@/components/RolesSelect/RolesSelect";
+import AccessDenied from "@/components/ui/AccessDenied/AccessDenied";
 import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { useRoles } from "@/hooks/roles/useRoles";
@@ -19,7 +20,7 @@ export default function alterUtilisateur() {
   const { roles } = useRoles();
   const [selectedRole, setSelectedRole] = useState(Number);
   const router = useRouter();
-  const { isAdmin } = useAuth();
+  const { isAdmin, isAuth, userId } = useAuth();
 
   useEffect(() => {
     if (utilisateur?.role?.id_role) {
@@ -45,6 +46,8 @@ export default function alterUtilisateur() {
       }, 1500);
     }
   };
+
+  if (!isAuth && id != String(userId) && !isAdmin) return <AccessDenied />;
 
   if (loading) return <p>Chargement...</p>;
 

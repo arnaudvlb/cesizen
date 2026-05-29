@@ -1,13 +1,18 @@
-"use client"
+"use client";
 
+import AccessDenied from "@/components/ui/AccessDenied/AccessDenied";
 import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { useCreateTracker } from "@/hooks/trackers/useCreateTracker";
+import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 
 export default function newTrackerPage() {
   const { createTracker, loading, error } = useCreateTracker();
   const router = useRouter();
+  const { isAuth } = useAuth();
+
+  if (!isAuth) return <AccessDenied />;
 
   const handleSubmit = async (formData: Record<string, string>) => {
     const res = await createTracker({

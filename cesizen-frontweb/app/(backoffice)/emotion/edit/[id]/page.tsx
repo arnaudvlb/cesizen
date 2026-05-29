@@ -1,17 +1,22 @@
-"use client"
+"use client";
 
+import AccessDenied from "@/components/ui/AccessDenied/AccessDenied";
 import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { useEmotion } from "@/hooks/emotions/useEmotion";
 import { usePatchEmotion } from "@/hooks/emotions/usePatchEmotion";
+import { useAuth } from "@/hooks/useAuth";
 import { useParams, useRouter } from "next/navigation";
 
 export default function editEmotionPage() {
   const params = useParams();
   const id = params.id as string;
-  const {emotion} = useEmotion(id);
+  const { emotion } = useEmotion(id);
   const { patchEmotion, loading, error } = usePatchEmotion(id);
   const router = useRouter();
+  const { isAdmin } = useAuth();
+
+  if (!isAdmin) return <AccessDenied />;
 
   const handleSubmit = async (formData: Record<string, string>) => {
     const res = await patchEmotion({

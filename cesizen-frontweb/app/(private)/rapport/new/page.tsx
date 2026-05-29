@@ -3,11 +3,13 @@
 import { useEmotions } from "@/hooks/emotions/useEmotions";
 import { useCreateRapport } from "@/hooks/rapports/useCreateRapport";
 import { useRapportForm } from "@/hooks/useRapportForm";
+import { useAuth } from "@/hooks/useAuth";
 import MandatoryButton from "@/components/ui/MandatoryButton/MandatoryButton";
 import TextArea from "@/components/ui/TextArea/TextArea";
 import EmotionsSelect from "@/components/EmotionsSelect/EmotionsSelect";
 import { useRouter } from "next/navigation";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
+import AccessDenied from "@/components/ui/AccessDenied/AccessDenied";
 
 const Questions = [
   "Quelle émotion décrit le mieux votre réveil aujourd’hui ?",
@@ -26,6 +28,7 @@ export default function newRapportPage() {
   const { emotions } = useEmotions();
   const { createRapport, loading, error } = useCreateRapport();
   const router = useRouter();
+  const { isAuth } = useAuth();
 
   const {
     reponses,
@@ -52,13 +55,13 @@ export default function newRapportPage() {
     }
   };
 
+  if (!isAuth) return <AccessDenied />;
+
   if (loading) return <p>Chargement...</p>;
 
   return (
     <>
-      {(error) && (
-        <FormMessage message={error} />
-      )}
+      {error && <FormMessage message={error} />}
       <div className="page">
         <h1 className="pageTitle">Nouveau rapport</h1>
         {Questions.map((question, index) => (

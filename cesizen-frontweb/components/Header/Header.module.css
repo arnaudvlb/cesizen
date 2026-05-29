@@ -89,7 +89,7 @@
 }
 
 .mobileWrapper.open {
-  max-height: 300px;
+  max-height: 500px;
   opacity: 1;
   transform: translateY(0);
 }
@@ -121,5 +121,6 @@
 
   .burger {
     display: block;
+    color: var(--text);
   }
 }

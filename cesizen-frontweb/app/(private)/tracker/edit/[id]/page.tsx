@@ -1,9 +1,11 @@
 "use client";
 
+import AccessDenied from "@/components/ui/AccessDenied/AccessDenied";
 import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { usePatchTracker } from "@/hooks/trackers/usePatchTracker";
 import { useTracker } from "@/hooks/trackers/useTracker";
+import { useAuth } from "@/hooks/useAuth";
 import { useParams, useRouter } from "next/navigation";
 
 export default function editTrackerPage() {
@@ -12,6 +14,9 @@ export default function editTrackerPage() {
   const { tracker } = useTracker(id);
   const { patchTracker, loading, error } = usePatchTracker(id);
   const router = useRouter();
+  const { isAuth } = useAuth();
+
+  if (!isAuth) return <AccessDenied />;
 
   const handleSubmit = async (formData: Record<string, string>) => {
     const res = await patchTracker({

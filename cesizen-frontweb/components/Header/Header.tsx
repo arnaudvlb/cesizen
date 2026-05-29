@@ -65,18 +65,6 @@ export default function Header() {
             <li>
               <Link href="/">Accueil</Link>
             </li>
-            {!isAuth && (
-              <li>
-                <Link href="/login">Connexion</Link>
-              </li>
-            )}
-            {isAuth && (
-              <>
-                <li>
-                  <Link href="/logout">Déconnexion</Link>
-                </li>
-              </>
-            )}
             <li>
               <Link href="/emotions">Emotions</Link>
             </li>
@@ -102,6 +90,18 @@ export default function Header() {
                 </Link>
               </li>
             )}
+            {!isAuth && (
+              <li>
+                <Link href="/login">Connexion</Link>
+              </li>
+            )}
+            {isAuth && (
+              <>
+                <li>
+                  <Link href="/logout">Déconnexion</Link>
+                </li>
+              </>
+            )}
           </ul>
 
           <button
@@ -123,22 +123,6 @@ export default function Header() {
                 Accueil
               </Link>
             </li>
-            {!isAuth && (
-              <li>
-                <Link href="/login" onClick={() => setMenuOpen(false)}>
-                  Connexion
-                </Link>
-              </li>
-            )}
-            {isAuth && (
-              <>
-                <li>
-                  <Link href="/logout" onClick={() => setMenuOpen(false)}>
-                    Déconnexion
-                  </Link>
-                </li>
-              </>
-            )}
             <li>
               <Link href="/emotions" onClick={() => setMenuOpen(false)}>
                 Emotions
@@ -172,6 +156,22 @@ export default function Header() {
                   Gestion des utilisateurs
                 </Link>
               </li>
+            )}
+            {!isAuth && (
+              <li>
+                <Link href="/login" onClick={() => setMenuOpen(false)}>
+                  Connexion
+                </Link>
+              </li>
+            )}
+            {isAuth && (
+              <>
+                <li>
+                  <Link href="/logout" onClick={() => setMenuOpen(false)}>
+                    Déconnexion
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </div>

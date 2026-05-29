@@ -1,9 +1,11 @@
 "use client";
 
+import AccessDenied from "@/components/ui/AccessDenied/AccessDenied";
 import Form from "@/components/ui/Form/Form";
 import FormMessage from "@/components/ui/FormMessage/FormMessage";
 import { useEmotionGenerale } from "@/hooks/emotionGenerales/useEmotionGenerale";
 import { usePatchEmotionGenerale } from "@/hooks/emotionGenerales/usePatchEmotionGenerale";
+import { useAuth } from "@/hooks/useAuth";
 import { useParams, useRouter } from "next/navigation";
 
 export default function editEmotionGeneralePage() {
@@ -12,6 +14,9 @@ export default function editEmotionGeneralePage() {
   const { emotionGenerale } = useEmotionGenerale(id);
   const { patchEmotionGenerale, loading, error } = usePatchEmotionGenerale(id);
   const router = useRouter();
+  const { isAdmin } = useAuth();
+
+  if (!isAdmin) return <AccessDenied />;
 
   const handleSubmit = async (formData: Record<string, string>) => {
     const res = await patchEmotionGenerale({
@@ -37,7 +42,9 @@ export default function editEmotionGeneralePage() {
           titreForm="Modifier l'émotion générale"
           champs={["Libellé", "Couleur"]}
           names={["libelle", "couleur"]}
-          buttonText={loading ? "Mise à jour..." : "Mettre à jour l'émotion générale"}
+          buttonText={
+            loading ? "Mise à jour..." : "Mettre à jour l'émotion générale"
+          }
           placeHolders={["Libellé", "#FFFFFF"]}
           textAreas={["Description"]}
           defaultValues={{

@@ -6,17 +6,17 @@
   --bg: #ffffff;
   --text: #111111;
   --primary: #eb7125;
-  --border: #ebe9e5;
-  --surface: #fcfbf8;
+  --border: #ebe5e7;
+  --surface: #fcf8fa;
   --shadow: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="dark"] {
-  --bg: #1f1108;
+  --bg: #1f080f;
   --text: #e5e7eb;
   --primary: #fa8e60;
-  --border: #3b271e;
-  --surface: #170a02;
+  --border: #3b1e2b;
+  --surface: #170209;
   --shadow: rgba(0, 0, 0, 0.35);
 }
 
@@ -185,6 +185,38 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
+}
+
+select {
+  padding: 0.75rem 1rem;
+
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+
+  background: var(--bg);
+  color: var(--text);
+
+  font-size: 0.95rem;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+select::placeholder {
+  color: #9ca3af;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.08);
+
+  transform: translateY(-1px);
 }
 
 /* =====================
