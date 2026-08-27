@@ -25,7 +25,6 @@ RUN composer install \
     --no-interaction \
     --no-progress \
     --prefer-dist \
-    --no-dev \
     --no-scripts \
     --optimize-autoloader
 
@@ -59,8 +58,8 @@ EXPOSE 8000
 
 # Vérifie que l'application ET ses dépendances critiques sont opérationnelles
 # LiipMonitorBundle renvoie un statut HTTP d'erreur si un check échoue
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-    CMD curl --fail --silent http://localhost:8000/health/http_status_checks > /dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD php bin/console monitor:health || exit 1
 
 # Démarrage de l'API
 CMD ["symfony", "server:start", "--allow-http", "--no-tls", "--listen-ip=0.0.0.0"]
