@@ -81,7 +81,7 @@ jobs:
         run: composer validate --no-check-publish
 
       - name: Run PHPUnit
-        run: php bin/phpunit --testdox --stop-on-error
+        run: php bin/phpunit --testdox
 
   frontweb:
     name: Front Web - Build
