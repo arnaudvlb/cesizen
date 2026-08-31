@@ -74,6 +74,9 @@ jobs:
       - name: Run database migrations
         run: php bin/console doctrine:migrations:migrate --no-interaction
 
+      - name: Load fixtures
+        run: php bin/console doctrine:fixtures:load --env=test --no-interaction
+
       - name: Validate Composer
         run: composer validate --no-check-publish
 
