@@ -1,4 +1,5 @@
 import { Tracker } from "@/types/database/trackers";
+import { apiFetch } from "../apiFetch";
 
 type Collection<T> = {
   member?: T[];
@@ -6,7 +7,7 @@ type Collection<T> = {
 };
 
 export default async function getTrackers(): Promise<Tracker[]> {
-  const res = await fetch("/api/trackers/me", {
+  const res = await apiFetch("/api/trackers/me", {
   method: "GET",
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,

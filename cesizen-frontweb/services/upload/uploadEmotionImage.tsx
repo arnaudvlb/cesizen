@@ -1,3 +1,5 @@
+import { apiFetch } from "../apiFetch";
+
 export async function uploadEmotionImage(
   file: File,
   id: Number,
@@ -5,7 +7,7 @@ export async function uploadEmotionImage(
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(`/api/emotions/${id}/upload`, {
+  const res = await apiFetch(`/api/emotions/${id}/upload`, {
     method: "POST",
     body: formData,
   });

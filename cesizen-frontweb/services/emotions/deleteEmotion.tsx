@@ -1,5 +1,7 @@
+import { apiFetch } from "../apiFetch";
+
 export default async function deleteEmotion(id: number | null): Promise<void> {
-  const res = await fetch(`/api/emotions/${id}`, {
+  const res = await apiFetch(`/api/emotions/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

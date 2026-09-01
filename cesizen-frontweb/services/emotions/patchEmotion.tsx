@@ -1,4 +1,5 @@
 import { Emotion } from "@/types/database/emotions";
+import { apiFetch } from "../apiFetch";
 
 export default async function patchEmotion(
   id: string,
@@ -6,7 +7,7 @@ export default async function patchEmotion(
   description: string,
   emotionGenerale: string,
 ): Promise<Emotion> {
-  const res = await fetch(`/api/emotions/${id}`, {
+  const res = await apiFetch(`/api/emotions/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

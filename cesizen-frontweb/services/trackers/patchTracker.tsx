@@ -1,4 +1,5 @@
 import { Tracker } from "@/types/database/trackers";
+import { apiFetch } from "../apiFetch";
 
 export default async function patchTracker(
   id: string,
@@ -7,7 +8,7 @@ export default async function patchTracker(
   libelle: string,
   description: string | null,
 ): Promise<Tracker> {
-  const res = await fetch(`/api/trackers/${id}`, {
+  const res = await apiFetch(`/api/trackers/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -1,4 +1,5 @@
 import { User } from "@/types/database/users";
+import { apiFetch } from "../apiFetch";
 
 type Collection<T> = {
   member?: T[];
@@ -6,7 +7,7 @@ type Collection<T> = {
 };
 
 export default async function getUtilisateurs(): Promise<User[]> {
-  const res = await fetch("/api/utilisateurs/", {
+  const res = await apiFetch("/api/utilisateurs/", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

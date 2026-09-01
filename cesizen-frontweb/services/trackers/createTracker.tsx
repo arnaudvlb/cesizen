@@ -1,4 +1,5 @@
 import { Tracker } from "@/types/database/trackers";
+import { apiFetch } from "../apiFetch";
 
 export default async function createTracker(
   dateDebut: string,
@@ -6,7 +7,7 @@ export default async function createTracker(
   libelle: string,
   description: string | null,
 ): Promise<Tracker> {
-  const res = await fetch("/api/trackers", {
+  const res = await apiFetch("/api/trackers", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

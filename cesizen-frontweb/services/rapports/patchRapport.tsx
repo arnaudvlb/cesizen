@@ -1,4 +1,5 @@
 import { Rapport } from "@/types/database/rapports";
+import { apiFetch } from "../apiFetch";
 
 export default async function patchRapport(
   id: string,
@@ -7,7 +8,7 @@ export default async function patchRapport(
   dateRapport: string,
   emotionGenerale: string,
 ): Promise<Rapport> {
-  const res = await fetch(`/api/rapports/${id}`, {
+  const res = await apiFetch(`/api/rapports/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

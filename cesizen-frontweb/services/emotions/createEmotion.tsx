@@ -1,11 +1,12 @@
 import { Emotion } from "@/types/database/emotions";
+import { apiFetch } from "../apiFetch";
 
 export default async function createEmotion(
   libelle: string,
   description: string,
   emotionGenerale: string,
 ): Promise<Emotion> {
-  const res = await fetch("/api/emotions", {
+  const res = await apiFetch("/api/emotions", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

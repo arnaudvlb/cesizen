@@ -1,4 +1,5 @@
 import { Role } from "@/types/database/roles";
+import { apiFetch } from "../apiFetch";
 
 type Collection<T> = {
   member?: T[];
@@ -6,7 +7,7 @@ type Collection<T> = {
 };
 
 export default async function getRoles(): Promise<Role[]> {
-  const res = await fetch("/api/roles_utilisateurs", {
+  const res = await apiFetch("/api/roles_utilisateurs", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

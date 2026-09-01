@@ -1,5 +1,7 @@
+import { apiFetch } from "../apiFetch";
+
 export default async function deleteTracker(id: number | null): Promise<void> {
-  const res = await fetch(`/api/trackers/${id}`, {
+  const res = await apiFetch(`/api/trackers/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

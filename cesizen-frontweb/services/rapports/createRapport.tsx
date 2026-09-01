@@ -1,4 +1,5 @@
 import { Rapport } from "@/types/database/rapports";
+import { apiFetch } from "../apiFetch";
 
 export default async function createRapport(
   reponses: string,
@@ -6,7 +7,7 @@ export default async function createRapport(
   dateRapport: string,
   emotionGenerale: string,
 ): Promise<Rapport> {
-  const res = await fetch("/api/rapports", {
+  const res = await apiFetch("/api/rapports", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

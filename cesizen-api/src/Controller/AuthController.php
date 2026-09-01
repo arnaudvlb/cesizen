@@ -87,4 +87,19 @@ class AuthController extends AbstractController
             'message' => 'Inscription réussie'
         ]);
     }
+
+    #[Route('/api/logout', name: 'api_logout', methods: ['POST'])]
+    public function logout(): JsonResponse
+    {
+        $response = new JsonResponse([
+            'message' => 'Déconnexion réussie',
+        ]);
+
+        $response->headers->clearCookie(
+            'JWT',
+            '/',
+        );
+
+        return $response;
+    }
 }

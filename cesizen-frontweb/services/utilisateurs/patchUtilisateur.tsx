@@ -1,4 +1,5 @@
 import { User } from "@/types/database/users";
+import { apiFetch } from "../apiFetch";
 
 export default async function patchUtilisateur(
   id: string,
@@ -8,7 +9,7 @@ export default async function patchUtilisateur(
   role: string | null,
   password: string | null,
 ): Promise<User> {
-  const res = await fetch(`/api/utilisateurs/${id}`, {
+  const res = await apiFetch(`/api/utilisateurs/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

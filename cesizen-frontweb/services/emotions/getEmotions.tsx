@@ -1,4 +1,5 @@
 import { Emotion } from "@/types/database/emotions";
+import { apiFetch } from "../apiFetch";
 
 type Collection<T> = {
   member?: T[];
@@ -6,7 +7,7 @@ type Collection<T> = {
 };
 
 export default async function getEmotions(): Promise<Emotion[]> {
-  const res = await fetch("/api/emotions/");
+  const res = await apiFetch("/api/emotions/");
   if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
   
   const data: Collection<Emotion> = await res.json();
