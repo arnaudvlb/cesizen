@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class AuthController extends AbstractController
 {
@@ -43,9 +44,25 @@ class AuthController extends AbstractController
 
         $token = $jwtManager->create($user);
 
-        return $this->json([
-            'token' => $token
+        $response = $this->json([
+            'message' => 'Connexion réussie'
         ]);
+
+        $response->headers->setCookie(
+            Cookie::create(
+                'JWT',
+                $token,
+                time() + 6000,
+                '/',
+                null,
+                $request->isSecure(), 
+                true,  
+                false,
+                'strict'
+            )
+        );
+
+        return $response;
     }
 
     #[Route('/api/register', methods: ['POST'])]

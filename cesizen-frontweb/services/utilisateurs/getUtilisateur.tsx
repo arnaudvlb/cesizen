@@ -7,7 +7,6 @@ export default async function getUtilisateur(
   const res = await apiFetch(`/api/utilisateurs/${id}`, {
   method: "GET",
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   },
 });

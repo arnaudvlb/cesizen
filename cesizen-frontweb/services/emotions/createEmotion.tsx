@@ -9,7 +9,6 @@ export default async function createEmotion(
   const res = await apiFetch("/api/emotions", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({

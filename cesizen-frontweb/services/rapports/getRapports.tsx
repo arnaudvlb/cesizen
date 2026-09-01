@@ -10,7 +10,6 @@ export default async function getRapports(): Promise<Rapport[]> {
   const res = await apiFetch("/api/rapports/me", {
   method: "GET",
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   },
 });

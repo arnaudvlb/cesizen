@@ -25,8 +25,6 @@ export function useLogin() {
 
       setData(result);
 
-      localStorage.setItem("token", `${result.token}`);
-
       return result;
     } catch (err: any) {
       setError(err?.message ?? "Erreur inconnue");

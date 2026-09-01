@@ -11,7 +11,6 @@ export default async function patchRapport(
   const res = await apiFetch(`/api/rapports/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({

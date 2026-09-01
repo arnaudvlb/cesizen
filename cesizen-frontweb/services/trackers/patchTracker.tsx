@@ -11,7 +11,6 @@ export default async function patchTracker(
   const res = await apiFetch(`/api/trackers/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({

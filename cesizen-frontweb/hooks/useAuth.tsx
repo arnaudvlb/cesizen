@@ -1,30 +1,39 @@
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/services/apiFetch";
 
-function parseJwt(token: string) {
-  try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch {
-    return null;
-  }
+interface User {
+  id: number;
+  email: string;
+  nom: string;
+  prenom: string;
+  roles: string[];
 }
 
 export function useAuth() {
   const [isAuth, setIsAuth] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [userId, setUserId] = useState<number | null>();
+  const [userId, setUserId] = useState<number | null>(null);
 
-  const syncAuth = () => {
-    const token = localStorage.getItem("token");
+  const syncAuth = async () => {
+    try {
+      const response = await apiFetch("/api/me");
 
-    setIsAuth(!!token);
+      if (!response.ok) {
+        setIsAuth(false);
+        setIsAdmin(false);
+        setUserId(null);
+        return;
+      }
 
-    if (token) {
-      const payload = parseJwt(token);
+      const user: User = await response.json();
 
-      setIsAdmin(payload?.roles.includes("ROLE_ADMIN"));
-      setUserId(payload?.id)
-    } else {
+      setIsAuth(true);
+      setIsAdmin(user.roles.includes("ROLE_ADMIN"));
+      setUserId(user.id);
+    } catch {
+      setIsAuth(false);
       setIsAdmin(false);
+      setUserId(null);
     }
   };
 
@@ -41,6 +50,6 @@ export function useAuth() {
   return {
     isAuth,
     isAdmin,
-    userId
+    userId,
   };
 }

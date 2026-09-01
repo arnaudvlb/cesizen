@@ -10,7 +10,6 @@ export default async function getUtilisateurs(): Promise<User[]> {
   const res = await apiFetch("/api/utilisateurs/", {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
     },
   });

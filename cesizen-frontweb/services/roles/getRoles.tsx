@@ -10,7 +10,6 @@ export default async function getRoles(): Promise<Role[]> {
   const res = await apiFetch("/api/roles_utilisateurs", {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
     },
   });

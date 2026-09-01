@@ -12,7 +12,6 @@ export default async function patchUtilisateur(
   const res = await apiFetch(`/api/utilisateurs/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({

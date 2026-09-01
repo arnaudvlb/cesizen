@@ -10,7 +10,6 @@ export default async function patchEmotion(
   const res = await apiFetch(`/api/emotions/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/merge-patch+json",
     },
     body: JSON.stringify({

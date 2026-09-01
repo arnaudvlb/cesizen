@@ -10,7 +10,6 @@ export default async function createRapport(
   const res = await apiFetch("/api/rapports", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({

@@ -7,7 +7,6 @@ export default async function getTracker(
   const res = await apiFetch(`/api/trackers/${id}`, {
   method: "GET",
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   },
 });
