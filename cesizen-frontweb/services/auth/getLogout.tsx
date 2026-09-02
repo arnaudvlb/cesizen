@@ -2,11 +2,11 @@ import { apiFetch } from "../apiFetch";
 
 export async function getLogout(): Promise<boolean> {
   try {
-    const response = await apiFetch("/api/logout", {
+    const res = await apiFetch("/api/logout", {
       method: "POST",
     });
 
-    return response.ok;
+    return res.ok;
   } catch {
     return false;
   }

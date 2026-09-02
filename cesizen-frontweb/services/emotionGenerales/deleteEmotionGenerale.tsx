@@ -4,8 +4,4 @@ export default async function deleteEmotionGenerale(id: number | null): Promise<
   const res = await apiFetch(`/api/emotion_generales/${id}`, {
     method: "DELETE",
   });
-
-  if (!res.ok) {
-    throw new Error(`Erreur API: ${res.status}`);
-  }
 }

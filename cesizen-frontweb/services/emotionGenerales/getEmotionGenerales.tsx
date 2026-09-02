@@ -8,7 +8,6 @@ type Collection<T> = {
 
 export default async function getEmotionGenerales(): Promise<EmotionGenerale[]> {
   const res = await apiFetch("/api/emotion_generales");
-  if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
 
   const data: Collection<EmotionGenerale> = await res.json();
   const items = data.member ?? data["hydra:member"] ?? [];

@@ -13,7 +13,6 @@ export default async function getUtilisateurs(): Promise<User[]> {
       "Content-Type": "application/json",
     },
   });
-  if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
 
   const data: Collection<User> = await res.json();
   const items = data.member ?? data["hydra:member"] ?? [];

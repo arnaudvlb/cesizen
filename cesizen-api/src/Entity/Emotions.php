@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\ApiFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EmotionsRepository::class)]
 #[ApiResource(
@@ -44,10 +45,17 @@ class Emotions
 
     #[ORM\Column(length: 25)]
     #[Groups(['emotion:read'])]
+    #[Assert\NotBlank(
+        message: 'Le libellé est obligatoire.'
+    )]
     private ?string $libelle = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['emotion:read'])]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'La description ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'emotions')]

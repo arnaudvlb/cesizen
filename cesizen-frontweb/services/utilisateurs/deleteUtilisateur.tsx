@@ -4,8 +4,4 @@ export default async function deleteUtilisateur(id: number | null): Promise<void
   const res = await apiFetch(`/api/utilisateurs/${id}`, {
     method: "DELETE",
   });
-
-  if (!res.ok) {
-    throw new Error(`Erreur API: ${res.status}`);
-  }
 }

@@ -13,7 +13,6 @@ export default async function getRoles(): Promise<Role[]> {
       "Content-Type": "application/json",
     },
   });
-  if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
 
   const data: Collection<Role> = await res.json();
   const items = data.member ?? data["hydra:member"] ?? [];

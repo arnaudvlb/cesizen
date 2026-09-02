@@ -8,12 +8,11 @@ type Collection<T> = {
 
 export default async function getTrackers(): Promise<Tracker[]> {
   const res = await apiFetch("/api/trackers/me", {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-  if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   const data: Collection<Tracker> = await res.json();
   const items = data.member ?? data["hydra:member"] ?? [];

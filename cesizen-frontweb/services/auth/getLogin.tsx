@@ -17,13 +17,6 @@ export default async function getLogin(
     body: JSON.stringify({ email, password }),
   });
 
-  if (!res.ok) {
-    if (res.status === 401) {
-      throw new Error("Email ou mot de passe incorrect");
-    }
-    throw new Error(`Erreur API: ${res.status}`);
-  }
-
   const data: LoginData = await res.json();
 
   return data;

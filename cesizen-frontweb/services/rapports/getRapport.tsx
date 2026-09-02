@@ -1,19 +1,13 @@
 import { Rapport } from "@/types/database/rapports";
 import { apiFetch } from "../apiFetch";
 
-export default async function getRapport(
-  id: string
-): Promise<Rapport> {
+export default async function getRapport(id: string): Promise<Rapport> {
   const res = await apiFetch(`/api/rapports/${id}`, {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-  if (!res.ok) {
-    throw new Error(`Erreur API: ${res.status}`);
-  }
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   const data: Rapport = await res.json();
 

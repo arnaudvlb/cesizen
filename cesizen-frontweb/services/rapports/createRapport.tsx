@@ -20,18 +20,6 @@ export default async function createRapport(
     }),
   });
 
-  if (!res.ok) {
-    if (res.status === 400) {
-      throw new Error("Données invalides.");
-    } else if (res.status === 403) {
-      throw new Error("Accès non autorisé.");
-    } else if (res.status === 404) {
-      throw new Error("Ressource introuvable.");
-    } else {
-      throw new Error(`Erreur API: ${res.status}`);
-    }
-  }
-
   const data: Rapport = await res.json();
 
   return data;

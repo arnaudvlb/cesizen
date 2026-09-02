@@ -8,11 +8,12 @@ use App\Repository\RolesUtilisateursRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AuthController extends AbstractController
 {
@@ -23,29 +24,40 @@ class AuthController extends AbstractController
         UserPasswordHasherInterface $hasher,
         JWTTokenManagerInterface $jwtManager
     ): JsonResponse {
-
         $data = json_decode($request->getContent(), true);
 
-        $user = $repo->findOneBy([
-            'email' => $data['email'] ?? ''
-        ]);
-
-        if (!$user) {
+        if (!is_array($data)) {
             return $this->json([
-                'error' => 'Utilisateur introuvable'
-            ], 401);
+                'message' => 'Le corps de la requête est invalide.'
+            ], 400);
         }
 
-        if (!$hasher->isPasswordValid($user, $data['password'] ?? '')) {
+        $email = trim($data['email'] ?? '');
+        $password = $data['password'] ?? '';
+
+        if ($email === '' || $password === '') {
             return $this->json([
-                'error' => 'Mot de passe incorrect'
+                'message' => 'L’adresse e-mail et le mot de passe sont obligatoires.'
+            ], 422);
+        }
+
+        $user = $repo->findOneBy([
+            'email' => $email
+        ]);
+
+        if (
+            !$user ||
+            !$hasher->isPasswordValid($user, $password)
+        ) {
+            return $this->json([
+                'message' => 'Identifiants invalides.'
             ], 401);
         }
 
         $token = $jwtManager->create($user);
 
         $response = $this->json([
-            'message' => 'Connexion réussie'
+            'message' => 'Connexion réussie.'
         ]);
 
         $response->headers->setCookie(
@@ -55,8 +67,8 @@ class AuthController extends AbstractController
                 time() + 6000,
                 '/',
                 null,
-                $request->isSecure(), 
-                true,  
+                $request->isSecure(),
+                true,
                 false,
                 'strict'
             )
@@ -65,56 +77,87 @@ class AuthController extends AbstractController
         return $response;
     }
 
-    #[Route('/api/register', methods: ['POST'])]
+    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
     public function register(
         Request $request,
         EntityManagerInterface $em,
         UserPasswordHasherInterface $hasher,
-        UtilisateursRepository $repo,
-        RolesUtilisateursRepository $roleRepo
+        RolesUtilisateursRepository $roleRepo,
+        ValidatorInterface $validator
     ): JsonResponse {
-
         $data = json_decode($request->getContent(), true);
 
-        $user = new Utilisateurs();
-
-        $emailExisting = $repo->findOneBy(['email' => $data['email']]);
-
-        if ($emailExisting) {
+        if (!is_array($data)) {
             return $this->json([
-                'error' => 'Email déjà utilisé'
+                'message' => 'Le corps de la requête est invalide.'
             ], 400);
         }
 
-        $user->setEmail($data['email']);
-        $user->setNom($data['nom']);
-        $user->setPrenom($data['prenom']);
+        $user = new Utilisateurs();
+
+        $user->setEmail(trim($data['email'] ?? ''));
+        $user->setNom(trim($data['nom'] ?? ''));
+        $user->setPrenom(trim($data['prenom'] ?? ''));
+
+        $password = $data['password'] ?? '';
+
+        $user->setPassword($password);
+
+        $role = $roleRepo->findOneBy([
+            'code' => 'ROLE_USER'
+        ]);
+
+        if (!$role) {
+            return $this->json([
+                'message' => 'Une erreur interne est survenue.'
+            ], 500);
+        }
+
+        $user->setRole($role);
+
+        $errors = $validator->validate($user);
+
+        if (count($errors) > 0) {
+            $violations = [];
+
+            foreach ($errors as $error) {
+                $violations[] = [
+                    'propertyPath' => $error->getPropertyPath(),
+                    'message' => $error->getMessage(),
+                ];
+            }
+
+            return $this->json([
+                'message' => 'Les données saisies sont invalides.',
+                'violations' => $violations,
+            ], 422);
+        }
 
         $user->setPassword(
-            $hasher->hashPassword($user, $data['password'])
+            $hasher->hashPassword(
+                $user,
+                $password
+            )
         );
-
-        $role = $roleRepo->findOneBy(['code' => 'ROLE_USER']);
-        $user->setRole($role);
 
         $em->persist($user);
         $em->flush();
 
         return $this->json([
-            'message' => 'Inscription réussie'
-        ]);
+            'message' => 'Inscription réussie.'
+        ], 201);
     }
 
     #[Route('/api/logout', name: 'api_logout', methods: ['POST'])]
     public function logout(): JsonResponse
     {
         $response = new JsonResponse([
-            'message' => 'Déconnexion réussie',
+            'message' => 'Déconnexion réussie.'
         ]);
 
         $response->headers->clearCookie(
             'JWT',
-            '/',
+            '/'
         );
 
         return $response;

@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: EmotionGeneralesRepository::class)]
@@ -42,14 +43,35 @@ class EmotionGenerales
 
     #[ORM\Column(length: 25)]
     #[Groups(['rapport:read', 'emotion:read'])]
+    #[Assert\NotBlank(
+        message: 'Le libellé est obligatoire.'
+    )]
+    #[Assert\Length(
+        max: 25,
+        maxMessage: 'Le libellé ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $libelle = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['rapport:read', 'emotion:read'])]
+    #[Assert\NotBlank(
+        message: 'La description est obligatoire.'
+    )]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'La description ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $description = null;
 
     #[ORM\Column(length: 7)]
     #[Groups(['rapport:read', 'emotion:read'])]
+    #[Assert\NotBlank(
+        message: 'La couleur est obligatoire.'
+    )]
+    #[Assert\Regex(
+        pattern: '/^#[0-9A-Fa-f]{6}$/',
+        message: 'La couleur doit être au format hexadécimal #RRGGBB.'
+    )]
     private ?string $couleur = null;
 
     /**

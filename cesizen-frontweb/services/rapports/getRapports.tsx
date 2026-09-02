@@ -13,7 +13,6 @@ export default async function getRapports(): Promise<Rapport[]> {
     "Content-Type": "application/json",
   },
 });
-  if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
 
   const data: Collection<Rapport> = await res.json();
   const items = data.member ?? data["hydra:member"] ?? [];

@@ -14,9 +14,5 @@ export async function uploadEmotionImage(
   
   const data = await res.json();
 
-  if (!res.ok) {
-    throw new Error(`Erreur API: ${res.status}`);
-  }
-
   return data.filename;
 }

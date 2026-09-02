@@ -25,10 +25,6 @@ export default async function getRegister(
     }),
   });
 
-  if (!res.ok) {
-    throw new Error(`Erreur API: ${res.status}`);
-  }
-
   const data: RegisterData = await res.json();
 
   return data;
