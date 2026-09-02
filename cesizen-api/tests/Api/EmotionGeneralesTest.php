@@ -3,6 +3,7 @@
 namespace App\Tests\Api;
 
 use App\Tests\Api\ApiTestCaseBase;
+use Symfony\Component\BrowserKit\Cookie;
 
 class EmotionGeneralesTest extends ApiTestCaseBase
 {
@@ -17,7 +18,6 @@ class EmotionGeneralesTest extends ApiTestCaseBase
 
         $this->assertArrayHasKey('@context', $data);
         $this->assertArrayHasKey('member', $data);
-
         $this->assertIsArray($data['member']);
 
         if (!empty($data['member'])) {
@@ -49,9 +49,20 @@ class EmotionGeneralesTest extends ApiTestCaseBase
 
         $token = $jwtManager->create($admin);
 
+        $client->getCookieJar()->set(
+            new Cookie('JWT', $token)
+        );
+
+        $csrfResponse = $client->request('GET', '/api/csrf-token');
+
+        $this->assertResponseIsSuccessful();
+
+        $csrfData = $csrfResponse->toArray();
+        $csrfToken = $csrfData['token'];
+
         $response = $client->request('POST', '/api/emotion_generales', [
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,
+                'csrf-token' => $csrfToken,
                 'Accept' => 'application/ld+json',
                 'Content-Type' => 'application/ld+json',
             ],
@@ -85,7 +96,7 @@ class EmotionGeneralesTest extends ApiTestCaseBase
 
         $client->request('PATCH', '/api/emotion_generales/' . $id, [
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,
+                'csrf-token' => $csrfToken,
                 'Accept' => 'application/ld+json',
                 'Content-Type' => 'application/merge-patch+json',
             ],
@@ -100,13 +111,12 @@ class EmotionGeneralesTest extends ApiTestCaseBase
 
         $client->request('DELETE', '/api/emotion_generales/' . $id, [
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,
+                'csrf-token' => $csrfToken,
                 'Accept' => 'application/ld+json',
             ],
         ]);
 
         $this->assertResponseIsSuccessful();
-
 
         $em = $container->get('doctrine')->getManager();
 

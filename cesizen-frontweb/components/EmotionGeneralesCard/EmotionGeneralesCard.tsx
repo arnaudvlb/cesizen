@@ -19,7 +19,7 @@ export default function EmotionGeneralesCard({
         <article key={emotion.id} className={styles.emotionCard}>
           <Link href={`/emotion/${emotion.id}`} className={styles.emotionLink}>
             <img
-              src={`http://localhost:8000${emotion.imageUrl}`}
+              src={`${emotion.imageUrl}`}
               alt={emotion.libelle}
             />
             <span>{emotion.libelle}</span>
