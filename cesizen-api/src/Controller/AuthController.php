@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 
 class AuthController extends AbstractController
 {
@@ -22,7 +23,8 @@ class AuthController extends AbstractController
         Request $request,
         UtilisateursRepository $repo,
         UserPasswordHasherInterface $hasher,
-        JWTTokenManagerInterface $jwtManager
+        JWTTokenManagerInterface $jwtManager,
+        RateLimiterFactory $loginLimiter
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
@@ -33,6 +35,22 @@ class AuthController extends AbstractController
         }
 
         $email = trim($data['email'] ?? '');
+
+        $key = sprintf(
+            '%s_%s',
+            $request->getClientIp() ?? 'unknown',
+            $email
+        );
+
+        $limiter = $loginLimiter->create($key);
+        $limit = $limiter->consume(1);
+
+        if (!$limit->isAccepted()) {
+            return $this->json([
+                'message' => 'Trop de tentatives de connexion. Veuillez réessayer plus tard.'
+            ], 429);
+        }
+
         $password = $data['password'] ?? '';
 
         if ($email === '' || $password === '') {
