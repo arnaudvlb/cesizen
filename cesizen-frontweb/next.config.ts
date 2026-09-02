@@ -40,6 +40,10 @@ const nextConfig: import("next").NextConfig = {
             value: "camera=(), microphone=(), geolocation=()",
           },
           {
+            key: "Cross-Origin-Embedder-Policy",
+            value: "require-corp",
+          },
+          {
             key: "Cross-Origin-Opener-Policy",
             value: "same-origin",
           },
