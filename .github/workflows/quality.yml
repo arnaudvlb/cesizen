@@ -21,6 +21,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          extensions: pdo_mysql
+          coverage: pcov
+
+      - name: Install API dependencies
+        working-directory: cesizen-api
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run PHPUnit with coverage
+        working-directory: cesizen-api
+        run: php bin/phpunit --coverage-clover=coverage.xml
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v7
         env:
