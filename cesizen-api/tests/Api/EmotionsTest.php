@@ -3,6 +3,7 @@
 namespace App\Tests\Api;
 
 use App\Tests\Api\ApiTestCaseBase;
+use Symfony\Component\BrowserKit\Cookie;
 
 class EmotionsTest extends ApiTestCaseBase
 {
@@ -17,7 +18,6 @@ class EmotionsTest extends ApiTestCaseBase
 
         $this->assertArrayHasKey('@context', $data);
         $this->assertArrayHasKey('member', $data);
-
         $this->assertIsArray($data['member']);
 
         if (!empty($data['member'])) {
@@ -29,6 +29,7 @@ class EmotionsTest extends ApiTestCaseBase
     public function testGetEmotionsByEmotionGenerale(): void
     {
         $client = static::createClient();
+
         $response = $client->request(
             'GET',
             '/api/emotions?emotionGenerale.id=1'
@@ -43,7 +44,6 @@ class EmotionsTest extends ApiTestCaseBase
 
         if (!empty($data['member'])) {
             foreach ($data['member'] as $emotion) {
-
                 $this->assertArrayHasKey(
                     'emotionGenerale',
                     $emotion
@@ -63,7 +63,9 @@ class EmotionsTest extends ApiTestCaseBase
         $container = static::getContainer();
 
         $userRepository = $container->get(\App\Repository\UtilisateursRepository::class);
-        $emotionRepository = $container->get(\App\Repository\EmotionsRepository::class);
+
+        $emotionGeneraleRepository = $container->get(\App\Repository\EmotionGeneralesRepository::class);
+
         $jwtManager = $container->get(\Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface::class);
 
         $admin = $userRepository->createQueryBuilder('u')
@@ -79,20 +81,47 @@ class EmotionsTest extends ApiTestCaseBase
             'TEST INIT ECHOUE: Aucun administrateur n\'a pas été trouvé en base'
         );
 
+        $emotionGenerale = $emotionGeneraleRepository->findOneBy([]);
+
+        $this->assertNotNull(
+            $emotionGenerale,
+            'TEST INIT ECHOUE: Aucune émotion générale n\'a été trouvée en base'
+        );
+
         $token = $jwtManager->create($admin);
 
-        $response = $client->request('POST', '/api/emotions', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-                'Accept' => 'application/ld+json',
-                'Content-Type' => 'application/ld+json',
-            ],
-            'json' => [
-                'libelle' => 'Test Emotion',
-                'description' => 'Description test',
-                'emotionGenerale' => '/api/emotion_generales/' . $emotionRepository->findOneBy([])->getId(),
-            ],
-        ]);
+        $client->getCookieJar()->set(
+            new Cookie('JWT', $token)
+        );
+
+        $csrfResponse = $client->request(
+            'GET',
+            '/api/csrf-token'
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        $csrfData = $csrfResponse->toArray();
+        $csrfToken = $csrfData['token'];
+
+        $response = $client->request(
+            'POST',
+            '/api/emotions',
+            [
+                'headers' => [
+                    'csrf-token' => $csrfToken,
+                    'Accept' => 'application/ld+json',
+                    'Content-Type' => 'application/ld+json',
+                ],
+                'json' => [
+                    'libelle' => 'Test Emotion',
+                    'description' => 'Description test',
+                    'emotionGenerale' =>
+                    '/api/emotion_generales/' .
+                        $emotionGenerale->getId(),
+                ],
+            ]
+        );
 
         $this->assertResponseIsSuccessful(
             'CREATE ECHOUE: impossible de créer une emotion'
@@ -115,34 +144,43 @@ class EmotionsTest extends ApiTestCaseBase
             'CREATE ECHOUE: ID invalide'
         );
 
-        $client->request('PATCH', '/api/emotions/' . $id, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-                'Accept' => 'application/ld+json',
-                'Content-Type' => 'application/merge-patch+json',
-            ],
-            'json' => [
-                'libelle' => 'Emotion Modifiée',
-                'description' => 'Description modifiée',
-            ],
-        ]);
+        $client->request(
+            'PATCH',
+            '/api/emotions/' . $id,
+            [
+                'headers' => [
+                    'csrf-token' => $csrfToken,
+                    'Accept' => 'application/ld+json',
+                    'Content-Type' => 'application/merge-patch+json',
+                ],
+                'json' => [
+                    'libelle' => 'Emotion Modifiée',
+                    'description' => 'Description modifiée',
+                ],
+            ]
+        );
 
         $this->assertResponseIsSuccessful();
 
-        $client->request('DELETE', '/api/emotions/' . $id, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-                'Accept' => 'application/ld+json',
-            ],
-        ]);
+        $client->request(
+            'DELETE',
+            '/api/emotions/' . $id,
+            [
+                'headers' => [
+                    'csrf-token' => $csrfToken,
+                    'Accept' => 'application/ld+json',
+                ],
+            ]
+        );
 
         $this->assertResponseIsSuccessful();
 
-
-        $em = $container->get('doctrine')->getManager();
+        $em = $container
+            ->get('doctrine')
+            ->getManager();
 
         $deletedEmotion = $em
-            ->getRepository(\App\Entity\EmotionGenerales::class)
+            ->getRepository(\App\Entity\Emotions::class)
             ->find($id);
 
         $this->assertNull(
