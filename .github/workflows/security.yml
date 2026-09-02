@@ -1,0 +1,63 @@
+name: Security Audit
+
+on:
+  push:
+    branches:
+      - "**"
+
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  composer-audit:
+    name: Composer Security Audit
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: cesizen-api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Validate Composer
+        run: composer validate --no-check-publish
+
+      - name: Audit Composer dependencies
+        run: composer audit
+
+  npm-audit:
+    name: NPM Security Audit
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: cesizen-frontweb
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: cesizen-frontweb/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Audit NPM dependencies
+        run: npm audit --audit-level=high
