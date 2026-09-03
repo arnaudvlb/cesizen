@@ -1,0 +1,126 @@
+name: CI Issue Automation
+
+on:
+  workflow_run:
+    workflows:
+      - "CI Cesizen"
+      - "Security Audit"
+      - "Code Quality"
+    types:
+      - completed
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  manage-ci-issue:
+    name: Manage CI failure issue
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create, update or close CI issue
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const workflow = context.payload.workflow_run;
+
+            const workflowName = workflow.name;
+            const conclusion = workflow.conclusion;
+            const branch = workflow.head_branch;
+            const sha = workflow.head_sha;
+            const runUrl = workflow.html_url;
+
+            const marker = `<!-- ci-failure:${workflowName}:${branch} -->`;
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: "ci-failure",
+              per_page: 100
+            });
+
+            const existingIssue = issues.find(issue =>
+              issue.body?.includes(marker)
+            );
+
+            if (conclusion === "success") {
+              if (existingIssue) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existingIssue.number,
+                  body: [
+                    "✅ Le workflow est de nouveau opérationnel.",
+                    "",
+                    `**Workflow :** ${workflowName}`,
+                    `**Branche :** ${branch}`,
+                    `**Commit :** \`${sha.substring(0, 7)}\``,
+                    `**Run :** ${runUrl}`
+                  ].join("\n")
+                });
+
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existingIssue.number,
+                  state: "closed"
+                });
+              }
+
+              return;
+            }
+
+            const failureBody = [
+              marker,
+              "## Échec automatique détecté",
+              "",
+              `Le workflow **${workflowName}** a échoué sur la branche **${branch}**.`,
+              "",
+              `**Branche :** ${branch}`,
+              `**Commit :** \`${sha.substring(0, 7)}\``,
+              `**Résultat :** ${conclusion}`,
+              `**Run GitHub Actions :** ${runUrl}`,
+              "",
+              "### Action corrective",
+              "",
+              "- [ ] Analyser les logs du workflow",
+              "- [ ] Identifier la cause de l'échec",
+              "- [ ] Appliquer le correctif",
+              "- [ ] Vérifier le retour au vert de la pipeline",
+              "",
+              "_Issue créée automatiquement par GitHub Actions._"
+            ].join("\n");
+
+            if (existingIssue) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: [
+                  "❌ Un nouvel échec a été détecté sur le même workflow et la même branche.",
+                  "",
+                  `**Workflow :** ${workflowName}`,
+                  `**Branche :** ${branch}`,
+                  `**Commit :** \`${sha.substring(0, 7)}\``,
+                  `**Résultat :** ${conclusion}`,
+                  `**Run :** ${runUrl}`
+                ].join("\n")
+              });
+
+              return;
+            }
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[CI] Échec de ${workflowName} sur ${branch}`,
+              body: failureBody,
+              labels: [
+                "bug",
+                "devops",
+                "ci-failure",
+                "priority:high"
+              ]
+            });
