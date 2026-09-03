@@ -146,11 +146,6 @@ jobs:
           docker compose --env-file .env.docker exec -T api \
             php bin/console doctrine:migrations:migrate --no-interaction
 
-      - name: Load fixtures
-        run: |
-          docker compose --env-file .env.docker exec -T api \
-            php bin/console doctrine:fixtures:load --no-interaction
-
       - name: Check API endpoint
         run: curl --fail http://localhost:8000/api/emotion_generales
 
