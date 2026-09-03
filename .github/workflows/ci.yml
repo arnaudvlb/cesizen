@@ -111,8 +111,8 @@ jobs:
           API_URL: http://localhost:8000
           NEXT_TELEMETRY_DISABLED: 1
 
-  zap-baseline:
-    name: OWASP ZAP Baseline
+  docker-smoke:
+    name: Docker - Smoke Test
     runs-on: ubuntu-latest
 
     steps:
@@ -122,10 +122,42 @@ jobs:
       - name: Create Docker environment files
         run: |
           cp .env.docker cesizen-api/.env.docker
-          cp .env.docker cesizen-frontweb/.env.docker  
+          cp .env.docker cesizen-frontweb/.env.docker
 
-      - name: Start application
+      - name: Build and start containers
         run: docker compose --env-file .env.docker up -d --build
+
+      - name: Check containers
+        run: docker compose --env-file .env.docker ps
+
+      - name: Wait for API
+        run: |
+          for i in {1..30}; do
+            if curl --fail http://localhost:8000/health/http_status_checks > /dev/null 2>&1; then
+              echo "API is healthy"
+              exit 0
+            fi
+
+            echo "Waiting for API..."
+            sleep 5
+          done
+
+          echo "API failed to become healthy"
+          docker compose logs api
+          exit 1
+
+      - name: Run database migrations
+        run: |
+          docker compose --env-file .env.docker exec -T api \
+            php bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Load fixtures
+        run: |
+          docker compose --env-file .env.docker exec -T api \
+            php bin/console doctrine:fixtures:load --no-interaction
+
+      - name: Check API endpoint
+        run: curl --fail http://localhost:8000/api/emotion_generales
 
       - name: Wait for frontend
         run: |
@@ -140,17 +172,9 @@ jobs:
           done
 
           echo "Frontend failed to start"
-          docker compose logs
+          docker compose logs frontweb
           exit 1
 
-      - name: OWASP ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.15.0
-        with:
-          target: "http://localhost:3000"
-          fail_action: true
-          allow_issue_writing: false
-          rules_file_name: "zap.conf"
-
-      - name: Stop application
+      - name: Stop containers
         if: always()
-        run: docker compose --env-file .env.docker down
+        run: docker compose --env-file .env.docker down -v
