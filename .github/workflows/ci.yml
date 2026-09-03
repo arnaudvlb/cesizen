@@ -119,11 +119,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create Docker environment files
-        run: |
-          cp .env.docker cesizen-api/.env.docker
-          cp .env.docker cesizen-frontweb/.env.docker
-
       - name: Build and start containers
         run: docker compose --env-file .env.docker up -d --build
 
