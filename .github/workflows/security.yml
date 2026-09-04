@@ -1,0 +1,102 @@
+name: Security Audit
+
+on:
+  push:
+    branches:
+      - "**"
+
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  composer-audit:
+    name: Composer Security Audit
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: cesizen-api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Validate Composer
+        run: composer validate --no-check-publish
+
+      - name: Audit Composer dependencies
+        run: composer audit
+
+  npm-audit:
+    name: NPM Security Audit
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: cesizen-frontweb
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: cesizen-frontweb/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Audit NPM dependencies
+        run: npm audit --audit-level=high
+
+  zap-baseline:
+    name: OWASP ZAP Baseline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4  
+
+      - name: Start application
+        run: docker compose --env-file .env.docker up -d --build
+
+      - name: Wait for frontend
+        run: |
+          for i in {1..30}; do
+            if curl --fail http://localhost:3000 > /dev/null 2>&1; then
+              echo "Frontend is ready"
+              exit 0
+            fi
+
+            echo "Waiting for frontend..."
+            sleep 5
+          done
+
+          echo "Frontend failed to start"
+          docker compose logs
+          exit 1
+
+      - name: OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          target: "http://localhost:3000"
+          fail_action: true
+          allow_issue_writing: false
+          rules_file_name: "zap.conf"
+
+      - name: Stop application
+        if: always()
+        run: docker compose --env-file .env.docker down

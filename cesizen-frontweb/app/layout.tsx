@@ -1,7 +1,11 @@
+import { connection } from "next/server";
 import Header from "../components/Header/Header";
 import "./globals.css";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  await connection();
   return (
     <html lang="fr">
       <body>

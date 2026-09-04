@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\Patch;
 use App\State\RapportsMeProvider;
 use App\State\AuthUserProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RapportsRepository::class)]
 #[ApiResource(
@@ -44,18 +45,35 @@ class Rapports
 
     #[ORM\Column(length: 50)]
     #[Groups(['rapport:read', 'rapport:write'])]
+    #[Assert\NotBlank(
+        message: 'Les réponses sont obligatoire.'
+    )]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'Les réponses ne sont pas au format valide.'
+    )]
     private ?string $reponses = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['rapport:read', 'rapport:write'])]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le commentaire ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $commentaire = null;
 
     #[ORM\Column(type: "datetime")]
     #[Groups(['rapport:read', 'rapport:write'])]
+    #[Assert\NotNull(
+        message: 'La date du rapport est obligatoire.'
+    )]
     private ?\DateTimeInterface $dateRapport = null;
 
     #[ORM\ManyToOne(inversedBy: 'rapports')]
     #[Groups(['rapport:read', 'rapport:write'])]
+    #[Assert\NotNull(
+        message: 'Une émotion générale doit être sélectionnée.'
+    )]
     private ?EmotionGenerales $emotionGenerale = null;
 
     #[ORM\ManyToOne(inversedBy: 'rapports')]

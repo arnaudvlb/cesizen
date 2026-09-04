@@ -13,7 +13,7 @@ export function useDeleteRapport(id: number) {
       await deleteRapportService(id);
       return true;
     } catch (err: any) {
-      setError(err?.message ?? "Erreur inconnue");
+      setError(err instanceof Error ? err.message : "Une erreur est survenue.");
       return false;
     } finally {
       setLoading(false);

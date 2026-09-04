@@ -17,7 +17,7 @@ export default function RapportCard({ rapports }: RapportsCardProps) {
           >
             <img
               className={styles.rapportImage}
-              src={`http://localhost:8000${rapport.emotionGenerale.imageUrl}`}
+              src={`${rapport.emotionGenerale.imageUrl}`}
               alt={rapport.emotionGenerale.libelle}
             />
 

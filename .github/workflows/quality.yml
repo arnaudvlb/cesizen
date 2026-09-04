@@ -1,0 +1,87 @@
+name: Code Quality
+
+on:
+  push:
+    branches:
+      - "**"
+
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  sonar:
+    name: SonarQube Analysis
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+
+        env:
+          MYSQL_DATABASE: cesizen_test
+          MYSQL_USER: cesizen
+          MYSQL_PASSWORD: cesizen
+          MYSQL_ROOT_PASSWORD: root
+
+        ports:
+          - 3306:3306
+
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -ucesizen -pcesizen --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      APP_ENV: test
+      APP_SECRET: ci_secret
+      KERNEL_CLASS: App\Kernel
+
+      DATABASE_URL: "mysql://cesizen:cesizen@127.0.0.1:3306/cesizen?serverVersion=8.4&charset=utf8mb4"
+
+      DEFAULT_URI: "http://localhost:3000"
+      CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
+
+      JWT_SECRET_KEY: "%kernel.project_dir%/config/jwt/private.pem"
+      JWT_PUBLIC_KEY: "%kernel.project_dir%/config/jwt/public.pem"
+      JWT_PASSPHRASE: "cesizen_ci"    
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          extensions: pdo_mysql
+          coverage: pcov
+
+      - name: Install API dependencies
+        working-directory: cesizen-api
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Generate JWT keys
+        working-directory: cesizen-api
+        run: php bin/console lexik:jwt:generate-keypair --skip-if-exists
+
+      - name: Run database migrations
+        working-directory: cesizen-api
+        run: php bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Load fixtures
+        working-directory: cesizen-api
+        run: php bin/console doctrine:fixtures:load --env=test --no-interaction
+
+      - name: Run PHPUnit with coverage
+        working-directory: cesizen-api
+        run: php bin/phpunit --coverage-clover=coverage.xml
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

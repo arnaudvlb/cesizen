@@ -2,11 +2,15 @@
 framework:
     secret: '%env(APP_SECRET)%'
 
-    # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    csrf_protection:
+        stateless_token_ids:
+            - submit
+        check_header: true
+        cookie_name: csrf-token
 
-    #esi: true
-    #fragments: true
+    session: true
+    
+    assets: true
 
 when@test:
     framework:

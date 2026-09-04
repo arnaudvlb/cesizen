@@ -29,7 +29,7 @@ class EmotionUploadController extends AbstractController
         $targetDir = $this->getParameter('kernel.project_dir') . '/public/uploads/emotions';
 
         if (!is_dir($targetDir)) {
-            mkdir($targetDir, 0777, true);
+            mkdir($targetDir, 0750, true);
         }
 
         $fileName = $id . '.png';

@@ -31,7 +31,7 @@ export function usePatchTracker(id: string) {
 
       return result;
     } catch (err: any) {
-      setError(err?.message ?? "Erreur inconnue");
+      setError(err instanceof Error ? err.message : "Une erreur est survenue.");
       return null;
     } finally {
       setLoading(false);

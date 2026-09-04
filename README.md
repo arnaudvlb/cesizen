@@ -1,72 +1,315 @@
-<h1>Projet CESIZEN</h1>
+# Projet CESIZEN
 
-<h2>Guide d’installation</h2>
+CESIZEN est une application de bien-être permettant notamment le suivi émotionnel des utilisateurs et la consultation de ressources.
 
-<h3>Prérequis pour l’importation du projet</h3>
+Le projet est composé de trois modules :
 
-● Node.js (version 20.xx recommandée)
-● PHP (>= 8.5.3)
-● Composer
-● XAMPP
-● Git
+* **API** : Symfony / API Platform
+* **Front Web** : Next.js / TypeScript
+* **Application mobile** : React Native / Expo
 
-<h3>Récupération du repository</h3>
+## Architecture du projet
 
-A partir de cette partie, les commandes données seront à exécuter dans le terminal en
-partant du dossier d’installation.
-● git clone https://github.com/arnaudvlb/cesizen.git
-● cd ./cesizen/
+```text
+cesizen/
+├── cesizen-api/          # API Symfony / API Platform
+├── cesizen-frontweb/     # Application Web Next.js
+├── cesizen-frontmobile/  # Application mobile Expo
+├── .github/workflows/    # Pipelines GitHub Actions
+├── compose.yaml          # Orchestration Docker
+└── .env.docker           # Configuration Docker Compose
+```
 
-<h3>Installation des dépendances</h3>
+---
 
-A la suite des commandes précédentes:
+# Installation avec Docker
 
-<h4>Back-end:</h4>
+L'utilisation de Docker est la méthode recommandée pour lancer l'API et le Front Web.
 
-● cd .\cesizen-api\
-● composer install
-● php bin/console doctrine:database:create
-● php bin/console doctrine:database:create --env=test
-● php bin/console doctrine:migrations:migrate
-● php bin/console doctrine:migrations:migrate --env=test
-● php bin/console doctrine:fixtures:load
-● php bin/console doctrine:fixtures:load --env=test
-● php bin/console lexik:jwt:generate-keypair
+L'application mobile n'est pas intégrée à la stack Docker et doit être lancée séparément avec Expo.
 
-<h4>Front-end:</h4>
+## Prérequis
 
-● cd ..\cesizen-frontweb\
-● npm install
+* Git
+* Docker
+* Docker Compose
 
-<h4>Front-end mobile:</h4>
+## Récupération du projet
 
-● cd ..\cesizen-frontmobile\
-● npm install
-● Aller dans “expo.config.ts” et changer dans API_URL, changer l’ip par la vôtre.
+```bash
+git clone https://github.com/arnaudvlb/cesizen.git
+cd cesizen
+```
 
-<h3>Lancements des modules</h3>
+## Configuration
 
-<h4>Back-end:</h4>
+La stack Docker utilise les fichiers d'environnement suivants :
 
-Dans le terminal du dossier cesizen-api:
+```text
+.env.docker
+cesizen-api/.env.docker
+cesizen-frontweb/.env.docker
+```
 
-● symfony serve --allow-all-ip
-Puis cliquez sur l’url présenté par le terminal et assurez vous que votre XAMPP est démarré
-avec le module Apache et MySQL démarrés.
+Ils contiennent les paramètres nécessaires au fonctionnement de l'environnement Docker local.
 
-<h4>Front-end:</h4>
+Aucun secret de production ne doit être stocké dans ces fichiers.
 
-Dans le terminal du dossier cesizen-frontweb:
+## Construction et démarrage
 
-● npm run dev
-Puis cliquez sur l’url présenté par le terminal
+Depuis la racine du projet :
 
-<h4>Front-end mobile:</h4>
+```bash
+docker compose --env-file .env.docker up -d --build
+```
 
-Dans le terminal du dossier cesizen-frontmobile:
+Docker construit et démarre les services suivants :
 
-● npx expo start
-Installez l’application Expo Go sur votre téléphone et scannez le QR code présenté par le
-terminal.
+| Service    | Description                | Port |
+| ---------- | -------------------------- | ---: |
+| `database` | MySQL 8.4                  | 3306 |
+| `api`      | API Symfony / API Platform | 8000 |
+| `frontweb` | Application Next.js        | 3000 |
 
+L'état des conteneurs peut être vérifié avec :
 
+```bash
+docker compose --env-file .env.docker ps
+```
+
+## Initialisation de la base de données
+
+Lors de la première installation, les migrations doivent être exécutées :
+
+```bash
+docker compose --env-file .env.docker exec api php bin/console doctrine:migrations:migrate --no-interaction
+```
+
+Les fixtures doivent ensuite être chargées :
+
+```bash
+docker compose --env-file .env.docker exec api php bin/console doctrine:fixtures:load --no-interaction
+```
+
+Les fixtures sont nécessaires à l'initialisation de l'application. Elles permettent notamment de créer les rôles utilisateurs indispensables à la création et à la gestion des comptes.
+
+## Accès aux applications
+
+Front Web :
+
+```text
+http://localhost:3000
+```
+
+API :
+
+```text
+http://localhost:8000
+```
+
+## Arrêt de l'application
+
+Pour arrêter les conteneurs :
+
+```bash
+docker compose --env-file .env.docker down
+```
+
+Pour arrêter les conteneurs et supprimer les volumes :
+
+```bash
+docker compose --env-file .env.docker down -v
+```
+
+> Attention : l'option `-v` supprime également les données stockées dans le volume de la base de données.
+
+## Consultation des logs
+
+Tous les services :
+
+```bash
+docker compose --env-file .env.docker logs
+```
+
+API :
+
+```bash
+docker compose --env-file .env.docker logs api
+```
+
+Front Web :
+
+```bash
+docker compose --env-file .env.docker logs frontweb
+```
+
+Base de données :
+
+```bash
+docker compose --env-file .env.docker logs database
+```
+
+---
+
+# Installation manuelle
+
+L'installation manuelle peut être utilisée pour le développement sans Docker.
+
+## Prérequis
+
+* Node.js
+* PHP >= 8.5
+* Composer
+* MySQL
+* Symfony CLI
+* Git
+
+Une installation locale telle que XAMPP peut être utilisée pour fournir MySQL.
+
+## Back-end
+
+Depuis la racine du projet :
+
+```bash
+cd cesizen-api
+composer install
+```
+
+Créer les bases de données :
+
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:database:create --env=test
+```
+
+Exécuter les migrations :
+
+```bash
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:migrations:migrate --env=test
+```
+
+Charger les données :
+
+```bash
+php bin/console doctrine:fixtures:load
+php bin/console doctrine:fixtures:load --env=test
+```
+
+Générer les clés JWT :
+
+```bash
+php bin/console lexik:jwt:generate-keypair
+```
+
+Lancer l'API :
+
+```bash
+symfony serve --allow-all-ip
+```
+
+## Front Web
+
+Depuis la racine du projet :
+
+```bash
+cd cesizen-frontweb
+npm install
+npm run dev
+```
+
+Le Front Web est accessible par défaut sur :
+
+```text
+http://localhost:3000
+```
+
+## Application mobile
+
+Depuis la racine du projet :
+
+```bash
+cd cesizen-frontmobile
+npm install
+npx expo start
+```
+
+Configurer l'URL de l'API utilisée par l'application mobile afin qu'elle corresponde à l'adresse IP de la machine hébergeant l'API.
+
+L'application peut ensuite être lancée avec Expo Go en scannant le QR code affiché dans le terminal.
+
+---
+
+# Tests
+
+## Tests API
+
+Depuis `cesizen-api` :
+
+```bash
+php bin/phpunit
+```
+
+Les tests utilisent l'environnement `test` et une base de données dédiée.
+
+## Build Front Web
+
+Depuis `cesizen-frontweb` :
+
+```bash
+npm run build
+```
+
+---
+
+# Intégration continue et qualité
+
+Le projet utilise GitHub Actions afin d'automatiser les contrôles réalisés sur le code.
+
+La chaîne mise en place comprend notamment :
+
+* l'installation des dépendances ;
+* l'exécution des migrations et fixtures de l'environnement de test ;
+* l'exécution des tests PHPUnit ;
+* la validation du build Next.js ;
+* un smoke test de la stack Docker ;
+* l'analyse de la qualité du code avec SonarQube Cloud ;
+* le contrôle des dépendances ;
+* une analyse de sécurité dynamique avec OWASP ZAP.
+
+Le smoke test Docker vérifie notamment que les images peuvent être construites, que les différents services démarrent correctement et que l'API et le Front Web sont accessibles.
+
+Les branches principales sont protégées afin que les modifications soient intégrées par Pull Request et validées par les contrôles configurés.
+
+---
+
+# Gestion des corrections et évolutions
+
+Le suivi des anomalies et des évolutions du projet est réalisé avec GitHub Issues.
+
+Les tickets peuvent être classifiés selon plusieurs dimensions :
+
+* leur **type** : bug, évolution ou documentation ;
+* leur **périmètre** : API, Front Web, Mobile ou DevOps ;
+* leur **priorité** : haute, moyenne ou faible.
+
+La chaîne CI est également reliée au système de ticketing. Une anomalie détectée par les workflows surveillés peut générer automatiquement un ticket correctif contenant les informations nécessaires à son analyse.
+
+Les échecs ultérieurs du même workflow sur la même branche sont regroupés dans le même ticket afin d'éviter la création de doublons. Lorsque le workflow concerné repasse au vert sur cette branche, le ticket peut être automatiquement clôturé.
+
+---
+
+# Technologies principales
+
+| Domaine                | Technologies                    |
+| ---------------------- | ------------------------------- |
+| API                    | Symfony, API Platform, Doctrine |
+| Web                    | Next.js, React, TypeScript      |
+| Mobile                 | React Native, Expo              |
+| Base de données        | MySQL                           |
+| Conteneurisation       | Docker, Docker Compose          |
+| CI                     | GitHub Actions                  |
+| Tests                  | PHPUnit                         |
+| Qualité                | SonarQube Cloud                 |
+| Sécurité               | OWASP ZAP                       |
+| Versioning / Ticketing | GitHub                          |

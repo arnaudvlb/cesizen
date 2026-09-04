@@ -15,8 +15,14 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 use App\State\UserPasswordProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
+#[UniqueEntity(
+    fields: ['email'],
+    message: 'Cette adresse e-mail est déjà utilisée.'
+)]
 #[ApiResource(
     normalizationContext: ['groups' => ['utilisateur:read', 'rapport:read']],
     operations: [
@@ -39,17 +45,48 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 50)]
     #[Groups(['utilisateur:read'])]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire.')]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private string $nom;
 
     #[ORM\Column(length: 30)]
     #[Groups(['utilisateur:read'])]
+    #[Assert\NotBlank(message: 'Le prénom est obligatoire.')]
+    #[Assert\Length(
+        max: 30,
+        maxMessage: 'Le prénom ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private string $prenom;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['rapport:read', 'utilisateur:read'])]
+    #[Assert\NotBlank(message: 'L’adresse e-mail est obligatoire.')]
+    #[Assert\Email(message: 'L’adresse e-mail n’est pas valide.')]
+    #[Assert\Length(
+        max: 180,
+        maxMessage: 'L’adresse e-mail ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private string $email;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(
+        message: 'Le mot de passe est obligatoire.',
+        groups: ['Default']
+    )]
+    #[Assert\Length(
+        min: 8,
+        max: 255,
+        minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le mot de passe ne peut pas dépasser {{ limit }} caractères.'
+    )]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/',
+        message: 'Le mot de passe doit contenir une majuscule, une minuscule, un chiffre et un caractère spécial.',
+        groups: ['Default']
+    )]
     private string $motDePasse;
 
     #[ORM\Column(type: "datetime")]

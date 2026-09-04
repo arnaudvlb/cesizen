@@ -13,6 +13,8 @@ use ApiPlatform\Metadata\Patch;
 use App\State\TrackersMeProvider;
 use App\State\AuthUserProcessor;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: TrackersRepository::class)]
 #[ApiResource(
@@ -30,9 +32,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             processor: AuthUserProcessor::class,
         ),
         new Delete(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
-        new Patch(security: "is_granted('IS_AUTHENTICATED_FULLY')",
-            processor: AuthUserProcessor::class,)
-    ])]
+        new Patch(
+            security: "is_granted('IS_AUTHENTICATED_FULLY')",
+            processor: AuthUserProcessor::class,
+        )
+    ]
+)]
 class Trackers
 {
     #[ORM\Id]
@@ -43,24 +48,59 @@ class Trackers
 
     #[ORM\Column]
     #[Groups(['tracker:read', 'tracker:write'])]
+    #[Assert\NotNull(
+        message: 'La date de début est obligatoire.'
+    )]
     private ?\DateTime $dateDebut = null;
 
     #[ORM\Column]
     #[Groups(['tracker:read', 'tracker:write'])]
+    #[Assert\NotNull(
+        message: 'La date de fin est obligatoire.'
+    )]
     private ?\DateTime $dateFin = null;
 
     #[ORM\Column(length: 50)]
     #[Groups(['tracker:read', 'tracker:write'])]
+    #[Assert\NotBlank(
+        message: 'Le libellé est obligatoire.'
+    )]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'Le libellé ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $libelle = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['tracker:read', 'tracker:write'])]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'La description ne peut pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'trackers')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['tracker:read'])]
     private ?Utilisateurs $utilisateur = null;
+
+    #[Assert\Callback]
+    public function validateDates(
+        ExecutionContextInterface $context
+    ): void {
+        if (
+            $this->dateDebut !== null &&
+            $this->dateFin !== null &&
+            $this->dateFin < $this->dateDebut
+        ) {
+            $context
+                ->buildViolation(
+                    'La date de fin doit être postérieure ou égale à la date de début.'
+                )
+                ->atPath('dateFin')
+                ->addViolation();
+        }
+    }
 
     public function getId(): ?int
     {
