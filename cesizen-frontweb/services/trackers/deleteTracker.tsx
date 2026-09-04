@@ -1,7 +1,7 @@
 import { apiFetch } from "../apiFetch";
 
 export default async function deleteTracker(id: number | null): Promise<void> {
-  const res = await apiFetch(`/api/trackers/${id}`, {
+  await apiFetch(`/api/trackers/${id}`, {
     method: "DELETE",
   });
 }
