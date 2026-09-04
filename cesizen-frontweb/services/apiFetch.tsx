@@ -1,7 +1,7 @@
 import { getCsrfToken } from "./csrf";
 import { ApiError } from "./apiError";
 
-const METHODS_REQUIRING_CSRF = ["POST", "PUT", "PATCH", "DELETE"];
+const METHODS_REQUIRING_CSRF = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
 export async function apiFetch(
   input: RequestInfo | URL,
@@ -11,7 +11,7 @@ export async function apiFetch(
 
   const headers = new Headers(init.headers);
 
-  if (METHODS_REQUIRING_CSRF.includes(method)) {
+  if (METHODS_REQUIRING_CSRF.has(method)) {
     const csrfToken = await getCsrfToken();
 
     headers.set("csrf-token", csrfToken);

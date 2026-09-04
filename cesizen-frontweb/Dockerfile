@@ -4,7 +4,7 @@ FROM node:22-alpine AS dependances
 WORKDIR /app
 COPY package.json package-lock.json ./
 
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 #Stage 1 build
 FROM node:22-alpine AS builder

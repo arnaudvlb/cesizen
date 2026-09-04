@@ -44,7 +44,7 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['utilisateur:read'])]    
+    #[Groups(['utilisateur:read'])]
     #[Assert\NotBlank(message: 'Le nom est obligatoire.')]
     #[Assert\Length(
         max: 50,
@@ -84,7 +84,7 @@ class Utilisateurs implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     #[Assert\Regex(
         pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).+$/',
-        message: 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
+        message: 'Le mot de passe doit contenir une majuscule, une minuscule, un chiffre et un caractère spécial.',
         groups: ['Default']
     )]
     private string $motDePasse;
