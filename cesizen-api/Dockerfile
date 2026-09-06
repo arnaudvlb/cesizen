@@ -17,10 +17,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copie séparée des fichiers Composer pour profiter du cache Docker
 COPY composer.json composer.lock symfony.lock ./
 
-# Copie du fichier d'environnement pour Docker
-COPY .env.docker .env
-
-# Installation des dépendances PHP de production
+# Installation des dépendances PHP
 RUN composer install \
     --no-interaction \
     --no-progress \
