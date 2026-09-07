@@ -1,0 +1,127 @@
+name: Release
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Tag and Release
+
+    if: github.event.pull_request.merged == true
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Get release type
+        id: release_type
+        env:
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+        run: |
+          echo "PR labels: $LABELS"
+
+          COUNT=0
+          RELEASE_TYPE=""
+
+          for TYPE in patch minor major; do
+            if echo " $LABELS " | grep -q " $TYPE "; then
+              RELEASE_TYPE="$TYPE"
+              COUNT=$((COUNT + 1))
+            fi
+          done
+
+          if [ "$COUNT" -eq 0 ]; then
+            echo "Error: no version label found."
+            echo "Add exactly one label: patch, minor or major."
+            exit 1
+          fi
+
+          if [ "$COUNT" -gt 1 ]; then
+            echo "Error: multiple version labels found."
+            echo "Use exactly one label: patch, minor or major."
+            exit 1
+          fi
+
+          echo "type=$RELEASE_TYPE" >> "$GITHUB_OUTPUT"
+          echo "Release type: $RELEASE_TYPE"
+
+      - name: Get latest version
+        id: latest_version
+        run: |
+          git fetch --tags --force
+
+          LATEST_TAG=$(git tag --list "v[0-9]*.[0-9]*.[0-9]*" \
+            --sort=-v:refname | head -n 1)
+
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="v1.0.0"
+          fi
+
+          echo "tag=$LATEST_TAG" >> "$GITHUB_OUTPUT"
+          echo "Latest version: $LATEST_TAG"
+
+      - name: Calculate next version
+        id: next_version
+        env:
+          CURRENT_TAG: ${{ steps.latest_version.outputs.tag }}
+          RELEASE_TYPE: ${{ steps.release_type.outputs.type }}
+        run: |
+          VERSION="${CURRENT_TAG#v}"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          case "$RELEASE_TYPE" in
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            *)
+              echo "Error: unsupported release type."
+              exit 1
+              ;;
+          esac
+
+          NEXT_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+
+          echo "tag=$NEXT_TAG" >> "$GITHUB_OUTPUT"
+          echo "$CURRENT_TAG -> $NEXT_TAG"
+
+      - name: Create and push tag
+        env:
+          TAG: ${{ steps.next_version.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.next_version.outputs.tag }}
+        run: |
+          gh release create "$TAG" \
+            --title "Release $TAG" \
+            --generate-notes \
+            --latest
