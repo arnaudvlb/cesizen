@@ -168,3 +168,50 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker compose --env-file .env.docker down -v
+
+  load-test:
+    name: Performance - Load Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and start containers
+        run: docker compose --env-file .env.docker up -d --build
+
+      - name: Wait for API
+        run: |
+          for i in {1..30}; do
+            if curl --fail http://localhost:8000/health/http_status_checks > /dev/null 2>&1; then
+              echo "API is healthy"
+              exit 0
+            fi
+
+            echo "Waiting for API..."
+            sleep 5
+          done
+
+          echo "API failed to become healthy"
+          docker compose logs api
+          exit 1
+
+      - name: Run database migrations
+        run: |
+          docker compose --env-file .env.docker exec -T api \
+            php bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Artillery
+        run: npm install --global artillery@latest
+
+      - name: Run load test
+        run: artillery run tests/performance/load-test.yml
+
+      - name: Stop containers
+        if: always()
+        run: docker compose --env-file .env.docker down -v
